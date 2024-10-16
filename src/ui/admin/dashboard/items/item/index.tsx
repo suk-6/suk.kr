@@ -11,7 +11,7 @@ export const ItemView = ({ slug, value }: Item) => (
 				{value!.createdAt.toLocaleString()}
 			</span>
 			<div className="w-3/12 text-gray-600 blur-sm hover:blur-none">
-				{value!.password ? value!.password : "-"}
+				{value!.password ? value!.password : ""}
 			</div>
 		</div>
 		<div className="w-1/12 flex items-center justify-center">
