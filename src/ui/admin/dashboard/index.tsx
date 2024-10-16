@@ -1,7 +1,7 @@
 "use client";
 
-import { ItemsView } from "./items";
 import { Logout } from "@/ui/components/dashboard/logout";
+import { ItemsView } from "./items";
 
 export const Dashboard = () => {
 	return (
