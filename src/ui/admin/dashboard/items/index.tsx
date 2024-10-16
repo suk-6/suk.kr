@@ -1,7 +1,13 @@
 import { getItems } from "@/lib/actions/item/getAll";
+import { Item } from "@/lib/models/item";
 import { Items } from "@/lib/models/items";
+import {
+	flexRender,
+	getCoreRowModel,
+	useReactTable,
+} from "@tanstack/react-table";
 import { useEffect, useState } from "react";
-import { ItemView } from "./item";
+import { columns } from "./columns";
 
 export const ItemsView = () => {
 	const [items, setItems] = useState<Items>({});
@@ -13,37 +19,43 @@ export const ItemsView = () => {
 	const updateItems = async () =>
 		await getItems().then((data) => setItems(data as unknown as Items));
 
+	const table = useReactTable<Item>({
+		columns,
+		data: Object.entries(items).map(([slug, value]) => ({ slug, value })),
+		getCoreRowModel: getCoreRowModel(),
+	});
+
 	return (
-		<div className="w-full h-full overflow-hidden border-2 border-gray-300">
-			<div className="w-full h-full *:w-full flex flex-col overflow-hidden">
-				<div className="flex text-center *:font-medium *:h-fit *:px-4 *:py-2">
-					<span className="w-1/12">Slug</span>
-					<span className="w-full text-left">Redirect URL</span>
-					<span className="w-3/12">Created At</span>
-					<span className="w-3/12">Password</span>
-					<span className="w-1/12">Disabled</span>
-				</div>
-				<div className="border border-gray-300" />
-				<div className="*:w-full overflow-y-scroll scrollbar-hide">
-					{Object.keys(items).length === 0 ? (
-						<p className="text-center p-4">No items found.</p>
-					) : (
-						Object.entries(items)
-							.sort(
-								([, a], [, b]) =>
-									new Date(b.createdAt).getTime() -
-									new Date(a.createdAt).getTime(),
-							)
-							.map(([key, value]) => (
-								<ItemView
-									key={key}
-									item={{ slug: key, value }}
-									updateItems={updateItems}
-								/>
-							))
-					)}
-				</div>
-			</div>
+		<div className="p-2">
+			<table>
+				<thead>
+					{table.getHeaderGroups().map((headerGroup) => (
+						<tr key={headerGroup.id}>
+							{headerGroup.headers.map((header) => (
+								<th key={header.id}>
+									{header.isPlaceholder
+										? null
+										: flexRender(
+												header.column.columnDef.header,
+												header.getContext(),
+											)}
+								</th>
+							))}
+						</tr>
+					))}
+				</thead>
+				<tbody>
+					{table.getRowModel().rows.map((row) => (
+						<tr key={row.id}>
+							{row.getVisibleCells().map((cell) => (
+								<td key={cell.id}>
+									{flexRender(cell.column.columnDef.cell, cell.getContext())}
+								</td>
+							))}
+						</tr>
+					))}
+				</tbody>
+			</table>
 		</div>
 	);
 };
