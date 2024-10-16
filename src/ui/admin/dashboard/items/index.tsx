@@ -7,8 +7,11 @@ export const ItemsView = () => {
 	const [items, setItems] = useState<Items>({});
 
 	useEffect(() => {
-		getItems().then((data) => setItems(data as unknown as Items));
+		updateItems();
 	}, []);
+
+	const updateItems = async () =>
+		await getItems().then((data) => setItems(data as unknown as Items));
 
 	return (
 		<div className="w-full h-full overflow-hidden border-2 border-gray-300">
@@ -32,7 +35,11 @@ export const ItemsView = () => {
 									new Date(a.createdAt).getTime(),
 							)
 							.map(([key, value]) => (
-								<ItemView key={key} slug={key} value={value} />
+								<ItemView
+									key={key}
+									item={{ slug: key, value }}
+									updateItems={updateItems}
+								/>
 							))
 					)}
 				</div>
