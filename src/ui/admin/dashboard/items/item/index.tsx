@@ -14,22 +14,22 @@ export const ItemView = ({
 
 	const update = (disabled: boolean) => {
 		setIsUpdating(true);
-		updateDisabled(slug, { ...value!, disabled }).then(() => {
-			updateItems().then(() => setIsUpdating(false));
-		});
+		updateDisabled(slug, { ...value!, disabled }).then(() =>
+			updateItems().then(() => setIsUpdating(false)),
+		);
 	};
 
 	return (
 		<div className="flex flex-row w-full">
-			<div className="w-full flex text-center *:h-fit *:px-4 *:py-2">
-				<span className="w-1/12 text-gray-800">{slug}</span>
-				<span className="w-full text-left text-blue-500 hover:underline">
+			<div className="w-full h-fit flex text-center *:px-4 *:py-2 *:flex *:items-center">
+				<span className="w-1/12 justify-center text-gray-800">{slug}</span>
+				<span className="w-full justify-start text-blue-500 hover:underline">
 					{value!.redirectURL}
 				</span>
-				<span className="w-3/12 text-nowrap text-gray-500 text-sm">
+				<span className="w-3/12 justify-center text-nowrap text-gray-500 text-sm">
 					{value!.createdAt.toLocaleString()}
 				</span>
-				<div className="w-3/12 text-gray-600 blur-sm hover:blur-none">
+				<div className="w-3/12 justify-center text-gray-600 blur-sm hover:blur-none">
 					{value!.password ? value!.password : ""}
 				</div>
 			</div>
