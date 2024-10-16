@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
-import { RequiresPassword } from "./auth";
+import { RequiresPassword } from "../../../ui/url/password";
 
 type Status = "not-found" | "requires-password";
 
