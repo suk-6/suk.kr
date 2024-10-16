@@ -14,7 +14,6 @@ export const createItem = async (item: CreateItem) =>
 			value: {
 				redirectURL: item.redirectURL,
 				password: item.password,
-				disabled: false,
 				createdAt: new Date(),
 			},
 			operation: "create",
