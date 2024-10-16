@@ -9,31 +9,25 @@ export const config = {
 export async function middleware(request: NextRequest) {
 	let data: Value | undefined;
 	const slug = request.nextUrl.pathname.substring(1);
-	const headers = new Headers(request.headers);
+	console.log("slug:", slug);
 
 	try {
 		data = await get(slug);
-	} catch {
-		headers.set("Suk-status", "not-found");
-
-		return NextResponse.next({
-			request: {
-				headers: headers,
-			},
-		});
+	} catch (error) {
+		console.error(error);
 	}
+
+	const response = NextResponse.next();
 
 	if (data) {
 		if (data.password) {
-			headers.set("Suk-status", "requires-password");
-
-			return NextResponse.next({
-				request: {
-					headers: headers,
-				},
-			});
+			response.headers.append("Suk-status", "requires-password");
+			return response;
 		}
 
 		return NextResponse.redirect(data.redirectURL, 301);
+	} else {
+		response.headers.append("Suk-status", "not-found");
+		return response;
 	}
 }
