@@ -1,4 +1,6 @@
-import { Item } from "@/models";
+"use server";
+
+import { Item } from "@/models/item";
 
 type Operation = "create" | "update" | "upsert" | "delete";
 type FetchItem = Item & {
@@ -19,5 +21,5 @@ export const request = async (items: FetchItem[]) =>
 			body: JSON.stringify({
 				items: [...items],
 			}),
-		}
+		},
 	).then((res) => res.json());
