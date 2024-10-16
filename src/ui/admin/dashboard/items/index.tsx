@@ -25,9 +25,15 @@ export const ItemsView = () => {
 					{Object.keys(items).length === 0 ? (
 						<p className="text-center p-4">No items found.</p>
 					) : (
-						Object.entries(items).map(([key, value]) => (
-							<ItemView key={key} slug={key} value={value} />
-						))
+						Object.entries(items)
+							.sort(
+								([, a], [, b]) =>
+									new Date(b.createdAt).getTime() -
+									new Date(a.createdAt).getTime(),
+							)
+							.map(([key, value]) => (
+								<ItemView key={key} slug={key} value={value} />
+							))
 					)}
 				</div>
 			</div>
