@@ -1,6 +1,6 @@
 import { Value } from "./value";
 
 export type Item = {
-	key: string;
+	slug: string;
 	value: Value | null;
 };

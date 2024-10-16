@@ -4,7 +4,8 @@ import { request } from "./request";
 export const createItem = async (item: Item) =>
 	await request([
 		{
-			...item,
+			key: item.slug,
+			value: item.value,
 			operation: "create",
 		},
 	]);
