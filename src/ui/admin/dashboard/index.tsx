@@ -2,6 +2,7 @@
 
 import { Logout } from "@/ui/components/dashboard/logout";
 import { ItemsView } from "./items";
+import { CreateView } from "./create";
 
 export const Dashboard = () => {
 	return (
@@ -11,7 +12,7 @@ export const Dashboard = () => {
 				<Logout />
 			</nav>
 			<div className="flex flex-col w-full h-full overflow-hidden px-36 py-10">
-				<div className="w-full h-32"></div>
+				<CreateView />
 				<ItemsView />
 			</div>
 		</main>
