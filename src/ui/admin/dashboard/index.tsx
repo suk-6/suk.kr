@@ -1,6 +1,6 @@
 "use client";
 
-import { Logout } from "@/ui/components/dashboard/logout";
+import { Logout } from "@/ui/components/button/logout";
 import { ItemsView } from "./items";
 import { CreateView } from "./create";
 
@@ -11,7 +11,7 @@ export const Dashboard = () => {
 				<h2 className="text-2xl font-semibold">Dashboard</h2>
 				<Logout />
 			</nav>
-			<div className="flex flex-col w-full h-full overflow-hidden px-36 py-10">
+			<div className="flex flex-col gap-2 w-full h-full overflow-hidden px-36 py-10">
 				<CreateView />
 				<ItemsView />
 			</div>
