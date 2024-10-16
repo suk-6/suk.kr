@@ -4,7 +4,7 @@ import { Value } from "@/lib/models/value";
 import { get } from "@vercel/edge-config";
 import { redirect } from "next/navigation";
 
-export const checkPassword = async (key: string, password: string) => {
+export const checkPassword = async (password: string, key: string) => {
 	let data: Value | undefined;
 
 	try {
