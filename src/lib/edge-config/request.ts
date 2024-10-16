@@ -3,7 +3,9 @@
 import { Item } from "@/lib/models/item";
 
 type Operation = "create" | "update" | "upsert" | "delete";
-type FetchItem = Item & {
+type FetchItem = {
+	key: Item["slug"];
+	value: Item["value"];
 	operation: Operation;
 };
 

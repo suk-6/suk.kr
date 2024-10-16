@@ -1,5 +1,5 @@
-import { Item } from "./item";
+import { Value } from "./value";
 
 export type Items = {
-	[key: string]: Item;
+	[key: string]: Value;
 };
