@@ -1,5 +1,5 @@
-import { request } from "./request";
 import { Value } from "../models/value";
+import { request } from "./request";
 
 class CreateItem implements Pick<Value, "redirectURL" | "password"> {
 	slug: string = "";
