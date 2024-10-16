@@ -1,1 +1,3 @@
-export default function Admin() {}
+export default async function Admin() {
+	return <main></main>;
+}
