@@ -1,7 +1,7 @@
-import { notFound, redirect, RedirectType } from "next/navigation";
-import { RequiresPassword } from "../../../ui/url/password";
-import { get } from "@vercel/edge-config";
 import { Value } from "@/lib/models/value";
+import { get } from "@vercel/edge-config";
+import { RedirectType, notFound, redirect } from "next/navigation";
+import { RequiresPassword } from "../../../ui/url/password";
 
 export default async function Page({ params }: { params: { slug: string } }) {
 	let data: Value | undefined;

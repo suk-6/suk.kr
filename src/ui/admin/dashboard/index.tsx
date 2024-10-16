@@ -1,8 +1,8 @@
 "use client";
 
 import { Logout } from "@/ui/components/button/logout";
-import { ItemsView } from "./items";
 import { CreateView } from "./create";
+import { ItemsView } from "./items";
 
 export const Dashboard = () => {
 	return (
