@@ -1,18 +1,21 @@
-import { headers } from "next/headers";
-import { notFound } from "next/navigation";
+import { notFound, redirect, RedirectType } from "next/navigation";
 import { RequiresPassword } from "../../../ui/url/password";
+import { get } from "@vercel/edge-config";
+import { Value } from "@/lib/models/value";
 
-type Status = "not-found" | "requires-password";
+export default async function Page({ params }: { params: { slug: string } }) {
+	let data: Value | undefined;
 
-export default function Page() {
-	const headersList = headers();
-	const status = headersList.get("Suk-status") as Status;
+	try {
+		data = await get(params.slug);
+	} catch (error) {
+		console.error(error);
+	}
 
-	if (status === "not-found") {
-		return notFound();
-	} else if (status === "requires-password") {
-		return <RequiresPassword />;
-	} else {
-		throw new Error("Invalid status");
+	if (data) {
+		if (data.password) return <RequiresPassword />;
+		if (data.disabled) return notFound();
+
+		return redirect(data.redirectURL, RedirectType.replace);
 	}
 }
