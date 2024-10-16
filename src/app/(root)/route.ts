@@ -1,4 +1,4 @@
-import { PF_SITE } from "@/constants";
+import { PF_SITE } from "@/lib/constants";
 import { redirect } from "next/navigation";
 
 export async function GET() {

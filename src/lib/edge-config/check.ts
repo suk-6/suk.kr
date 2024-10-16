@@ -1,6 +1,6 @@
 "use server";
 
-import { Value } from "@/models/value";
+import { Value } from "@/lib/models/value";
 import { get } from "@vercel/edge-config";
 import { redirect } from "next/navigation";
 

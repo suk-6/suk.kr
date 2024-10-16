@@ -1,6 +1,6 @@
 "use client";
 
-import { checkPassword } from "@/edge-config";
+import { checkPassword } from "@/lib/edge-config";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";

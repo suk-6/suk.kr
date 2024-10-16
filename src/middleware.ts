@@ -1,6 +1,6 @@
 import { get } from "@vercel/edge-config";
 import { NextRequest, NextResponse } from "next/server";
-import { Value } from "./models/value";
+import { Value } from "./lib/models/value";
 
 export const config = {
 	matcher: "/((?!api|_next/static|_next/image|favicon.ico|admin).*)",

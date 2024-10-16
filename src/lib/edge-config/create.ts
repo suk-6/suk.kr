@@ -1,4 +1,4 @@
-import { Item } from "@/models/item";
+import { Item } from "@/lib/models/item";
 import { request } from "./request";
 
 export const createItem = async (item: Item) =>
