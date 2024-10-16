@@ -1,6 +1,6 @@
 "use server";
 
-import { Item } from "@/models/item";
+import { Item } from "@/lib/models/item";
 
 type Operation = "create" | "update" | "upsert" | "delete";
 type FetchItem = Item & {
