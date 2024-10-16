@@ -29,11 +29,6 @@ export const ItemsView = () => {
 							<ItemView key={key} slug={key} value={value} />
 						))
 					)}
-					{Array.from({ length: 100 }).map((_, i) => {
-						return Object.entries(items).map(([key, value]) => (
-							<ItemView key={i} slug={key} value={value} />
-						));
-					})}
 				</div>
 			</div>
 		</div>
