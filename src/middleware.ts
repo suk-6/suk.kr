@@ -17,17 +17,24 @@ export async function middleware(request: NextRequest) {
 		console.error(error);
 	}
 
-	const response = NextResponse.next();
-
 	if (data) {
-		if (data.password) {
-			response.headers.append("Suk-status", "requires-password");
-			return response;
-		}
+		if (data.password) return requiresPassword();
+		if (data.disabled) return notFound();
 
 		return NextResponse.redirect(data.redirectURL, 301);
-	} else {
-		response.headers.append("Suk-status", "not-found");
-		return response;
 	}
+
+	return notFound();
 }
+
+export const notFound = () => {
+	const response = NextResponse.next();
+	response.headers.append("Suk-status", "not-found");
+	return response;
+};
+
+export const requiresPassword = () => {
+	const response = NextResponse.next();
+	response.headers.append("Suk-status", "requires-password");
+	return response;
+};
