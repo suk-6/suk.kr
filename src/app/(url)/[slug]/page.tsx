@@ -14,7 +14,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
 	if (data) {
 		if (data.password) return <RequiresPassword />;
-		if (data.disabled) return notFound();
 
 		return redirect(data.redirectURL, RedirectType.replace);
 	}
