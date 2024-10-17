@@ -37,7 +37,8 @@ export const ItemsView = ({
 		getCoreRowModel: getCoreRowModel(),
 		meta: {
 			removeRow: ({ slug }: Item) => {
-				deleteItem(slug).then(() => updateItems());
+				confirm(`Are you sure you want to delete this item?\nSlug: ${slug}`) &&
+					deleteItem(slug).then(() => updateItems());
 			},
 		} as CustomTableMeta,
 	});
