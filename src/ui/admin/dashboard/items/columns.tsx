@@ -13,7 +13,7 @@ export const columns = [
 			const password = info.getValue();
 			return (
 				<a href={password} className="text-left text-blue-500 hover:underline">
-					{password.length > 60 ? `${password.substring(0, 60)}...` : password}
+					{password.length > 70 ? `${password.substring(0, 70)}...` : password}
 				</a>
 			);
 		},
