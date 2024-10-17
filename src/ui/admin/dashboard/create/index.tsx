@@ -2,7 +2,9 @@ import { createItem } from "@/lib/edge-config";
 import { CreateItemInput } from "@/ui/components/input/dashboard";
 import { useState } from "react";
 
-export const CreateView = () => {
+export const CreateView = ({
+	updateItems,
+}: { updateItems: () => Promise<void> }) => {
 	const [slug, setSlug] = useState("");
 	const [redirectURL, setRedirectURL] = useState("");
 	const [password, setPassword] = useState("");
@@ -37,11 +39,16 @@ export const CreateView = () => {
 					<button
 						className="font-semibold bg-gray-100"
 						onClick={() => {
+							if (slug === "" || redirectURL === "") return;
+
 							createItem({
 								slug,
 								redirectURL,
 								password: password === "" ? null : password,
-							}).then(() => clear());
+							}).then(() => {
+								clear();
+								updateItems();
+							});
 						}}
 					>
 						Submit
