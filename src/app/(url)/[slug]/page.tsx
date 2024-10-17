@@ -17,4 +17,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
 		return redirect(data.redirectURL, RedirectType.replace);
 	}
+
+	return notFound();
 }
