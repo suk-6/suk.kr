@@ -1,11 +1,11 @@
 "use client";
 
+import { getItems } from "@/lib/actions/item/getAll";
+import { Items } from "@/lib/models/items";
 import { Logout } from "@/ui/components/button/logout";
+import { useEffect, useState } from "react";
 import { CreateView } from "./create";
 import { ItemsView } from "./items";
-import { Items } from "@/lib/models/items";
-import { useEffect, useState } from "react";
-import { getItems } from "@/lib/actions/item/getAll";
 
 export const Dashboard = () => {
 	const [items, setItems] = useState<Items>({});
@@ -25,7 +25,7 @@ export const Dashboard = () => {
 			</nav>
 			<div className="flex flex-col gap-3 w-full h-full overflow-hidden px-36 py-10">
 				<CreateView updateItems={updateItems} />
-				<ItemsView items={items} />
+				<ItemsView items={items} updateItems={updateItems} />
 			</div>
 		</main>
 	);
