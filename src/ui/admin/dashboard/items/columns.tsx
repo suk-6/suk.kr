@@ -12,7 +12,7 @@ export const columns = [
 		cell: (info) => {
 			const password = info.getValue();
 			return (
-				<a href={password}>
+				<a href={password} className="text-left text-blue-500 hover:underline">
 					{password.length > 60 ? `${password.substring(0, 60)}...` : password}
 				</a>
 			);
@@ -20,12 +20,16 @@ export const columns = [
 		header: "Redirect URL",
 	}),
 	columnHelper.accessor("value.createdAt", {
-		cell: (info) => new Date(info.getValue()).toLocaleString(),
+		cell: (info) => (
+			<p className="text-center">
+				{new Date(info.getValue()).toLocaleString()},
+			</p>
+		),
 		header: "Created At",
 	}),
 	columnHelper.accessor("value.password", {
 		cell: (info) => (
-			<div className="text-gray-600 blur-sm hover:blur-none">
+			<div className="text-center text-gray-600 blur-sm hover:blur-none">
 				{info.getValue() ? info.getValue() : ""}
 			</div>
 		),
