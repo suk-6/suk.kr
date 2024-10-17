@@ -1,4 +1,3 @@
-import { getItems } from "@/lib/actions/item/getAll";
 import { Item } from "@/lib/models/item";
 import { Items } from "@/lib/models/items";
 import {
@@ -6,19 +5,9 @@ import {
 	getCoreRowModel,
 	useReactTable,
 } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
 import { columns } from "./columns";
 
-export const ItemsView = () => {
-	const [items, setItems] = useState<Items>({});
-
-	useEffect(() => {
-		updateItems();
-	}, []);
-
-	const updateItems = async () =>
-		await getItems().then((data) => setItems(data as unknown as Items));
-
+export const ItemsView = ({ items }: { items: Items }) => {
 	const table = useReactTable<Item>({
 		columns,
 		data: Object.entries(items).map(([slug, value]) => ({ slug, value })),
@@ -27,7 +16,7 @@ export const ItemsView = () => {
 
 	return (
 		<div className="p-2">
-			<table>
+			<table className="w-full *:w-full">
 				<thead>
 					{table.getHeaderGroups().map((headerGroup) => (
 						<tr key={headerGroup.id}>
