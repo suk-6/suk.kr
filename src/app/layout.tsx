@@ -3,8 +3,8 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
-	title: "URL Shortener",
-	description: "Suk's URL Shortener",
+	title: "@woosuknam",
+	description: "About Me",
 };
 
 export default function RootLayout({
