@@ -1,3 +1,5 @@
+import { PF_SITE } from "@/lib/constants";
+
 export default function Index() {
     return (
         <iframe
@@ -12,7 +14,7 @@ export default function Index() {
                 overflow: "hidden",
                 zIndex: 999999,
             }}
-            src="https://my.surfit.io/w/2105395662"
+            src={PF_SITE}
         />
     );
 }
