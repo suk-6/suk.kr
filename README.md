@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# suk.kr v2
 
-## Getting Started
+개인 포트폴리오, 단축 URL, 파일 관리 기능을 하나의 pnpm workspace에서 운영합니다.
 
-First, run the development server:
+## 구조
+
+- `apps/web` — Next.js 16 / React 19, Vercel 배포
+- `apps/api` — Cloudflare Worker / D1, Wrangler 배포
+- `packages/contracts` — 양쪽 런타임이 공유하는 Zod 계약
+
+브라우저는 Worker를 직접 호출하지 않습니다. `suk.kr`의 서버 런타임이 `API_TOKEN`으로 `api.suk.kr`을 호출하며, D1만 영속 상태를 보관합니다. SSFS 파일 바이트는 기존 S3에 유지하고 D1은 파일 메타데이터와 단축 URL 관계를 관리합니다.
+
+## 개발
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
+cp apps/web/.env.example apps/web/.env.local
+pnpm --filter @suk/api db:local
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Worker 로컬 비밀값은 `apps/api/.dev.vars`에 `API_TOKEN`으로 설정합니다. 웹 환경에는 같은 값과 SSFS의 기존 S3 환경값을 설정합니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 배포
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Vercel 프로젝트 Root Directory: `apps/web`
+- Worker 이름: `api-suk-kr`
+- Worker Custom Domain: `api.suk.kr`
+- D1: `suk-kr`
+- GitHub Actions secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`main`에 API 관련 변경이 push되면 D1 migration을 적용한 뒤 Wrangler로 Worker를 배포합니다. Vercel은 같은 저장소의 `apps/web` 변경을 독립 배포합니다.

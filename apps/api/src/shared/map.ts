@@ -1,0 +1,148 @@
+import type {
+	Entry,
+	Project,
+	Settings,
+	ShortLink,
+	Skill,
+	StoredFile,
+} from "@suk/contracts";
+
+type SettingsRow = {
+	name: string;
+	title: string;
+	intro: string;
+	email: string;
+	location: string;
+	resume_url: string;
+	github_url: string;
+	linkedin_url: string;
+	available_for: string;
+};
+
+type ProjectRow = {
+	id: string;
+	slug: string;
+	name: string;
+	subtitle: string;
+	description: string;
+	cover_url: string;
+	project_url: string;
+	repo_url: string;
+	tags: string;
+	highlights: string;
+	sort_order: number;
+	visible: number;
+};
+
+type EntryRow = {
+	id: string;
+	kind: Entry["kind"];
+	title: string;
+	organization: string;
+	start_date: string;
+	end_date: string;
+	description: string;
+	url: string;
+	sort_order: number;
+	visible: number;
+};
+
+type SkillRow = {
+	id: string;
+	name: string;
+	group_name: string;
+	sort_order: number;
+};
+
+type LinkRow = {
+	slug: string;
+	target_url: string;
+	password_hash: string | null;
+	source: ShortLink["source"];
+	file_id: string | null;
+	created_at: string;
+	updated_at: string;
+};
+
+type FileRow = {
+	id: string;
+	slug: string;
+	file_name: string;
+	object_key: string;
+	content_type: string;
+	size: number;
+	public_url: string;
+	created_at: string;
+	updated_at: string;
+};
+
+export const mapSettings = (row: SettingsRow): Settings => ({
+	name: row.name,
+	title: row.title,
+	intro: row.intro,
+	email: row.email,
+	location: row.location,
+	resumeUrl: row.resume_url,
+	githubUrl: row.github_url,
+	linkedinUrl: row.linkedin_url,
+	availableFor: row.available_for,
+});
+
+export const mapProject = (row: ProjectRow): Project => ({
+	id: row.id,
+	slug: row.slug,
+	name: row.name,
+	subtitle: row.subtitle,
+	description: row.description,
+	coverUrl: row.cover_url,
+	projectUrl: row.project_url,
+	repoUrl: row.repo_url,
+	tags: JSON.parse(row.tags) as string[],
+	highlights: JSON.parse(row.highlights) as string[],
+	sortOrder: row.sort_order,
+	visible: Boolean(row.visible),
+});
+
+export const mapEntry = (row: EntryRow): Entry => ({
+	id: row.id,
+	kind: row.kind,
+	title: row.title,
+	organization: row.organization,
+	startDate: row.start_date,
+	endDate: row.end_date,
+	description: row.description,
+	url: row.url,
+	sortOrder: row.sort_order,
+	visible: Boolean(row.visible),
+});
+
+export const mapSkill = (row: SkillRow): Skill => ({
+	id: row.id,
+	name: row.name,
+	groupName: row.group_name,
+	sortOrder: row.sort_order,
+});
+
+export const mapLink = (row: LinkRow): ShortLink => ({
+	slug: row.slug,
+	targetUrl: row.target_url,
+	passwordHash: row.password_hash,
+	source: row.source,
+	fileId: row.file_id,
+	createdAt: row.created_at,
+	updatedAt: row.updated_at,
+});
+
+export const mapFile = (row: FileRow): StoredFile => ({
+	id: row.id,
+	slug: row.slug,
+	fileName: row.file_name,
+	objectKey: row.object_key,
+	contentType: row.content_type,
+	size: row.size,
+	publicUrl: row.public_url,
+	createdAt: row.created_at,
+	updatedAt: row.updated_at,
+});
+
+export type { EntryRow, FileRow, LinkRow, ProjectRow, SettingsRow, SkillRow };

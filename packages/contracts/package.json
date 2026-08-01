@@ -1,0 +1,17 @@
+{
+	"name": "@suk/contracts",
+	"version": "2.0.0",
+	"private": true,
+	"type": "module",
+	"exports": "./src/index.ts",
+	"scripts": {
+		"build": "tsc --noEmit",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"zod": "latest"
+	},
+	"devDependencies": {
+		"typescript": "latest"
+	}
+}

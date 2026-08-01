@@ -1,0 +1,22 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "api-suk-kr",
+	"main": "src/index.ts",
+	"account_id": "521861af0ccd0a033f4bee6b61a9bb18",
+	"compatibility_date": "2026-08-01",
+	"compatibility_flags": ["nodejs_compat"],
+	"routes": [{ "pattern": "api.suk.kr", "custom_domain": true }],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "suk-kr",
+			"database_id": "20394753-5ffa-4a66-9bfa-eb242a4e5d66",
+			"migrations_dir": "migrations"
+		}
+	],
+	"observability": {
+		"enabled": true,
+		"logs": { "head_sampling_rate": 1 },
+		"traces": { "enabled": true, "head_sampling_rate": 0.1 }
+	}
+}

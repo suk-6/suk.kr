@@ -1,65 +1,28 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.9.3/schema.json",
-	"vcs": { "enabled": false, "clientKind": "git", "useIgnoreFile": false },
-	"files": { "ignoreUnknown": false, "ignore": [".next", ".vercel"] },
+	"$schema": "https://biomejs.dev/schemas/2.5.6/schema.json",
+	"assist": { "actions": { "source": { "organizeImports": "on" } } },
+	"files": {
+		"includes": [
+			"**",
+			"!!**/.next",
+			"!!**/.pnpm-store",
+			"!!**/.vercel",
+			"!!**/.wrangler",
+			"!!**/coverage",
+			"!!**/dist",
+			"!!**/node_modules",
+			"!!tmp",
+			"!!**/.secrets.json",
+			"!!apps/api/worker-configuration.d.ts"
+		]
+	},
 	"formatter": { "enabled": true, "indentStyle": "tab" },
-	"organizeImports": { "enabled": true },
+	"javascript": { "formatter": { "quoteStyle": "double" } },
 	"linter": {
 		"enabled": true,
 		"rules": {
-			"recommended": false,
-			"complexity": {
-				"noUselessThisAlias": "error",
-				"noUselessTypeConstraint": "error"
-			},
-			"correctness": {
-				"noUnusedVariables": "error",
-				"useArrayLiterals": "off"
-			},
-			"style": { "noNamespace": "error", "useAsConstAssertion": "error" },
-			"suspicious": {
-				"noExplicitAny": "error",
-				"noExtraNonNullAssertion": "error",
-				"noMisleadingInstantiator": "error",
-				"noUnsafeDeclarationMerging": "error",
-				"useNamespaceKeyword": "error"
-			}
+			"preset": "recommended",
+			"suspicious": { "noExplicitAny": "error" }
 		}
-	},
-	"javascript": { "formatter": { "quoteStyle": "double" } },
-	"overrides": [
-		{
-			"include": ["*.ts", "*.tsx", "*.mts", "*.cts"],
-			"linter": {
-				"rules": {
-					"correctness": {
-						"noConstAssign": "off",
-						"noGlobalObjectCalls": "off",
-						"noInvalidBuiltinInstantiation": "off",
-						"noInvalidConstructorSuper": "off",
-						"noNewSymbol": "off",
-						"noSetterReturn": "off",
-						"noUndeclaredVariables": "off",
-						"noUnreachable": "off",
-						"noUnreachableSuper": "off"
-					},
-					"style": {
-						"noArguments": "error",
-						"noVar": "error",
-						"useConst": "error"
-					},
-					"suspicious": {
-						"noDuplicateClassMembers": "off",
-						"noDuplicateObjectKeys": "off",
-						"noDuplicateParameters": "off",
-						"noFunctionAssign": "off",
-						"noImportAssign": "off",
-						"noRedeclare": "off",
-						"noUnsafeNegation": "off",
-						"useGetterReturn": "off"
-					}
-				}
-			}
-		}
-	]
+	}
 }

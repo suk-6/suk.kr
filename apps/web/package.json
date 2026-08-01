@@ -1,0 +1,36 @@
+{
+	"name": "@suk/web",
+	"version": "2.0.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"migrate:ssfs": "node scripts/migrateSsfs.mjs",
+		"repair:resume": "node scripts/repairResume.mjs",
+		"start": "next start",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@aws-sdk/client-s3": "latest",
+		"@aws-sdk/s3-request-presigner": "latest",
+		"@suk/contracts": "workspace:*",
+		"@vercel/analytics": "latest",
+		"class-variance-authority": "latest",
+		"clsx": "latest",
+		"lucide-react": "latest",
+		"next": "16.2.12",
+		"react": "19.2.8",
+		"react-dom": "19.2.8",
+		"satori": "latest",
+		"sharp": "latest",
+		"tailwind-merge": "latest"
+	},
+	"devDependencies": {
+		"@tailwindcss/postcss": "latest",
+		"@types/node": "latest",
+		"@types/react": "latest",
+		"@types/react-dom": "latest",
+		"tailwindcss": "latest",
+		"typescript": "latest"
+	}
+}
