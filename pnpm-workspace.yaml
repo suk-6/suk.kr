@@ -2,6 +2,18 @@ packages:
   - apps/*
   - packages/*
 
-onlyBuiltDependencies:
-  - sharp
-  - workerd
+allowBuilds:
+  esbuild: true
+  sharp: true
+  workerd: true
+
+minimumReleaseAgeExclude:
+  - "@aws-sdk/client-s3@3.1101.0"
+  - "@aws-sdk/s3-request-presigner@3.1101.0"
+  - "@cloudflare/vitest-pool-workers@0.20.1"
+  - "@napi-rs/wasm-runtime@1.2.2"
+  - "@speed-highlight/core@1.2.18"
+  - "baseline-browser-mapping@2.11.9"
+  - "hono@4.12.33"
+  - "miniflare@5.20260730.0-alpha"
+  - "wrangler@4.118.0"
