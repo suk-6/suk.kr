@@ -1,0 +1,13 @@
+.next
+.pnpm-store
+.vercel
+.wrangler
+coverage
+dist
+node_modules
+tmp
+apps/api/worker-configuration.d.ts
+apps/web/next-env.d.ts
+*.tsbuildinfo
+pnpm-lock.yaml
+.secrets.json

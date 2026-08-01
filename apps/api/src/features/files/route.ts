@@ -1,9 +1,15 @@
 import { fileSchema, fileUpdateSchema } from "@suk/contracts";
 import { Hono } from "hono";
-import { createFile, deleteFile, getFiles, updateFile } from "./repo";
+import { createFile, deleteFile, getFile, getFiles, updateFile } from "./repo";
 
 export const filesRoute = new Hono<{ Bindings: Env }>()
 	.get("/", async (context) => context.json(await getFiles(context.env.DB)))
+	.get("/:id", async (context) => {
+		const value = await getFile(context.env.DB, context.req.param("id"));
+		return value
+			? context.json(value)
+			: context.json({ error: "File not found" }, 404);
+	})
 	.post("/", async (context) => {
 		const value = fileSchema.parse(await context.req.json());
 		await createFile(context.env.DB, value);
@@ -11,15 +17,16 @@ export const filesRoute = new Hono<{ Bindings: Env }>()
 	})
 	.patch("/:id", async (context) => {
 		const value = fileUpdateSchema.parse(await context.req.json());
-		await updateFile(
+		const updated = await updateFile(
 			context.env.DB,
 			context.req.param("id"),
 			value.slug,
 			value.fileName,
 		);
-		return context.json(value);
+		return context.json(updated);
 	})
 	.delete("/:id", async (context) => {
-		await deleteFile(context.env.DB, context.req.param("id"));
-		return context.body(null, 204);
+		return context.json(
+			await deleteFile(context.env.DB, context.req.param("id")),
+		);
 	});

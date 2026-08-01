@@ -10,8 +10,10 @@ export const getSkills = async (db: D1Database) => {
 
 export const saveSkill = (db: D1Database, value: Skill) =>
 	db
-		.prepare(`INSERT INTO skills (id, name, group_name, sort_order) VALUES (?, ?, ?, ?)
-			ON CONFLICT(id) DO UPDATE SET name = excluded.name, group_name = excluded.group_name, sort_order = excluded.sort_order`)
+		.prepare(
+			`INSERT INTO skills (id, name, group_name, sort_order) VALUES (?, ?, ?, ?)
+			ON CONFLICT(id) DO UPDATE SET name = excluded.name, group_name = excluded.group_name, sort_order = excluded.sort_order`,
+		)
 		.bind(value.id, value.name, value.groupName, value.sortOrder)
 		.run();
 

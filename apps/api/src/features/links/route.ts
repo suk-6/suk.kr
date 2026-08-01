@@ -23,11 +23,9 @@ export const linksRoute = new Hono<{ Bindings: Env }>()
 		return context.json(value);
 	})
 	.delete("/:slug", async (context) => {
-		const result = await deleteLink(
+		await deleteLink(
 			context.env.DB,
 			decodeURIComponent(context.req.param("slug")),
 		);
-		return result.meta.changes
-			? context.body(null, 204)
-			: context.json({ error: "Managed links are read-only" }, 409);
+		return context.body(null, 204);
 	});

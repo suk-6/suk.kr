@@ -8,7 +8,7 @@ import { saveSettings } from "../actions";
 export const SettingsSection = ({ settings }: { settings: Settings }) => (
 	<>
 		<header className="mb-8">
-			<p className="text-sm text-zinc-500">Profile</p>
+			<p className="text-sm text-muted-foreground">Profile</p>
 			<h1 className="mt-1 text-3xl font-semibold tracking-tight">기본 관리</h1>
 		</header>
 		<Card className="max-w-4xl">

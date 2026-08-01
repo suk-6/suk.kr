@@ -3,17 +3,24 @@ import type { ButtonHTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
 const variants = cva(
-	"inline-flex h-9 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50",
+	"inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all outline-none disabled:pointer-events-none disabled:opacity-50 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
 	{
 		variants: {
 			variant: {
-				default: "bg-zinc-950 text-white hover:bg-zinc-800",
-				outline: "border border-zinc-200 bg-white hover:bg-zinc-50",
-				destructive: "bg-red-600 text-white hover:bg-red-500",
-				ghost: "hover:bg-zinc-100",
-				link: "h-auto px-0 underline underline-offset-4",
+				default:
+					"bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
+				outline:
+					"border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground",
+				destructive:
+					"bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20",
+				ghost: "hover:bg-accent hover:text-accent-foreground",
+				link: "text-primary underline-offset-4 hover:underline",
 			},
-			size: { default: "h-9", sm: "h-8 px-3 text-xs", lg: "h-11 px-6" },
+			size: {
+				default: "h-9 px-4 py-2",
+				sm: "h-8 rounded-md px-3 text-xs",
+				lg: "h-10 rounded-md px-6",
+			},
 		},
 		defaultVariants: { variant: "default", size: "default" },
 	},

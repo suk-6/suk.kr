@@ -1,4 +1,5 @@
 import type { FileInput } from "@suk/contracts";
+import { ApiError } from "../../shared/error";
 import { type FileRow, mapFile } from "../../shared/map";
 
 export const getFiles = async (db: D1Database) => {
@@ -6,6 +7,14 @@ export const getFiles = async (db: D1Database) => {
 		.prepare("SELECT * FROM files ORDER BY created_at DESC")
 		.all<FileRow>();
 	return results.map(mapFile);
+};
+
+export const getFile = async (db: D1Database, id: string) => {
+	const row = await db
+		.prepare("SELECT * FROM files WHERE id = ?")
+		.bind(id)
+		.first<FileRow>();
+	return row ? mapFile(row) : null;
 };
 
 export const createFile = (db: D1Database, value: FileInput) =>
@@ -38,14 +47,23 @@ export const createFile = (db: D1Database, value: FileInput) =>
 			),
 	]);
 
-export const updateFile = (
+export const updateFile = async (
 	db: D1Database,
 	id: string,
 	slug: string,
 	fileName: string,
 ) => {
+	const current = await getFile(db, id);
+	if (!current) throw new ApiError(404, "File not found");
+	const collision = await db
+		.prepare(
+			"SELECT slug FROM short_links WHERE slug = ? AND (file_id IS NULL OR file_id != ?)",
+		)
+		.bind(slug, id)
+		.first("slug");
+	if (collision) throw new ApiError(409, "이미 사용 중인 slug입니다.");
 	const now = new Date().toISOString();
-	return db.batch([
+	await db.batch([
 		db
 			.prepare(
 				"UPDATE short_links SET slug = ?, updated_at = ? WHERE file_id = ?",
@@ -57,12 +75,17 @@ export const updateFile = (
 			)
 			.bind(slug, fileName, now, id),
 	]);
+	return { ...current, slug, fileName, updatedAt: now };
 };
 
-export const deleteFile = (db: D1Database, id: string) =>
-	db.batch([
+export const deleteFile = async (db: D1Database, id: string) => {
+	const current = await getFile(db, id);
+	if (!current) throw new ApiError(404, "File not found");
+	await db.batch([
 		db
 			.prepare("DELETE FROM short_links WHERE file_id = ? AND source = 'file'")
 			.bind(id),
 		db.prepare("DELETE FROM files WHERE id = ?").bind(id),
 	]);
+	return current;
+};

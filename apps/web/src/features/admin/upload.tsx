@@ -20,51 +20,55 @@ export const FileUpload = () => {
 				event.preventDefault();
 				if (!value.file) return;
 				setValue({ ...value, status: "업로드 중…" });
-				const signed = await fetch("/api/files/sign", {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({
+				try {
+					const signed = await fetch("/api/files/sign", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({
+							slug: value.slug,
+							fileName: value.fileName,
+							contentType: value.file.type,
+						}),
+					});
+					if (!signed.ok)
+						throw new Error(((await signed.json()) as { error: string }).error);
+					const { uploadUrl, objectKey } = (await signed.json()) as {
+						uploadUrl: string;
+						objectKey: string;
+					};
+					const uploaded = await fetch(uploadUrl, {
+						method: "PUT",
+						body: value.file,
+						headers: {
+							"Content-Type": value.file.type || "application/octet-stream",
+						},
+					});
+					if (!uploaded.ok) throw new Error("S3 업로드에 실패했습니다.");
+					const data = new FormData();
+					Object.entries({
 						slug: value.slug,
 						fileName: value.fileName,
-						contentType: value.file.type,
-					}),
-				});
-				if (!signed.ok)
-					return setValue({
-						...value,
-						status: ((await signed.json()) as { error: string }).error,
+						objectKey,
+						contentType: value.file.type || "application/octet-stream",
+						size: String(value.file.size),
+					}).forEach(([key, item]) => {
+						data.set(key, item);
 					});
-				const { uploadUrl, objectKey } = (await signed.json()) as {
-					uploadUrl: string;
-					objectKey: string;
-				};
-				const uploaded = await fetch(uploadUrl, {
-					method: "PUT",
-					body: value.file,
-					headers: {
-						"Content-Type": value.file.type || "application/octet-stream",
-					},
-				});
-				if (!uploaded.ok)
-					return setValue({ ...value, status: "S3 업로드에 실패했습니다." });
-				const data = new FormData();
-				Object.entries({
-					slug: value.slug,
-					fileName: value.fileName,
-					objectKey,
-					contentType: value.file.type || "application/octet-stream",
-					size: String(value.file.size),
-				}).forEach(([key, item]) => {
-					data.set(key, item);
-				});
-				await createFile(data);
-				setValue({ file: null, slug: "", fileName: "", status: "완료" });
+					await createFile(data);
+					setValue({ file: null, slug: "", fileName: "", status: "완료" });
+				} catch (error) {
+					setValue({
+						...value,
+						status:
+							error instanceof Error ? error.message : "업로드에 실패했습니다.",
+					});
+				}
 			}}
 		>
-			<label className="flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-zinc-300 bg-zinc-50 text-center md:col-span-2">
-				<UploadCloud className="mb-2 text-zinc-400" />
+			<label className="flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed border-input bg-background text-center md:col-span-2">
+				<UploadCloud className="mb-2 text-muted-foreground" />
 				<span className="text-sm font-medium">
-					{value.file?.name ?? "파일을 선택하거나 끌어오세요"}
+					{value.file?.name ?? "업로드할 파일을 선택하세요"}
 				</span>
 				<input
 					className="hidden"
@@ -95,8 +99,10 @@ export const FileUpload = () => {
 				required
 			/>
 			<div className="flex items-center gap-3 md:col-span-2">
-				<Button disabled={!value.file}>업로드</Button>
-				<span className="text-sm text-zinc-500">{value.status}</span>
+				<Button disabled={!value.file || value.status === "업로드 중…"}>
+					업로드
+				</Button>
+				<span className="text-sm text-muted-foreground">{value.status}</span>
 			</div>
 		</form>
 	);

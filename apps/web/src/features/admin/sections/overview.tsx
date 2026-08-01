@@ -11,7 +11,7 @@ export const OverviewSection = ({ data }: { data: AdminData }) => {
 	return (
 		<>
 			<header className="mb-8">
-				<p className="text-sm text-zinc-500">Overview</p>
+				<p className="text-sm text-muted-foreground">Overview</p>
 				<h1 className="mt-1 text-3xl font-semibold tracking-tight">
 					안녕하세요, 우석님.
 				</h1>
@@ -20,10 +20,12 @@ export const OverviewSection = ({ data }: { data: AdminData }) => {
 				{counts.map(([label, value]) => (
 					<Card key={label}>
 						<CardHeader>
-							<p className="text-sm text-zinc-500">{label}</p>
+							<p className="text-sm text-muted-foreground">{label}</p>
 						</CardHeader>
 						<CardContent>
-							<strong className="text-4xl tracking-tight">{value}</strong>
+							<span className="text-3xl font-semibold tracking-tight">
+								{value}
+							</span>
 						</CardContent>
 					</Card>
 				))}
@@ -32,20 +34,26 @@ export const OverviewSection = ({ data }: { data: AdminData }) => {
 				<CardHeader>
 					<h2 className="font-semibold">운영 구조</h2>
 				</CardHeader>
-				<CardContent className="grid gap-5 text-sm text-zinc-600 md:grid-cols-3">
+				<CardContent className="grid gap-5 text-sm text-muted-foreground md:grid-cols-3">
 					<div>
-						<b className="block text-zinc-950">suk.kr</b>Next.js · Vercel
+						<span className="block font-medium text-foreground">suk.kr</span>
+						Next.js · Vercel
 						<br />
 						렌더링과 모든 요청 처리
 					</div>
 					<div>
-						<b className="block text-zinc-950">api.suk.kr</b>Cloudflare Workers
-						· D1
+						<span className="block font-medium text-foreground">
+							api.suk.kr
+						</span>
+						Cloudflare Workers · D1
 						<br />
 						상태와 관계 데이터
 					</div>
 					<div>
-						<b className="block text-zinc-950">file.suk.kr</b>기존 SSFS · S3
+						<span className="block font-medium text-foreground">
+							file.suk.kr
+						</span>
+						기존 SSFS · S3
 						<br />
 						파일 바이트 저장
 					</div>

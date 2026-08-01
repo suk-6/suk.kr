@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import { type Section, sections } from "@/features/admin/config";
 import { getAdminData } from "@/features/admin/data";
 import { AdminLogin } from "@/features/admin/login";
 import { AdminPage } from "@/features/admin/page";
 import { isAdmin } from "@/lib/auth/session";
+
+export const dynamic = "force-dynamic";
+export const metadata: Metadata = {
+	title: "Admin",
+	robots: { index: false, follow: false },
+};
 
 export default async function Page({
 	searchParams,

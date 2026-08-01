@@ -12,9 +12,11 @@ export const getEntries = async (db: D1Database, includeHidden = false) => {
 
 export const saveEntry = (db: D1Database, value: Entry) =>
 	db
-		.prepare(`INSERT INTO timeline_entries (id, kind, title, organization, start_date, end_date, description, url, sort_order, visible, updated_at)
+		.prepare(
+			`INSERT INTO timeline_entries (id, kind, title, organization, start_date, end_date, description, url, sort_order, visible, updated_at)
 			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-			ON CONFLICT(id) DO UPDATE SET kind = excluded.kind, title = excluded.title, organization = excluded.organization, start_date = excluded.start_date, end_date = excluded.end_date, description = excluded.description, url = excluded.url, sort_order = excluded.sort_order, visible = excluded.visible, updated_at = excluded.updated_at`)
+			ON CONFLICT(id) DO UPDATE SET kind = excluded.kind, title = excluded.title, organization = excluded.organization, start_date = excluded.start_date, end_date = excluded.end_date, description = excluded.description, url = excluded.url, sort_order = excluded.sort_order, visible = excluded.visible, updated_at = excluded.updated_at`,
+		)
 		.bind(
 			value.id,
 			value.kind,

@@ -11,12 +11,12 @@
 			"binding": "DB",
 			"database_name": "suk-kr",
 			"database_id": "20394753-5ffa-4a66-9bfa-eb242a4e5d66",
-			"migrations_dir": "migrations"
-		}
+			"migrations_dir": "migrations",
+		},
 	],
 	"observability": {
 		"enabled": true,
 		"logs": { "head_sampling_rate": 1 },
-		"traces": { "enabled": true, "head_sampling_rate": 0.1 }
-	}
+		"traces": { "enabled": true, "head_sampling_rate": 0.1 },
+	},
 }

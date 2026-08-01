@@ -65,6 +65,7 @@ const listObjects = async (client, bucket) => {
 };
 
 const main = async () => {
+	const dryRun = process.argv.includes("--dry-run");
 	const env = await readEnv();
 	const client = new S3Client({
 		region: env.S3_REGION,
@@ -85,26 +86,28 @@ const main = async () => {
 		if (existingKeys.has(object.Key)) continue;
 		const slug = uniqueSlug(object.Key, usedSlugs);
 		const encodedKey = object.Key.split("/").map(encodeURIComponent).join("/");
-		await request(env, "/files", {
-			method: "POST",
-			body: JSON.stringify({
-				id: randomUUID(),
-				slug,
-				fileName: object.Key.split("/").at(-1),
-				objectKey: object.Key,
-				contentType: contentType(object.Key),
-				size: object.Size ?? 0,
-				publicUrl: `${env.NEXT_PUBLIC_S3_URL}/${encodedKey}`,
-				createdAt:
-					object.LastModified?.toISOString() ?? new Date().toISOString(),
-			}),
-		});
+		if (!dryRun)
+			await request(env, "/files", {
+				method: "POST",
+				body: JSON.stringify({
+					id: randomUUID(),
+					slug,
+					fileName: object.Key.split("/").at(-1),
+					objectKey: object.Key,
+					contentType: contentType(object.Key),
+					size: object.Size ?? 0,
+					publicUrl: `${env.NEXT_PUBLIC_S3_URL}/${encodedKey}`,
+					createdAt:
+						object.LastModified?.toISOString() ?? new Date().toISOString(),
+				}),
+			});
 		migrated += 1;
 	}
 	console.log(
 		JSON.stringify({
+			dryRun,
 			discovered: objects.length,
-			migrated,
+			[dryRun ? "missing" : "migrated"]: migrated,
 			skipped: objects.length - migrated,
 		}),
 	);

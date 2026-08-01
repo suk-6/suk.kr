@@ -66,12 +66,7 @@ const EntryForm = ({ kind, entry }: { kind: EntryKind; entry?: Entry }) => (
 				<div className="flex gap-2 md:col-span-2">
 					<Button>저장</Button>
 					{entry && (
-						<Button
-							formAction={removeEntry}
-							name="id"
-							value={entry.id}
-							variant="destructive"
-						>
+						<Button formAction={removeEntry} variant="destructive">
 							삭제
 						</Button>
 					)}
@@ -90,7 +85,7 @@ export const EntriesSection = ({
 }) => (
 	<>
 		<header className="mb-8">
-			<p className="text-sm text-zinc-500">Timeline</p>
+			<p className="text-sm text-muted-foreground">Timeline</p>
 			<h1 className="mt-1 text-3xl font-semibold tracking-tight">
 				{labels[kind]} 관리
 			</h1>

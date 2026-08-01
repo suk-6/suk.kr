@@ -11,7 +11,7 @@ const LinkForm = ({ link }: { link?: ShortLink }) => {
 	return (
 		<form
 			action={saveLink}
-			className="grid gap-2 rounded-lg border border-zinc-200 bg-white p-3 md:grid-cols-[12rem_1fr_12rem_auto]"
+			className="grid gap-2 rounded-lg border bg-card p-3 md:grid-cols-[12rem_1fr_12rem_auto]"
 		>
 			<input type="hidden" name="previousSlug" value={link?.slug ?? ""} />
 			<Input
@@ -45,13 +45,7 @@ const LinkForm = ({ link }: { link?: ShortLink }) => {
 					<>
 						<Button size="sm">저장</Button>
 						{link && (
-							<Button
-								size="sm"
-								variant="destructive"
-								formAction={removeLink}
-								name="slug"
-								value={link.slug}
-							>
+							<Button size="sm" variant="destructive" formAction={removeLink}>
 								삭제
 							</Button>
 						)}
@@ -75,7 +69,7 @@ const LinkForm = ({ link }: { link?: ShortLink }) => {
 export const LinksSection = ({ links }: { links: ShortLink[] }) => (
 	<>
 		<header className="mb-8">
-			<p className="text-sm text-zinc-500">Redirects</p>
+			<p className="text-sm text-muted-foreground">Redirects</p>
 			<h1 className="mt-1 text-3xl font-semibold tracking-tight">
 				단축 URL 관리
 			</h1>
@@ -83,7 +77,7 @@ export const LinksSection = ({ links }: { links: ShortLink[] }) => (
 		<Card>
 			<CardHeader>
 				<h2 className="font-semibold">suk.kr/slug</h2>
-				<p className="mt-1 text-sm text-zinc-500">
+				<p className="mt-1 text-sm text-muted-foreground">
 					파일에서 생성된 항목은 파일 관리에서만 변경할 수 있습니다.
 				</p>
 			</CardHeader>

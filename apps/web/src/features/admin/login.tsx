@@ -4,16 +4,16 @@ import { Input } from "@/components/ui/input";
 import { login } from "@/lib/auth/actions";
 
 export const AdminLogin = ({ invalid }: { invalid: boolean }) => (
-	<main className="flex min-h-svh items-center justify-center bg-zinc-950 p-6 text-white">
+	<main className="flex min-h-svh items-center justify-center bg-background p-6 text-foreground">
 		<form
 			action={login}
-			className="w-full max-w-sm rounded-2xl border border-zinc-800 bg-zinc-900 p-7 shadow-2xl"
+			className="w-full max-w-sm rounded-xl border bg-card p-6 text-card-foreground shadow-sm"
 		>
-			<div className="mb-8 flex h-11 w-11 items-center justify-center rounded-xl bg-white text-zinc-950">
+			<div className="mb-6 flex h-9 w-9 items-center justify-center rounded-md border bg-muted">
 				<LockKeyhole size={20} />
 			</div>
-			<h1 className="text-2xl font-semibold tracking-tight">suk.kr admin</h1>
-			<p className="mt-2 text-sm text-zinc-400">
+			<h1 className="text-xl font-semibold tracking-tight">suk.kr admin</h1>
+			<p className="mt-2 text-sm text-muted-foreground">
 				관리자 비밀번호를 입력하세요.
 			</p>
 			<Input
@@ -21,16 +21,14 @@ export const AdminLogin = ({ invalid }: { invalid: boolean }) => (
 				type="password"
 				autoFocus
 				required
-				className="mt-7 border-zinc-700 bg-zinc-950 text-white"
+				className="mt-6"
 			/>
 			{invalid && (
 				<p className="mt-3 text-sm text-red-400">
 					비밀번호가 올바르지 않습니다.
 				</p>
 			)}
-			<Button className="mt-4 w-full bg-white text-zinc-950 hover:bg-zinc-200">
-				로그인
-			</Button>
+			<Button className="mt-4 w-full">로그인</Button>
 		</form>
 	</main>
 );

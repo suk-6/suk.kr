@@ -16,9 +16,9 @@ export const AdminPage = ({
 	section: Section;
 	data: AdminData;
 }) => (
-	<main className="min-h-svh bg-zinc-50 text-zinc-950">
+	<main className="min-h-svh bg-background text-foreground">
 		<AdminNav active={section} />
-		<div className="p-5 sm:p-8 lg:ml-64 lg:p-10">
+		<div className="mx-auto max-w-7xl p-5 sm:p-8 lg:ml-60 lg:p-10">
 			{section === "overview" && <OverviewSection data={data} />}
 			{section === "settings" && <SettingsSection settings={data.settings} />}
 			{section === "projects" && <ProjectsSection projects={data.projects} />}
@@ -26,11 +26,7 @@ export const AdminPage = ({
 				<EntriesSection
 					kind={
 						section as
-							| "experience"
-							| "education"
-							| "activity"
-							| "award"
-							| "certificate"
+							"experience" | "education" | "activity" | "award" | "certificate"
 					}
 					entries={data.entries.filter(({ kind }) => kind === section)}
 				/>

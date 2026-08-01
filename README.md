@@ -21,6 +21,19 @@ pnpm dev
 
 Worker 로컬 비밀값은 `apps/api/.dev.vars`에 `API_TOKEN`으로 설정합니다. 웹 환경에는 같은 값과 SSFS의 기존 S3 환경값을 설정합니다.
 
+기존 SSFS 객체와 D1 메타데이터의 차이는 변경 없이 먼저 확인할 수 있습니다.
+
+```bash
+pnpm --filter @suk/web migrate:ssfs -- --dry-run
+pnpm --filter @suk/web migrate:ssfs
+```
+
+포트폴리오 이미지와 OG 이미지는 S3의 `assets/` prefix에 보관합니다. 로컬 원본과 외부 커버를 새 버킷에 처음 동기화하거나 누락 여부를 확인할 때 아래 명령을 사용합니다.
+
+```bash
+pnpm --filter @suk/web sync:assets
+```
+
 ## 배포
 
 - Vercel 프로젝트 Root Directory: `apps/web`

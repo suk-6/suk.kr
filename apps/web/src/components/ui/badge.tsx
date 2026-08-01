@@ -7,7 +7,7 @@ export const Badge = ({
 }: HTMLAttributes<HTMLSpanElement>) => (
 	<span
 		className={cn(
-			"inline-flex rounded-full border border-zinc-300 px-2.5 py-1 text-xs",
+			"inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden rounded-md border border-transparent bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground",
 			className,
 		)}
 		{...props}

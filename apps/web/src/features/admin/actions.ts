@@ -6,6 +6,7 @@ import {
 	fileUpdateSchema,
 	linkSchema,
 	projectSchema,
+	type StoredFile,
 	settingsSchema,
 	skillSchema,
 } from "@suk/contracts";
@@ -147,7 +148,7 @@ export const saveLink = async (data: FormData) => {
 export const removeLink = async (data: FormData) => {
 	await authorize();
 	await api.mutate(
-		`/links/${encodeURIComponent(text(data, "slug"))}`,
+		`/links/${encodeURIComponent(text(data, "previousSlug") || text(data, "slug"))}`,
 		"DELETE",
 	);
 	done();
@@ -165,7 +166,14 @@ export const createFile = async (data: FormData) => {
 		publicUrl: `${process.env.NEXT_PUBLIC_S3_URL}/${encodeURIComponent(text(data, "objectKey")).replaceAll("%2F", "/")}`,
 		createdAt: new Date().toISOString(),
 	});
-	await api.mutate("/files", "POST", value);
+	try {
+		await api.mutate("/files", "POST", value);
+	} catch (error) {
+		await deleteObject(value.objectKey).catch((cleanupError) =>
+			console.error("Failed to clean up an untracked upload", cleanupError),
+		);
+		throw error;
+	}
 	done();
 };
 
@@ -181,7 +189,19 @@ export const updateFile = async (data: FormData) => {
 
 export const removeFile = async (data: FormData) => {
 	await authorize();
-	await deleteObject(text(data, "objectKey"));
-	await api.mutate(`/files/${text(data, "id")}`, "DELETE");
+	const deleted = await api.mutate<StoredFile>(
+		`/files/${text(data, "id")}`,
+		"DELETE",
+	);
+	try {
+		await deleteObject(deleted.objectKey);
+	} catch (error) {
+		await api
+			.mutate("/files", "POST", deleted)
+			.catch((rollbackError) =>
+				console.error("Failed to restore file metadata", rollbackError),
+			);
+		throw error;
+	}
 	done();
 };

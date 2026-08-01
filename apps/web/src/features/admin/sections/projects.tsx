@@ -80,12 +80,7 @@ const ProjectForm = ({ project }: { project?: Project }) => (
 				<div className="flex gap-2 md:col-span-2">
 					<Button>저장</Button>
 					{project && (
-						<Button
-							formAction={removeProject}
-							name="id"
-							value={project.id}
-							variant="destructive"
-						>
+						<Button formAction={removeProject} variant="destructive">
 							삭제
 						</Button>
 					)}
@@ -98,7 +93,7 @@ const ProjectForm = ({ project }: { project?: Project }) => (
 export const ProjectsSection = ({ projects }: { projects: Project[] }) => (
 	<>
 		<header className="mb-8">
-			<p className="text-sm text-zinc-500">Portfolio</p>
+			<p className="text-sm text-muted-foreground">Portfolio</p>
 			<h1 className="mt-1 text-3xl font-semibold tracking-tight">
 				프로젝트 관리
 			</h1>

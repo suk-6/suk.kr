@@ -1,5 +1,6 @@
 import { Analytics } from "@vercel/analytics/react";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import { assetUrl } from "@/lib/assets";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -12,13 +13,18 @@ export const metadata: Metadata = {
 		description: "Software Engineer based in Seoul.",
 		type: "website",
 		locale: "ko_KR",
-		images: "/og.png",
+		images: assetUrl("og.png"),
 	},
 	twitter: {
 		card: "summary_large_image",
 		title: "남우석 — Software Engineer",
-		images: "/og.png",
+		images: assetUrl("og.png"),
 	},
+};
+
+export const viewport: Viewport = {
+	colorScheme: "dark",
+	themeColor: "#09090b",
 };
 
 export default function RootLayout({

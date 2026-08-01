@@ -2,17 +2,28 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 import "server-only";
 
-const name = "suk_admin";
+const name =
+	process.env.NODE_ENV === "production" ? "__Host-suk_admin" : "suk_admin";
+const secret = () => {
+	if (!process.env.SESSION_SECRET)
+		throw new Error("SESSION_SECRET is not configured");
+	return process.env.SESSION_SECRET;
+};
 const sign = (value: string) =>
-	createHmac("sha256", process.env.SESSION_SECRET ?? "")
-		.update(value)
-		.digest("base64url");
+	createHmac("sha256", secret()).update(value).digest("base64url");
 
 export const isAdmin = async () => {
 	const session = (await cookies()).get(name)?.value;
 	if (!session) return false;
 	const [expiresAt, signature] = session.split(".");
-	if (!expiresAt || !signature || Number(expiresAt) < Date.now()) return false;
+	const expires = Number(expiresAt);
+	if (
+		!expiresAt ||
+		!signature ||
+		!Number.isSafeInteger(expires) ||
+		expires < Date.now()
+	)
+		return false;
 	const expected = Buffer.from(sign(expiresAt));
 	const provided = Buffer.from(signature);
 	return (
@@ -26,8 +37,9 @@ export const createSession = async () => {
 		httpOnly: true,
 		secure: process.env.NODE_ENV === "production",
 		sameSite: "strict",
-		path: "/admin",
+		path: "/",
 		maxAge: 30 * 24 * 60 * 60,
+		priority: "high",
 	});
 };
 

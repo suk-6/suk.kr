@@ -6,7 +6,10 @@ export const Card = ({
 	...props
 }: HTMLAttributes<HTMLDivElement>) => (
 	<div
-		className={cn("rounded-xl border border-zinc-200 bg-white", className)}
+		className={cn(
+			"flex flex-col gap-6 rounded-xl border bg-card py-6 text-card-foreground shadow-sm",
+			className,
+		)}
 		{...props}
 	/>
 );
@@ -14,11 +17,11 @@ export const CardHeader = ({
 	className,
 	...props
 }: HTMLAttributes<HTMLDivElement>) => (
-	<div className={cn("border-b border-zinc-100 p-5", className)} {...props} />
+	<div className={cn("grid gap-1.5 px-6", className)} {...props} />
 );
 export const CardContent = ({
 	className,
 	...props
 }: HTMLAttributes<HTMLDivElement>) => (
-	<div className={cn("p-5", className)} {...props} />
+	<div className={cn("px-6", className)} {...props} />
 );

@@ -1,87 +1,153 @@
-import { ArrowDownRight, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import Image from "next/image";
 import { api } from "@/lib/api/client";
+import { assetUrl } from "@/lib/assets";
 
 export const PortfolioPage = async () => {
-	const { settings, projects, entries, skills } = await api.portfolio();
+	const { settings, projects, entries } = await api.portfolio();
 	const experiences = entries.filter(({ kind }) => kind === "experience");
 	const awards = entries.filter(({ kind }) => kind === "award");
-	const groups = Map.groupBy(skills, ({ groupName }) => groupName);
+	const beyond = [
+		["학력", entries.filter(({ kind }) => kind === "education")],
+		["활동", entries.filter(({ kind }) => kind === "activity")],
+		["자격", entries.filter(({ kind }) => kind === "certificate")],
+	] as const;
+	const profileLinks = [
+		["GitHub", settings.githubUrl],
+		["LinkedIn", settings.linkedinUrl],
+	].filter(([, url]) => url);
 
 	return (
-		<main className="portfolio">
+		<main className="portfolio" id="top">
 			<header className="portfolioNav">
-				<a href="#top" className="portfolioMark">
-					NW
-				</a>
-				<nav>
-					<a href="#work">Work</a>
-					<a href="#about">About</a>
-					<a href={`mailto:${settings.email}`}>Contact</a>
-				</nav>
+				<div className="portfolioNavInner">
+					<a href="#top" className="portfolioMark">
+						<Image
+							src={assetUrl("profile.png")}
+							alt=""
+							width={30}
+							height={30}
+							priority
+						/>
+						<span>@woosuknam</span>
+					</a>
+					<nav>
+						<a href="#work">프로젝트</a>
+						<a href="#about">소개</a>
+						<a href={`mailto:${settings.email}`}>연락</a>
+					</nav>
+				</div>
 			</header>
 
-			<section className="hero" id="top">
-				<div className="heroLabel">Seoul · {new Date().getFullYear()}</div>
-				<h1>
-					{settings.name}
-					<span>{settings.title}</span>
-				</h1>
-				<div className="heroBottom">
-					<p>{settings.intro}</p>
-					<a href="#work" aria-label="프로젝트로 이동">
-						<ArrowDownRight />
-					</a>
-				</div>
+			<section className="hero">
+				<p className="heroLabel">{settings.title}</p>
+				<h1>{settings.name}</h1>
 			</section>
 
-			<section className="portfolioSection" id="work">
-				<div className="sectionHeading">
-					<span className="sectionCounter">01</span>
-					<h2>Selected work</h2>
-					<p>{projects.length} projects</p>
-				</div>
-				<div className="projectGrid">
-					{projects.map((project, index) => (
-						<article className="projectCard" key={project.id}>
-							<a
-								href={project.projectUrl || project.repoUrl || "#work"}
-								target={
-									project.projectUrl || project.repoUrl ? "_blank" : undefined
-								}
-							>
-								<div
-									className="projectImage"
-									style={{ backgroundImage: `url(${project.coverUrl})` }}
-								>
-									<span className="projectIndex">0{index + 1}</span>
-								</div>
-								<div className="projectMeta">
-									<div>
-										<h3>{project.name}</h3>
-										<p>{project.subtitle}</p>
-									</div>
-									<ArrowUpRight />
-								</div>
-							</a>
-							<p className="projectDescription">{project.description}</p>
-							<div className="projectTags">
-								{project.tags.map((tag) => (
-									<span className="projectTag" key={tag}>
-										{tag}
-									</span>
-								))}
+			<section className="portfolioSection">
+				<header className="sectionHeading">
+					<h2>수상</h2>
+				</header>
+				<div className="awardList">
+					{awards.map((entry) => (
+						<article key={entry.id}>
+							<time>{entry.startDate}</time>
+							<div className="awardContent">
+								<h3>{entry.title}</h3>
+								<p>{entry.organization}</p>
+								{entry.description && (
+									<p className="entryDescription">{entry.description}</p>
+								)}
+								{entry.url && (
+									<a
+										className="entryLink"
+										href={entry.url}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										관련 자료 <ArrowUpRight />
+									</a>
+								)}
 							</div>
 						</article>
 					))}
 				</div>
 			</section>
 
-			<section className="portfolioSection darkSection" id="about">
-				<div className="sectionHeading">
-					<span className="sectionCounter">02</span>
-					<h2>Experience</h2>
-					<p>{settings.location}</p>
+			<section className="portfolioSection" id="work">
+				<header className="sectionHeading">
+					<h2>프로젝트</h2>
+				</header>
+				<div className="projectList">
+					{projects.map((project, index) => {
+						const href = project.projectUrl || project.repoUrl;
+						return (
+							<article
+								className={`projectCard${project.coverUrl ? "" : " projectCardText"}`}
+								key={project.id}
+							>
+								<div className="projectCopy">
+									<span className="projectIndex">
+										{String(index + 1).padStart(2, "0")}
+									</span>
+									<div className="projectMeta">
+										<h3>{project.name}</h3>
+										<p>{project.subtitle}</p>
+									</div>
+									<p className="projectDescription">{project.description}</p>
+									{project.highlights.length > 0 && (
+										<ul className="projectHighlights">
+											{project.highlights.map((highlight) => (
+												<li key={highlight}>{highlight}</li>
+											))}
+										</ul>
+									)}
+									<div className="projectTags">
+										{project.tags.map((tag) => (
+											<span key={tag}>{tag}</span>
+										))}
+									</div>
+									{href && !project.coverUrl && (
+										<a
+											className="projectLink"
+											href={href}
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											프로젝트 보기 <ArrowUpRight />
+										</a>
+									)}
+								</div>
+								{project.coverUrl && href ? (
+									<a
+										className="projectMedia"
+										href={href}
+										target="_blank"
+										rel="noopener noreferrer"
+										aria-label={`${project.name} 열기`}
+									>
+										<div
+											style={{ backgroundImage: `url(${project.coverUrl})` }}
+										/>
+										<ArrowUpRight />
+									</a>
+								) : project.coverUrl ? (
+									<div className="projectMedia" aria-hidden="true">
+										<div
+											style={{ backgroundImage: `url(${project.coverUrl})` }}
+										/>
+									</div>
+								) : null}
+							</article>
+						);
+					})}
 				</div>
+			</section>
+
+			<section className="portfolioSection" id="about">
+				<header className="sectionHeading">
+					<h2>경력</h2>
+				</header>
 				<div className="experienceList">
 					{experiences.map((entry) => (
 						<article key={entry.id}>
@@ -99,51 +165,64 @@ export const PortfolioPage = async () => {
 			</section>
 
 			<section className="portfolioSection">
-				<div className="sectionHeading">
-					<span className="sectionCounter">03</span>
-					<h2>Recognition</h2>
-					<p>Selected awards</p>
-				</div>
-				<div className="awardList">
-					{awards.slice(0, 12).map((entry) => (
-						<article key={entry.id}>
-							<time>{entry.startDate}</time>
-							<h3>{entry.title}</h3>
-							<p>{entry.organization}</p>
-						</article>
-					))}
-				</div>
-			</section>
-
-			<section className="portfolioSection skillsSection">
-				<div className="sectionHeading">
-					<span className="sectionCounter">04</span>
-					<h2>Toolkit</h2>
-					<p>Built through practice</p>
-				</div>
-				<div className="skillGroups">
-					{[...groups].map(([group, values]) => (
-						<article key={group}>
-							<h3>{group}</h3>
-							<p>{values.map(({ name }) => name).join(" · ")}</p>
-						</article>
+				<header className="sectionHeading">
+					<h2>활동과 배움</h2>
+				</header>
+				<div className="archiveGroups">
+					{beyond.map(([title, values]) => (
+						<section className="archiveGroup" key={title}>
+							<header>
+								<h3>{title}</h3>
+							</header>
+							<div className="archiveList">
+								{values.map((entry) => (
+									<article key={entry.id}>
+										<time>
+											{entry.startDate}
+											{entry.endDate && entry.endDate !== entry.startDate
+												? ` — ${entry.endDate}`
+												: ""}
+										</time>
+										<div>
+											<strong>{entry.title}</strong>
+											<p>{entry.organization}</p>
+											{entry.description && (
+												<p className="entryDescription">{entry.description}</p>
+											)}
+											{entry.url && (
+												<a
+													className="entryLink"
+													href={entry.url}
+													target="_blank"
+													rel="noopener noreferrer"
+												>
+													관련 자료 <ArrowUpRight />
+												</a>
+											)}
+										</div>
+									</article>
+								))}
+							</div>
+						</section>
 					))}
 				</div>
 			</section>
 
 			<footer className="portfolioFooter">
-				<p>Have a difficult problem?</p>
+				<p>{settings.availableFor}</p>
 				<a href={`mailto:${settings.email}`}>
-					Let’s talk <ArrowUpRight />
+					{settings.email} <ArrowUpRight />
 				</a>
 				<div>
 					<span>
 						© {new Date().getFullYear()} {settings.name}
 					</span>
 					<nav>
-						<a href={settings.githubUrl}>GitHub</a>
-						<a href={settings.linkedinUrl}>LinkedIn</a>
-						<a href={settings.resumeUrl}>Résumé</a>
+						{profileLinks.map(([label, url]) => (
+							<a href={url} key={label}>
+								{label}
+							</a>
+						))}
 					</nav>
 				</div>
 			</footer>

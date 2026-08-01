@@ -46,6 +46,7 @@ export const api = {
 	link: (slug: string) =>
 		request<ShortLink>(`/links/${encodeURIComponent(slug)}`),
 	files: () => request<StoredFile[]>("/files"),
+	file: (id: string) => request<StoredFile>(`/files/${encodeURIComponent(id)}`),
 	mutate: <T>(
 		path: string,
 		method: "POST" | "PUT" | "PATCH" | "DELETE",
