@@ -28,7 +28,8 @@ CREATE TABLE projects (
 	sort_order INTEGER NOT NULL DEFAULT 0,
 	visible INTEGER NOT NULL DEFAULT 1 CHECK (visible IN (0, 1)),
 	created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+	updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	organization TEXT NOT NULL DEFAULT ''
 );
 
 CREATE TABLE timeline_entries (
@@ -76,10 +77,9 @@ CREATE TABLE short_links (
 	CHECK ((source = 'file' AND file_id IS NOT NULL) OR (source = 'manual' AND file_id IS NULL))
 );
 
-CREATE INDEX idx_projects_visible_order ON projects(visible, sort_order);
-CREATE INDEX idx_entries_kind_visible_order ON timeline_entries(kind, visible, sort_order);
-CREATE INDEX idx_skills_group_order ON skills(group_name, sort_order);
-CREATE INDEX idx_links_source ON short_links(source);
+CREATE INDEX idx_projects_visible_order ON projects(visible, sort_order, name);
+CREATE INDEX idx_entries_visible_order ON timeline_entries(visible, sort_order, start_date DESC);
+CREATE INDEX idx_skills_order ON skills(sort_order, name);
 CREATE INDEX idx_files_created_at ON files(created_at DESC);
 
 PRAGMA optimize;

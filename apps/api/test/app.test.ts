@@ -18,56 +18,21 @@ describe("api", () => {
 		expect(response.status).toBe(401);
 	});
 
-	it("loads the complete Surfit and resume portfolio archive", async () => {
-		const entryCounts = await env.DB.prepare(
-			"SELECT kind, COUNT(*) AS count FROM timeline_entries GROUP BY kind",
-		).all<{ kind: string; count: number }>();
-		expect(
-			Object.fromEntries(
-				entryCounts.results.map(({ kind, count }) => [kind, count]),
-			),
-		).toEqual({
-			activity: 16,
-			award: 26,
-			certificate: 8,
-			education: 2,
-			experience: 3,
-		});
-		expect(
-			await env.DB.prepare("SELECT COUNT(*) AS count FROM projects").first(
-				"count",
-			),
-		).toBe(13);
-		expect(
-			await env.DB.prepare(
-				"SELECT COUNT(*) AS count FROM projects WHERE organization <> ''",
-			).first("count"),
-		).toBe(13);
-		expect(
-			await env.DB.prepare("SELECT organization FROM projects WHERE id = ?")
-				.bind("project-walkability")
-				.first("organization"),
-		).toBe("서울개발자모임");
-		expect(
-			await env.DB.prepare(
-				"SELECT COUNT(*) AS count FROM projects WHERE cover_url <> '' AND cover_url NOT LIKE 'https://file.suk.kr/assets/%'",
-			).first("count"),
-		).toBe(0);
-		expect(
-			await env.DB.prepare("SELECT COUNT(*) AS count FROM skills").first(
-				"count",
-			),
-		).toBe(20);
-		expect(
-			await env.DB.prepare("SELECT id FROM timeline_entries WHERE title = ?")
-				.bind("인공지능 교육과 사례 특강")
-				.first("id"),
-		).toBe("act-ai-lecture22");
-		expect(
-			await env.DB.prepare("SELECT id FROM projects WHERE slug = ?")
-				.bind("zio-react-module")
-				.first("id"),
-		).toBe("project-zio-module");
+	it("keeps the baseline migration schema-only", async () => {
+		for (const table of [
+			"site_settings",
+			"projects",
+			"timeline_entries",
+			"skills",
+			"files",
+			"short_links",
+		]) {
+			expect(
+				await env.DB.prepare(
+					`SELECT COUNT(*) AS count FROM ${table}`,
+				).first<number>("count"),
+			).toBe(0);
+		}
 	});
 
 	it("manages portfolio content and keeps hidden work out of the public payload", async () => {

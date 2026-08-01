@@ -12,7 +12,19 @@ export const getSettings = async (db: D1Database) => {
 export const saveSettings = (db: D1Database, value: Settings) =>
 	db
 		.prepare(
-			`UPDATE site_settings SET name = ?, title = ?, intro = ?, email = ?, location = ?, resume_url = ?, github_url = ?, linkedin_url = ?, available_for = ?, updated_at = ? WHERE id = 1`,
+			`INSERT INTO site_settings (id, name, title, intro, email, location, resume_url, github_url, linkedin_url, available_for, updated_at)
+			 VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+			 ON CONFLICT(id) DO UPDATE SET
+				name = excluded.name,
+				title = excluded.title,
+				intro = excluded.intro,
+				email = excluded.email,
+				location = excluded.location,
+				resume_url = excluded.resume_url,
+				github_url = excluded.github_url,
+				linkedin_url = excluded.linkedin_url,
+				available_for = excluded.available_for,
+				updated_at = excluded.updated_at`,
 		)
 		.bind(
 			value.name,

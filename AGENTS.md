@@ -13,7 +13,8 @@
 - The Cloudflare account is `suk-6` (`521861af0ccd0a033f4bee6b61a9bb18`), and the D1 database is `suk-kr`.
 - Use migrations only for schema changes such as tables, columns, indexes, and constraints.
 - Do not create migrations for portfolio content, mappings, corrections, or other data-only work. Apply those changes directly from `apps/api` with `npx wrangler d1 execute suk-kr --remote --command ...` or `--file ...`.
-- Never edit or remove a migration that has already been applied. `0010_project_organization.sql` and `0011_remove_resume_url.sql` are existing history and must remain intact.
+- `0001_initial.sql` is the schema-only production baseline created after the 2026-08-02 D1 reset. Do not add admin-managed content or seed data to it.
+- Never edit or remove an applied migration after this baseline. Create sequential schema migrations starting at `0002` for future table, column, index, or constraint changes.
 - The production D1 database is the source of truth for admin-managed data: `site_settings`, `projects`, `timeline_entries`, `skills`, `short_links`, and `files`.
 - When local data must match production, sync production to local. Compare keys and counts first, preserve a temporary backup, and upsert by primary key. Do not broadly truncate the local database when a non-destructive upsert is sufficient.
 - Preserve the `files` and `short_links` relationship. File-owned short links are read-only in link management and must only be renamed or deleted through file management. When syncing, write `files` before file-owned `short_links`.
