@@ -92,6 +92,9 @@ export const PortfolioPage = async () => {
 									</span>
 									<div className="projectMeta">
 										<h3>{project.name}</h3>
+										{project.organization && (
+											<span>@{project.organization}</span>
+										)}
 										<p>{project.subtitle}</p>
 									</div>
 									<p className="projectDescription">{project.description}</p>

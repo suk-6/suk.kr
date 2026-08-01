@@ -255,7 +255,14 @@ select {
 	font-size: 24px;
 	font-weight: 450;
 	letter-spacing: -0.035em;
-	margin: 0 0 8px;
+	margin: 0;
+}
+
+.projectMeta span {
+	color: var(--portfolio-muted);
+	display: block;
+	font-size: 12px;
+	margin: 6px 0 10px;
 }
 
 .projectMeta p,

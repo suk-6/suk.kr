@@ -57,6 +57,7 @@ export const saveProject = async (data: FormData) => {
 		id,
 		slug: text(data, "slug"),
 		name: text(data, "name"),
+		organization: text(data, "organization"),
 		subtitle: text(data, "subtitle"),
 		description: text(data, "description"),
 		coverUrl: text(data, "coverUrl"),

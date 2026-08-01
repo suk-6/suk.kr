@@ -40,6 +40,16 @@ describe("api", () => {
 		).toBe(13);
 		expect(
 			await env.DB.prepare(
+				"SELECT COUNT(*) AS count FROM projects WHERE organization <> ''",
+			).first("count"),
+		).toBe(13);
+		expect(
+			await env.DB.prepare("SELECT organization FROM projects WHERE id = ?")
+				.bind("project-walkability")
+				.first("organization"),
+		).toBe("서울개발자모임");
+		expect(
+			await env.DB.prepare(
 				"SELECT COUNT(*) AS count FROM projects WHERE cover_url <> '' AND cover_url NOT LIKE 'https://file.suk.kr/assets/%'",
 			).first("count"),
 		).toBe(0);
@@ -86,6 +96,7 @@ describe("api", () => {
 			id: "project-visible",
 			slug: "visible",
 			name: "Visible project",
+			organization: "suk.kr",
 			subtitle: "subtitle",
 			description: "description",
 			coverUrl: "",

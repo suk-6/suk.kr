@@ -26,6 +26,12 @@ const ProjectForm = ({ project }: { project?: Project }) => (
 					required
 				/>
 				<Input
+					name="organization"
+					placeholder="활동처"
+					defaultValue={project?.organization}
+					className="md:col-span-2"
+				/>
+				<Input
 					name="subtitle"
 					placeholder="한 줄 설명"
 					defaultValue={project?.subtitle}

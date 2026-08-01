@@ -23,6 +23,7 @@ type ProjectRow = {
 	id: string;
 	slug: string;
 	name: string;
+	organization: string;
 	subtitle: string;
 	description: string;
 	cover_url: string;
@@ -92,6 +93,7 @@ export const mapProject = (row: ProjectRow): Project => ({
 	id: row.id,
 	slug: row.slug,
 	name: row.name,
+	organization: row.organization,
 	subtitle: row.subtitle,
 	description: row.description,
 	coverUrl: row.cover_url,

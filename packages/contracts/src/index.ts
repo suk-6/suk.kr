@@ -28,6 +28,7 @@ export const projectSchema = z.object({
 		.default(() => crypto.randomUUID()),
 	slug: z.string().min(1).max(100),
 	name: z.string().min(1).max(160),
+	organization: z.string().max(200),
 	subtitle: z.string().max(240),
 	description: z.string().min(1).max(3000),
 	coverUrl: z.url().or(z.literal("")),
