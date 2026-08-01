@@ -6,6 +6,10 @@ const digest = (value: string) =>
 
 export const auth =
 	(): MiddlewareHandler<{ Bindings: Env }> => async (context, next) => {
+		if (!context.env.API_TOKEN) {
+			console.error("API_TOKEN is not configured");
+			return context.json({ error: "Service unavailable" }, 503);
+		}
 		const provided =
 			context.req.header("authorization")?.replace(/^Bearer\s+/i, "") ?? "";
 		const [providedHash, expectedHash] = await Promise.all([
