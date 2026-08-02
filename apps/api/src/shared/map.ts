@@ -1,10 +1,11 @@
-import type {
-	Entry,
-	Project,
-	Settings,
-	ShortLink,
-	Skill,
-	StoredFile,
+import {
+	projectSchema,
+	type Entry,
+	type Project,
+	type Settings,
+	type ShortLink,
+	type Skill,
+	type StoredFile,
 } from "@suk/contracts";
 
 type SettingsRow = {
@@ -102,7 +103,7 @@ export const mapProject = (row: ProjectRow): Project => ({
 	repoUrl: row.repo_url,
 	tags: JSON.parse(row.tags) as string[],
 	highlights: JSON.parse(row.highlights) as string[],
-	caseStudy: JSON.parse(row.case_study) as Project["caseStudy"],
+	caseStudy: projectSchema.shape.caseStudy.parse(JSON.parse(row.case_study)),
 	sortOrder: row.sort_order,
 	visible: Boolean(row.visible),
 });

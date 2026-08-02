@@ -32,10 +32,16 @@ const lines = (data: FormData, key: string) =>
 const caseStudy = (data: FormData) => {
 	const titles = data.getAll("caseStudyTitle").map(String);
 	const bodies = data.getAll("caseStudyBody").map(String);
+	const imageUrls = data.getAll("caseStudyImageUrl").map(String);
+	const codes = data.getAll("caseStudyCode").map(String);
+	const codeLanguages = data.getAll("caseStudyCodeLanguage").map(String);
 	return titles
 		.map((title, index) => ({
 			title: title.trim(),
 			body: (bodies[index] ?? "").trim(),
+			imageUrl: (imageUrls[index] ?? "").trim(),
+			code: (codes[index] ?? "").trim(),
+			codeLanguage: (codeLanguages[index] ?? "").trim(),
 		}))
 		.filter(({ title, body }) => title || body);
 };
