@@ -60,12 +60,6 @@ export const PortfolioPage = async () => {
 						<a className={navLink} href="#contact">
 							연락
 						</a>
-						<a
-							className="portfolio-primary-cta hidden min-h-11 items-center rounded-full bg-white px-[15px] font-medium transition-transform active:scale-[.97] min-[540px]:inline-flex"
-							href={`mailto:${settings.email}`}
-						>
-							이야기하기
-						</a>
 					</nav>
 				</div>
 			</header>
@@ -88,12 +82,6 @@ export const PortfolioPage = async () => {
 						href="#work"
 					>
 						프로젝트 보기
-					</a>
-					<a
-						className="inline-flex min-h-11 items-center rounded-full bg-portfolio-surface px-[15px] text-white transition-colors hover:bg-portfolio-surface-raised"
-						href={`mailto:${settings.email}`}
-					>
-						연락하기
 					</a>
 				</div>
 			</section>
