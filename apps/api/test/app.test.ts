@@ -73,6 +73,9 @@ describe("api", () => {
 				{
 					title: "Problem",
 					body: "A detailed case-study section.",
+					imageUrl: "https://example.com/case-study.png",
+					code: "const answer = 42;",
+					codeLanguage: "typescript",
 				},
 			],
 			sortOrder: 10,

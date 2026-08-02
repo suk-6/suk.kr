@@ -1,9 +1,11 @@
 import type { Project } from "@suk/contracts";
+import { FileText } from "lucide-react";
+import type { Route } from "next";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { CaseStudyEditor } from "../caseStudyEditor";
 import { removeProject, saveProject } from "../actions";
 
 const ProjectForm = ({ project }: { project?: Project }) => (
@@ -71,7 +73,6 @@ const ProjectForm = ({ project }: { project?: Project }) => (
 					placeholder="하이라이트 — 한 줄에 하나"
 					defaultValue={project?.highlights.join("\n")}
 				/>
-				<CaseStudyEditor value={project?.caseStudy} />
 				<Input
 					name="sortOrder"
 					type="number"
@@ -87,6 +88,13 @@ const ProjectForm = ({ project }: { project?: Project }) => (
 				</label>
 				<div className="flex gap-2 md:col-span-2">
 					<Button>저장</Button>
+					{project && (
+						<Button asChild type="button" variant="outline">
+							<Link href={`/admin/projects/${project.id}/case-study` as Route}>
+								<FileText /> 케이스 스터디 편집
+							</Link>
+						</Button>
+					)}
 					{project && (
 						<Button formAction={removeProject} variant="destructive">
 							삭제

@@ -126,9 +126,31 @@ export const CaseStudyPage = ({
 											{section.title}
 										</h2>
 									</div>
-									<p className="m-0 whitespace-pre-line text-base leading-[1.7] text-portfolio-description min-[761px]:text-lg">
-										{section.body}
-									</p>
+									<div>
+										{section.imageUrl && (
+											<div
+												className="mb-8 aspect-video rounded-[20px] bg-portfolio-surface bg-cover bg-center"
+												style={{ backgroundImage: `url(${section.imageUrl})` }}
+												role="img"
+												aria-label={`${section.title} 이미지`}
+											/>
+										)}
+										<p className="m-0 whitespace-pre-line text-base leading-[1.7] text-portfolio-description min-[761px]:text-lg">
+											{section.body}
+										</p>
+										{section.code && (
+											<div className="mt-8 overflow-hidden rounded-[20px] border border-white/10 bg-[#0d0d0d]">
+												{section.codeLanguage && (
+													<div className="border-b border-white/10 px-5 py-3 font-mono text-xs text-zinc-500">
+														{section.codeLanguage}
+													</div>
+												)}
+												<pre className="m-0 overflow-x-auto p-5 text-sm leading-6 text-zinc-200">
+													<code>{section.code}</code>
+												</pre>
+											</div>
+										)}
+									</div>
 								</div>
 							))}
 						</div>

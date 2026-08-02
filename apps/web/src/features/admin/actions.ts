@@ -10,6 +10,7 @@ import {
 	settingsSchema,
 	skillSchema,
 } from "@suk/contracts";
+import type { Route } from "next";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { deleteObject } from "@/features/files/s3";
@@ -31,10 +32,16 @@ const lines = (data: FormData, key: string) =>
 const caseStudy = (data: FormData) => {
 	const titles = data.getAll("caseStudyTitle").map(String);
 	const bodies = data.getAll("caseStudyBody").map(String);
+	const imageUrls = data.getAll("caseStudyImageUrl").map(String);
+	const codes = data.getAll("caseStudyCode").map(String);
+	const codeLanguages = data.getAll("caseStudyCodeLanguage").map(String);
 	return titles
 		.map((title, index) => ({
 			title: title.trim(),
 			body: (bodies[index] ?? "").trim(),
+			imageUrl: (imageUrls[index] ?? "").trim(),
+			code: (codes[index] ?? "").trim(),
+			codeLanguage: (codeLanguages[index] ?? "").trim(),
 		}))
 		.filter(({ title, body }) => title || body);
 };
@@ -81,6 +88,21 @@ export const saveProject = async (data: FormData) => {
 	});
 	await api.mutate(`/projects/${id}`, "PUT", value);
 	done();
+};
+
+export const saveCaseStudy = async (data: FormData) => {
+	await authorize();
+	const id = text(data, "id");
+	const project = (await api.projects()).find((value) => value.id === id);
+	if (!project) throw new Error("Project not found");
+	const value = projectSchema.parse({
+		...project,
+		caseStudy: caseStudy(data),
+	});
+	await api.mutate(`/projects/${id}`, "PUT", value);
+	revalidatePath(`/work/${project.slug}`);
+	revalidatePath(`/admin/projects/${id}/case-study`);
+	redirect(`/admin/projects/${id}/case-study?saved=1` as Route);
 };
 
 export const removeProject = async (data: FormData) => {

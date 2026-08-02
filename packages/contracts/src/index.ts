@@ -41,6 +41,9 @@ export const projectSchema = z.object({
 			z.object({
 				title: z.string().min(1).max(160),
 				body: z.string().min(1).max(5000),
+				imageUrl: z.url().or(z.literal("")).default(""),
+				code: z.string().max(10000).default(""),
+				codeLanguage: z.string().max(40).default(""),
 			}),
 		)
 		.max(12)
