@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { api } from "@/lib/api/client";
 import { assetUrl } from "@/lib/assets";
+import { RenewalNotice } from "./notice";
 
 const content = "mx-auto max-w-[1199px]";
 const section = `${content} scroll-mt-[72px] py-[72px] min-[761px]:py-24`;
@@ -19,7 +20,7 @@ const mediaImage =
 	"aspect-4/3 bg-portfolio-surface bg-cover bg-center opacity-90 transition-opacity duration-[180ms] group-hover:opacity-100 motion-reduce:transition-none";
 
 export const PortfolioPage = async () => {
-	const { settings, projects, entries } = await api.portfolio();
+	const { settings, projects, entries, notices = [] } = await api.portfolio();
 	const experiences = entries.filter(({ kind }) => kind === "experience");
 	const awards = entries.filter(({ kind }) => kind === "award");
 	const beyond = [
@@ -34,6 +35,7 @@ export const PortfolioPage = async () => {
 
 	return (
 		<main className="portfolio min-h-svh px-5 min-[761px]:px-8" id="top">
+			<RenewalNotice notices={notices} />
 			<header className="sticky top-0 z-20 -mx-5 h-[72px] border-b border-transparent bg-background/95 px-5 backdrop-blur-xl [animation:stickyHeaderBorder_linear_both] [animation-range:0_2px] [animation-timeline:scroll(root_block)] motion-reduce:[animation:none] min-[761px]:-mx-8 min-[761px]:px-8">
 				<div className={`${content} flex h-full items-center justify-between`}>
 					<a

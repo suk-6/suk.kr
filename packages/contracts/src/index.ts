@@ -78,6 +78,27 @@ export const skillSchema = z.object({
 	sortOrder: z.number().int().min(0).max(9999),
 });
 
+export const noticeSchema = z
+	.object({
+		id: z
+			.string()
+			.min(1)
+			.default(() => crypto.randomUUID()),
+		title: z.string().min(1).max(160),
+		content: z.string().min(1).max(2000),
+		startsAt: z.string().datetime().or(z.literal("")),
+		endsAt: z.string().datetime().or(z.literal("")),
+		sortOrder: z.number().int().min(0).max(9999),
+		visible: z.boolean(),
+	})
+	.refine(
+		({ startsAt, endsAt }) => !startsAt || !endsAt || startsAt <= endsAt,
+		{
+			message: "종료 시각은 시작 시각보다 빠를 수 없습니다.",
+			path: ["endsAt"],
+		},
+	);
+
 export const linkSchema = z.object({
 	slug: z
 		.string()
@@ -109,6 +130,7 @@ export type Project = z.infer<typeof projectSchema>;
 export type Entry = z.infer<typeof entrySchema>;
 export type EntryKind = z.infer<typeof entryKind>;
 export type Skill = z.infer<typeof skillSchema>;
+export type SiteNotice = z.infer<typeof noticeSchema>;
 export type LinkInput = z.infer<typeof linkSchema>;
 export type FileInput = z.infer<typeof fileSchema>;
 
@@ -126,4 +148,5 @@ export type Portfolio = {
 	projects: Project[];
 	entries: Entry[];
 	skills: Skill[];
+	notices: SiteNotice[];
 };

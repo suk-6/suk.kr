@@ -8,6 +8,7 @@ import {
 	GraduationCap,
 	LayoutDashboard,
 	Link2,
+	Megaphone,
 	Settings,
 	Sparkles,
 } from "lucide-react";
@@ -15,6 +16,7 @@ import {
 export const sections = [
 	{ id: "overview", label: "대시보드", icon: LayoutDashboard },
 	{ id: "settings", label: "기본 관리", icon: Settings },
+	{ id: "notices", label: "공지 관리", icon: Megaphone },
 	{ id: "projects", label: "프로젝트 관리", icon: Sparkles },
 	{ id: "experience", label: "경력 관리", icon: BriefcaseBusiness },
 	{ id: "education", label: "학력 관리", icon: GraduationCap },

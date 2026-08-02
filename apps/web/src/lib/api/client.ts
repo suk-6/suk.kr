@@ -5,6 +5,7 @@ import type {
 	Settings,
 	ShortLink,
 	Skill,
+	SiteNotice,
 	StoredFile,
 } from "@suk/contracts";
 import "server-only";
@@ -46,6 +47,7 @@ export const api = {
 	link: (slug: string) =>
 		request<ShortLink>(`/links/${encodeURIComponent(slug)}`),
 	files: () => request<StoredFile[]>("/files"),
+	notices: () => request<SiteNotice[]>("/notices"),
 	file: (id: string) => request<StoredFile>(`/files/${encodeURIComponent(id)}`),
 	mutate: <T>(
 		path: string,

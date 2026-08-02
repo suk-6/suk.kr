@@ -24,6 +24,7 @@ describe("api", () => {
 			"projects",
 			"timeline_entries",
 			"skills",
+			"site_notices",
 			"files",
 			"short_links",
 		]) {
@@ -152,6 +153,67 @@ describe("api", () => {
 			).status,
 		).toBe(200);
 
+		const activeNotice = {
+			id: "notice-active",
+			title: "사이트 리뉴얼 작업 중입니다",
+			content: "현재 일부 내용과 화면을 새롭게 정리하고 있습니다.",
+			startsAt: new Date(Date.now() - 60_000).toISOString(),
+			endsAt: new Date(Date.now() + 60_000).toISOString(),
+			sortOrder: 10,
+			visible: true,
+		};
+		const futureNotice = {
+			...activeNotice,
+			id: "notice-future",
+			title: "Future notice",
+			startsAt: new Date(Date.now() + 3_600_000).toISOString(),
+			endsAt: "",
+		};
+		const secondActiveNotice = {
+			...activeNotice,
+			id: "notice-active-second",
+			title: "Second active notice",
+			startsAt: "",
+			endsAt: "",
+			sortOrder: 20,
+		};
+		const hiddenNotice = {
+			...activeNotice,
+			id: "notice-hidden",
+			title: "Hidden notice",
+			visible: false,
+		};
+		for (const value of [
+			activeNotice,
+			futureNotice,
+			secondActiveNotice,
+			hiddenNotice,
+		]) {
+			expect(
+				(
+					await app.request(
+						`/notices/${value.id}`,
+						{ method: "PUT", headers: headers(), body: JSON.stringify(value) },
+						env,
+					)
+				).status,
+			).toBe(200);
+		}
+		expect(
+			(
+				await (
+					await app.request("/notices", { headers: headers() }, env)
+				).json<Array<{ id: string }>>()
+			).map(({ id }) => id),
+		).toEqual(
+			expect.arrayContaining([
+				activeNotice.id,
+				futureNotice.id,
+				secondActiveNotice.id,
+				hiddenNotice.id,
+			]),
+		);
+
 		const managedProjects = await (
 			await app.request("/projects", { headers: headers() }, env)
 		).json<Array<{ id: string }>>();
@@ -166,6 +228,7 @@ describe("api", () => {
 			projects: Array<{ id: string; caseStudy: typeof project.caseStudy }>;
 			entries: Array<{ id: string }>;
 			skills: Array<{ id: string }>;
+			notices: Array<{ id: string }>;
 		}>();
 		expect(portfolio.settings).toEqual(settings);
 		expect(portfolio.projects.map(({ id }) => id)).toContain(project.id);
@@ -180,6 +243,10 @@ describe("api", () => {
 		);
 		expect(portfolio.entries.map(({ id }) => id)).not.toContain(hiddenEntry.id);
 		expect(portfolio.skills.map(({ id }) => id)).toContain(skill.id);
+		expect(portfolio.notices.map(({ id }) => id)).toEqual([
+			activeNotice.id,
+			secondActiveNotice.id,
+		]);
 
 		for (const [path, id] of [
 			["projects", project.id],
@@ -187,6 +254,10 @@ describe("api", () => {
 			...entries.map(({ id }) => ["entries", id] as const),
 			["entries", hiddenEntry.id],
 			["skills", skill.id],
+			["notices", activeNotice.id],
+			["notices", futureNotice.id],
+			["notices", secondActiveNotice.id],
+			["notices", hiddenNotice.id],
 		] as const) {
 			expect(
 				(

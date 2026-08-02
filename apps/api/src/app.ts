@@ -4,6 +4,7 @@ import { ZodError } from "zod";
 import { entriesRoute } from "./features/entries/route";
 import { filesRoute } from "./features/files/route";
 import { linksRoute } from "./features/links/route";
+import { noticesRoute } from "./features/notices/route";
 import { portfolioRoute } from "./features/portfolio/route";
 import { projectsRoute } from "./features/projects/route";
 import { settingsRoute } from "./features/settings/route";
@@ -44,6 +45,7 @@ app.route("/entries", entriesRoute);
 app.route("/skills", skillsRoute);
 app.route("/links", linksRoute);
 app.route("/files", filesRoute);
+app.route("/notices", noticesRoute);
 app.notFound((context) => context.json({ error: "Not found" }, 404));
 app.onError((error, context) => {
 	console.error(

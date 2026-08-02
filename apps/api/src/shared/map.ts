@@ -5,6 +5,7 @@ import {
 	type Settings,
 	type ShortLink,
 	type Skill,
+	type SiteNotice,
 	type StoredFile,
 } from "@suk/contracts";
 
@@ -55,6 +56,16 @@ type SkillRow = {
 	name: string;
 	group_name: string;
 	sort_order: number;
+};
+
+type NoticeRow = {
+	id: string;
+	title: string;
+	content: string;
+	starts_at: string;
+	ends_at: string;
+	sort_order: number;
+	visible: number;
 };
 
 type LinkRow = {
@@ -128,6 +139,16 @@ export const mapSkill = (row: SkillRow): Skill => ({
 	sortOrder: row.sort_order,
 });
 
+export const mapNotice = (row: NoticeRow): SiteNotice => ({
+	id: row.id,
+	title: row.title,
+	content: row.content,
+	startsAt: row.starts_at,
+	endsAt: row.ends_at,
+	sortOrder: row.sort_order,
+	visible: Boolean(row.visible),
+});
+
 export const mapLink = (row: LinkRow): ShortLink => ({
 	slug: row.slug,
 	targetUrl: row.target_url,
@@ -150,4 +171,12 @@ export const mapFile = (row: FileRow): StoredFile => ({
 	updatedAt: row.updated_at,
 });
 
-export type { EntryRow, FileRow, LinkRow, ProjectRow, SettingsRow, SkillRow };
+export type {
+	EntryRow,
+	FileRow,
+	LinkRow,
+	NoticeRow,
+	ProjectRow,
+	SettingsRow,
+	SkillRow,
+};

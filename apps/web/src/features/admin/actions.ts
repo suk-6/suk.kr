@@ -5,6 +5,7 @@ import {
 	fileSchema,
 	fileUpdateSchema,
 	linkSchema,
+	noticeSchema,
 	projectSchema,
 	type StoredFile,
 	settingsSchema,
@@ -24,6 +25,10 @@ const authorize = async () => {
 const text = (data: FormData, key: string) =>
 	String(data.get(key) ?? "").trim();
 const number = (data: FormData, key: string) => Number(data.get(key) ?? 0);
+const dateTime = (data: FormData, key: string) => {
+	const value = text(data, key);
+	return value ? new Date(`${value}:00+09:00`).toISOString() : "";
+};
 const lines = (data: FormData, key: string) =>
 	text(data, key)
 		.split("\n")
@@ -155,6 +160,31 @@ export const saveSkill = async (data: FormData) => {
 export const removeSkill = async (data: FormData) => {
 	await authorize();
 	await api.mutate(`/skills/${text(data, "id")}`, "DELETE");
+	done();
+};
+
+export const saveNotice = async (data: FormData) => {
+	await authorize();
+	const id = text(data, "id") || crypto.randomUUID();
+	await api.mutate(
+		`/notices/${id}`,
+		"PUT",
+		noticeSchema.parse({
+			id,
+			title: text(data, "title"),
+			content: text(data, "content"),
+			startsAt: dateTime(data, "startsAt"),
+			endsAt: dateTime(data, "endsAt"),
+			sortOrder: number(data, "sortOrder"),
+			visible: data.get("visible") === "on",
+		}),
+	);
+	done();
+};
+
+export const removeNotice = async (data: FormData) => {
+	await authorize();
+	await api.mutate(`/notices/${text(data, "id")}`, "DELETE");
 	done();
 };
 
