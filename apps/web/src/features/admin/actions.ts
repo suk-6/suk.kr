@@ -28,6 +28,16 @@ const lines = (data: FormData, key: string) =>
 		.split("\n")
 		.map((value) => value.trim())
 		.filter(Boolean);
+const caseStudy = (data: FormData) => {
+	const titles = data.getAll("caseStudyTitle").map(String);
+	const bodies = data.getAll("caseStudyBody").map(String);
+	return titles
+		.map((title, index) => ({
+			title: title.trim(),
+			body: (bodies[index] ?? "").trim(),
+		}))
+		.filter(({ title, body }) => title || body);
+};
 const done = () => {
 	revalidatePath("/");
 	revalidatePath("/admin");
@@ -65,6 +75,7 @@ export const saveProject = async (data: FormData) => {
 		repoUrl: text(data, "repoUrl"),
 		tags: lines(data, "tags"),
 		highlights: lines(data, "highlights"),
+		caseStudy: caseStudy(data),
 		sortOrder: number(data, "sortOrder"),
 		visible: data.get("visible") === "on",
 	});

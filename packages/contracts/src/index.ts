@@ -36,6 +36,15 @@ export const projectSchema = z.object({
 	repoUrl: z.url().or(z.literal("")),
 	tags: z.array(z.string().min(1).max(50)).max(20),
 	highlights: z.array(z.string().min(1).max(500)).max(20),
+	caseStudy: z
+		.array(
+			z.object({
+				title: z.string().min(1).max(160),
+				body: z.string().min(1).max(5000),
+			}),
+		)
+		.max(12)
+		.default([]),
 	sortOrder: z.number().int().min(0).max(9999),
 	visible: z.boolean(),
 });

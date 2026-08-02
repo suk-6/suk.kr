@@ -31,15 +31,17 @@
 	--sidebar-accent-foreground: oklch(0.985 0 0);
 	--sidebar-border: oklch(1 0 0 / 10%);
 	--sidebar-ring: oklch(0.556 0 0);
-	--portfolio-surface: #171716;
-	--portfolio-line: #30302e;
-	--portfolio-muted: #969693;
+	--portfolio-surface: #141414;
+	--portfolio-surface-raised: #1c1c1c;
+	--portfolio-line: #262626;
+	--portfolio-muted: #999999;
 	--portfolio-description: #b4b4b0;
 	--portfolio-secondary: #c4c4c0;
 	--portfolio-highlight: #cacac6;
 	--portfolio-text: #ecece8;
-	--selection: #e8e8e4;
-	--selection-foreground: #111110;
+	--portfolio-link: #0099ff;
+	--selection: #0099ff;
+	--selection-foreground: #ffffff;
 }
 
 @theme inline {
@@ -70,12 +72,14 @@
 	--color-sidebar-border: var(--sidebar-border);
 	--color-sidebar-ring: var(--sidebar-ring);
 	--color-portfolio-surface: var(--portfolio-surface);
+	--color-portfolio-surface-raised: var(--portfolio-surface-raised);
 	--color-portfolio-line: var(--portfolio-line);
 	--color-portfolio-muted: var(--portfolio-muted);
 	--color-portfolio-description: var(--portfolio-description);
 	--color-portfolio-secondary: var(--portfolio-secondary);
 	--color-portfolio-highlight: var(--portfolio-highlight);
 	--color-portfolio-text: var(--portfolio-text);
+	--color-portfolio-link: var(--portfolio-link);
 	--radius-sm: calc(var(--radius) - 4px);
 	--radius-md: calc(var(--radius) - 2px);
 	--radius-lg: var(--radius);
@@ -100,6 +104,129 @@ body {
 	font-weight: 400;
 }
 
+.portfolio {
+	font-feature-settings: "cv01", "cv05", "cv09", "cv11", "ss03", "ss07";
+	letter-spacing: -0.01em;
+}
+
+.portfolio-primary-cta {
+	color: #000;
+}
+
+.portfolio-accent-link {
+	color: var(--portfolio-link);
+}
+
+.portfolio-footer-link:hover {
+	color: var(--portfolio-link);
+}
+
+.portfolio-enter {
+	animation: portfolio-enter 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.portfolio-enter-2 {
+	animation-delay: 70ms;
+}
+
+.portfolio-enter-3 {
+	animation-delay: 140ms;
+}
+
+.portfolio-enter-4 {
+	animation-delay: 210ms;
+}
+
+.portfolio-card {
+	transform: translateZ(0);
+	transition:
+		transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+		background-color 200ms ease;
+	will-change: transform;
+}
+
+.portfolio-card:hover {
+	transform: translate3d(0, -4px, 0);
+}
+
+.portfolio-card:active {
+	transform: scale(0.985);
+	transition-duration: 100ms;
+}
+
+.portfolio-row {
+	transition:
+		background-color 180ms ease,
+		color 180ms ease;
+}
+
+.portfolio-row:hover {
+	background: color-mix(in srgb, var(--portfolio-surface) 55%, transparent);
+}
+
+.portfolio-media {
+	transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+	will-change: transform;
+}
+
+.group:hover .portfolio-media,
+.portfolio-card:hover .portfolio-media {
+	transform: scale(1.025);
+}
+
+.portfolio-arrow-link svg {
+	transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portfolio-arrow-link:hover svg {
+	transform: translate3d(3px, -3px, 0);
+}
+
+.portfolio-avatar-link img {
+	transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portfolio-avatar-link:hover img {
+	transform: scale(1.08) rotate(-3deg);
+}
+
+.portfolio-primary-cta,
+.portfolio a.rounded-full {
+	-webkit-tap-highlight-color: transparent;
+}
+
+@keyframes portfolio-enter {
+	from {
+		opacity: 0;
+		transform: translate3d(0, 14px, 0);
+	}
+
+	to {
+		opacity: 1;
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+@supports (animation-timeline: view()) {
+	.portfolio-scroll-reveal {
+		animation: portfolio-scroll-reveal linear both;
+		animation-range: entry 5% entry 32%;
+		animation-timeline: view();
+	}
+
+	@keyframes portfolio-scroll-reveal {
+		from {
+			opacity: 0.25;
+			transform: translate3d(0, 18px, 0);
+		}
+
+		to {
+			opacity: 1;
+			transform: translate3d(0, 0, 0);
+		}
+	}
+}
+
 a {
 	color: inherit;
 	text-decoration: none;
@@ -118,7 +245,7 @@ select {
 }
 
 :focus-visible {
-	outline: 1px solid var(--selection);
+	outline: 1px solid var(--portfolio-link);
 	outline-offset: 3px;
 }
 
@@ -135,5 +262,29 @@ select {
 @media (prefers-reduced-motion: reduce) {
 	html {
 		scroll-behavior: auto;
+	}
+
+	.portfolio-enter,
+	.portfolio-scroll-reveal {
+		animation: none;
+	}
+
+	.portfolio-card,
+	.portfolio-media,
+	.portfolio-arrow-link svg,
+	.portfolio-avatar-link img {
+		transition: none;
+		transform: none;
+	}
+}
+
+@media (hover: none) {
+	.portfolio-card:hover,
+	.portfolio-card:active,
+	.group:hover .portfolio-media,
+	.portfolio-card:hover .portfolio-media,
+	.portfolio-arrow-link:hover svg,
+	.portfolio-avatar-link:hover img {
+		transform: none;
 	}
 }

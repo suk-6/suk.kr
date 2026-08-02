@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { CaseStudyEditor } from "../caseStudyEditor";
 import { removeProject, saveProject } from "../actions";
 
 const ProjectForm = ({ project }: { project?: Project }) => (
@@ -70,6 +71,7 @@ const ProjectForm = ({ project }: { project?: Project }) => (
 					placeholder="하이라이트 — 한 줄에 하나"
 					defaultValue={project?.highlights.join("\n")}
 				/>
+				<CaseStudyEditor value={project?.caseStudy} />
 				<Input
 					name="sortOrder"
 					type="number"

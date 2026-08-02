@@ -31,6 +31,7 @@ type ProjectRow = {
 	repo_url: string;
 	tags: string;
 	highlights: string;
+	case_study: string;
 	sort_order: number;
 	visible: number;
 };
@@ -101,6 +102,7 @@ export const mapProject = (row: ProjectRow): Project => ({
 	repoUrl: row.repo_url,
 	tags: JSON.parse(row.tags) as string[],
 	highlights: JSON.parse(row.highlights) as string[],
+	caseStudy: JSON.parse(row.case_study) as Project["caseStudy"],
 	sortOrder: row.sort_order,
 	visible: Boolean(row.visible),
 });
