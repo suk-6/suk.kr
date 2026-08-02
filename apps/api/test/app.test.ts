@@ -69,6 +69,12 @@ describe("api", () => {
 			repoUrl: "",
 			tags: ["TypeScript"],
 			highlights: ["Small interfaces"],
+			caseStudy: [
+				{
+					title: "Problem",
+					body: "A detailed case-study section.",
+				},
+			],
 			sortOrder: 10,
 			visible: true,
 		};
@@ -154,12 +160,15 @@ describe("api", () => {
 			await app.request("/portfolio", { headers: headers() }, env)
 		).json<{
 			settings: typeof settings;
-			projects: Array<{ id: string }>;
+			projects: Array<{ id: string; caseStudy: typeof project.caseStudy }>;
 			entries: Array<{ id: string }>;
 			skills: Array<{ id: string }>;
 		}>();
 		expect(portfolio.settings).toEqual(settings);
 		expect(portfolio.projects.map(({ id }) => id)).toContain(project.id);
+		expect(
+			portfolio.projects.find(({ id }) => id === project.id)?.caseStudy,
+		).toEqual(project.caseStudy);
 		expect(portfolio.projects.map(({ id }) => id)).not.toContain(
 			hiddenProject.id,
 		);
