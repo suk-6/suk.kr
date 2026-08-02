@@ -10,6 +10,7 @@ import {
 	settingsSchema,
 	skillSchema,
 } from "@suk/contracts";
+import type { Route } from "next";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { deleteObject } from "@/features/files/s3";
@@ -81,6 +82,21 @@ export const saveProject = async (data: FormData) => {
 	});
 	await api.mutate(`/projects/${id}`, "PUT", value);
 	done();
+};
+
+export const saveCaseStudy = async (data: FormData) => {
+	await authorize();
+	const id = text(data, "id");
+	const project = (await api.projects()).find((value) => value.id === id);
+	if (!project) throw new Error("Project not found");
+	const value = projectSchema.parse({
+		...project,
+		caseStudy: caseStudy(data),
+	});
+	await api.mutate(`/projects/${id}`, "PUT", value);
+	revalidatePath(`/work/${project.slug}`);
+	revalidatePath(`/admin/projects/${id}/case-study`);
+	redirect(`/admin/projects/${id}/case-study?saved=1` as Route);
 };
 
 export const removeProject = async (data: FormData) => {
