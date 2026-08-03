@@ -11,7 +11,7 @@ export const OverviewSection = ({ data }: { data: AdminData }) => {
 	return (
 		<>
 			<header className="mb-8">
-				<p className="text-sm text-muted-foreground">Overview</p>
+				<p className="text-base text-muted-foreground">Overview</p>
 				<h1 className="mt-1 text-3xl font-semibold tracking-tight">
 					안녕하세요, 우석님.
 				</h1>
@@ -20,7 +20,7 @@ export const OverviewSection = ({ data }: { data: AdminData }) => {
 				{counts.map(([label, value]) => (
 					<Card key={label}>
 						<CardHeader>
-							<p className="text-sm text-muted-foreground">{label}</p>
+							<p className="text-base text-muted-foreground">{label}</p>
 						</CardHeader>
 						<CardContent>
 							<span className="text-3xl font-semibold tracking-tight">
@@ -34,7 +34,7 @@ export const OverviewSection = ({ data }: { data: AdminData }) => {
 				<CardHeader>
 					<h2 className="font-semibold">운영 구조</h2>
 				</CardHeader>
-				<CardContent className="grid gap-5 text-sm text-muted-foreground md:grid-cols-3">
+				<CardContent className="grid gap-5 text-base text-muted-foreground md:grid-cols-3">
 					<div>
 						<span className="block font-medium text-foreground">suk.kr</span>
 						Next.js · Vercel

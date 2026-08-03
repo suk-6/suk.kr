@@ -8,7 +8,7 @@ import { saveSettings } from "../actions";
 export const SettingsSection = ({ settings }: { settings: Settings }) => (
 	<>
 		<header className="mb-8">
-			<p className="text-sm text-muted-foreground">Profile</p>
+			<p className="text-base text-muted-foreground">Profile</p>
 			<h1 className="mt-1 text-3xl font-semibold tracking-tight">기본 관리</h1>
 		</header>
 		<Card className="max-w-4xl">
@@ -17,7 +17,7 @@ export const SettingsSection = ({ settings }: { settings: Settings }) => (
 			</CardHeader>
 			<CardContent>
 				<form action={saveSettings} className="grid gap-4 md:grid-cols-2">
-					<label className="text-sm" htmlFor="settings-name">
+					<label className="text-base" htmlFor="settings-name">
 						이름
 						<Input
 							id="settings-name"
@@ -27,7 +27,7 @@ export const SettingsSection = ({ settings }: { settings: Settings }) => (
 							required
 						/>
 					</label>
-					<label className="text-sm" htmlFor="settings-title">
+					<label className="text-base" htmlFor="settings-title">
 						직함
 						<Input
 							id="settings-title"
@@ -37,7 +37,7 @@ export const SettingsSection = ({ settings }: { settings: Settings }) => (
 							required
 						/>
 					</label>
-					<label className="text-sm md:col-span-2" htmlFor="settings-intro">
+					<label className="text-base md:col-span-2" htmlFor="settings-intro">
 						소개
 						<Textarea
 							id="settings-intro"
@@ -47,7 +47,7 @@ export const SettingsSection = ({ settings }: { settings: Settings }) => (
 							required
 						/>
 					</label>
-					<label className="text-sm" htmlFor="settings-email">
+					<label className="text-base" htmlFor="settings-email">
 						이메일
 						<Input
 							id="settings-email"
@@ -58,7 +58,7 @@ export const SettingsSection = ({ settings }: { settings: Settings }) => (
 							required
 						/>
 					</label>
-					<label className="text-sm" htmlFor="settings-location">
+					<label className="text-base" htmlFor="settings-location">
 						위치
 						<Input
 							id="settings-location"
@@ -67,7 +67,7 @@ export const SettingsSection = ({ settings }: { settings: Settings }) => (
 							className="mt-1.5"
 						/>
 					</label>
-					<label className="text-sm" htmlFor="settings-resume">
+					<label className="text-base" htmlFor="settings-resume">
 						이력서 URL
 						<Input
 							id="settings-resume"
@@ -76,7 +76,7 @@ export const SettingsSection = ({ settings }: { settings: Settings }) => (
 							className="mt-1.5"
 						/>
 					</label>
-					<label className="text-sm" htmlFor="settings-github">
+					<label className="text-base" htmlFor="settings-github">
 						GitHub URL
 						<Input
 							id="settings-github"
@@ -85,7 +85,7 @@ export const SettingsSection = ({ settings }: { settings: Settings }) => (
 							className="mt-1.5"
 						/>
 					</label>
-					<label className="text-sm" htmlFor="settings-linkedin">
+					<label className="text-base" htmlFor="settings-linkedin">
 						LinkedIn URL
 						<Input
 							id="settings-linkedin"
@@ -94,7 +94,7 @@ export const SettingsSection = ({ settings }: { settings: Settings }) => (
 							className="mt-1.5"
 						/>
 					</label>
-					<label className="text-sm" htmlFor="settings-status">
+					<label className="text-base" htmlFor="settings-status">
 						상태 메시지
 						<Input
 							id="settings-status"

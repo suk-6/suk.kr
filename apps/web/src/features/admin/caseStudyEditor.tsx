@@ -125,8 +125,8 @@ export const CaseStudyEditor = ({
 							</Link>
 						</Button>
 						<div className="min-w-0">
-							<p className="truncate text-sm font-medium">{project.name}</p>
-							<p className="text-xs text-muted-foreground">
+							<p className="truncate text-base font-medium">{project.name}</p>
+							<p className="text-base text-muted-foreground">
 								{saved ? "저장됨" : "케이스 스터디 편집"}
 							</p>
 						</div>
@@ -150,7 +150,7 @@ export const CaseStudyEditor = ({
 				className="mx-auto max-w-3xl px-5 py-16 sm:px-8 sm:py-24"
 			>
 				<input type="hidden" name="id" value={project.id} />
-				<p className="text-xs font-medium tracking-[0.12em] text-muted-foreground uppercase">
+				<p className="text-base font-medium tracking-[0.12em] text-muted-foreground uppercase">
 					Case study
 				</p>
 				<h1 className="mt-4 text-4xl leading-tight font-bold tracking-[-0.04em] sm:text-5xl">
@@ -228,7 +228,7 @@ export const CaseStudyEditor = ({
 									<Trash2 />
 								</Button>
 							</div>
-							<span className="mb-3 block text-xs text-muted-foreground">
+							<span className="mb-3 block text-base text-muted-foreground">
 								{String(index + 1).padStart(2, "0")}
 							</span>
 							<input
@@ -264,7 +264,7 @@ export const CaseStudyEditor = ({
 										style={{ backgroundImage: `url(${section.imageUrl})` }}
 									/>
 									<div className="flex items-center justify-between gap-3 px-3 py-2">
-										<span className="truncate text-xs text-muted-foreground">
+										<span className="truncate text-base text-muted-foreground">
 											{uploadStatus[section.id] || "이미지"}
 										</span>
 										<Button
@@ -287,14 +287,14 @@ export const CaseStudyEditor = ({
 									onDrop={(event) => acceptImageDrop(event, section.id)}
 								>
 									<ImagePlus className="mb-2 size-5" />
-									<span className="text-sm">
+									<span className="text-base">
 										이미지를 선택하거나 여기에 드롭
 									</span>
-									<span className="mt-1 text-xs">
+									<span className="mt-1 text-base">
 										JPG, PNG, WebP, GIF · 최대 10MB
 									</span>
 									{uploadStatus[section.id] && (
-										<span className="mt-2 text-xs">
+										<span className="mt-2 text-base">
 											{uploadStatus[section.id]}
 										</span>
 									)}
@@ -317,7 +317,7 @@ export const CaseStudyEditor = ({
 											value={section.codeLanguage}
 											placeholder="typescript"
 											aria-label="코드 언어"
-											className="w-40 border-0 bg-transparent font-mono text-xs text-zinc-400 outline-none placeholder:text-zinc-600"
+											className="w-40 border-0 bg-transparent font-mono text-base text-zinc-400 outline-none placeholder:text-zinc-600"
 											onChange={(event) =>
 												update(section.id, { codeLanguage: event.target.value })
 											}
@@ -342,7 +342,7 @@ export const CaseStudyEditor = ({
 										name="caseStudyCode"
 										value={section.code}
 										placeholder="코드를 입력하세요..."
-										className="min-h-44 w-full resize-y border-0 bg-transparent p-4 font-mono text-sm leading-6 outline-none placeholder:text-zinc-700"
+										className="min-h-44 w-full resize-y border-0 bg-transparent p-4 font-mono text-base leading-6 outline-none placeholder:text-zinc-700"
 										onChange={(event) =>
 											update(section.id, { code: event.target.value })
 										}

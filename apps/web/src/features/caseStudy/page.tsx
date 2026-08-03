@@ -19,12 +19,12 @@ export const CaseStudyPage = ({
 			<header className="sticky top-0 z-20 -mx-5 h-[72px] border-b border-transparent bg-background/95 px-5 backdrop-blur-xl min-[761px]:-mx-8 min-[761px]:px-8">
 				<div className={`${content} flex h-full items-center justify-between`}>
 					<Link
-						className="flex min-h-11 items-center gap-2 text-sm text-portfolio-muted transition-colors hover:text-white"
+						className="flex min-h-11 items-center gap-2 text-base text-portfolio-muted transition-colors hover:text-white"
 						href="/#work"
 					>
 						<ArrowLeft className="size-4" /> 프로젝트
 					</Link>
-					<span className="text-sm text-portfolio-muted">Case study</span>
+					<span className="text-base text-portfolio-muted">Case study</span>
 				</div>
 			</header>
 
@@ -32,7 +32,7 @@ export const CaseStudyPage = ({
 				<header
 					className={`${content} flex min-h-[min(780px,calc(100svh-72px))] flex-col justify-end py-20 min-[761px]:py-28`}
 				>
-					<div className="portfolio-enter flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-portfolio-muted">
+					<div className="portfolio-enter flex flex-wrap items-center gap-x-4 gap-y-2 text-base text-portfolio-muted">
 						<span>{project.organization || "Independent"}</span>
 						<span aria-hidden="true">·</span>
 						<span>{project.tags.join(" · ")}</span>
@@ -45,7 +45,7 @@ export const CaseStudyPage = ({
 					</p>
 					{externalUrl && (
 						<a
-							className="portfolio-primary-cta portfolio-arrow-link portfolio-enter portfolio-enter-4 mt-10 inline-flex min-h-11 w-fit items-center gap-2 rounded-full bg-white px-[15px] text-sm font-medium transition-transform active:scale-[.97]"
+							className="portfolio-primary-cta portfolio-arrow-link portfolio-enter portfolio-enter-4 mt-10 inline-flex min-h-11 w-fit items-center gap-2 rounded-full bg-white px-[15px] text-base font-medium transition-transform active:scale-[.97]"
 							href={externalUrl}
 							target="_blank"
 							rel="noopener noreferrer"
@@ -80,24 +80,24 @@ export const CaseStudyPage = ({
 					className={`${content} portfolio-scroll-reveal grid gap-12 border-t border-portfolio-line py-20 min-[761px]:grid-cols-[minmax(0,1fr)_minmax(280px,360px)] min-[761px]:gap-24 min-[761px]:py-28`}
 				>
 					<div>
-						<p className="m-0 text-sm text-portfolio-muted">프로젝트 개요</p>
+						<p className="m-0 text-base text-portfolio-muted">프로젝트 개요</p>
 						<p className="mt-6 mb-0 max-w-[760px] text-xl leading-[1.5] tracking-[-0.02em] text-portfolio-description min-[761px]:text-2xl">
 							{project.description}
 						</p>
 					</div>
 					<aside className="grid content-start gap-8">
 						<div>
-							<p className="m-0 text-sm text-portfolio-muted">함께한 곳</p>
+							<p className="m-0 text-base text-portfolio-muted">함께한 곳</p>
 							<p className="mt-2 mb-0 text-base">
 								{project.organization || "Independent"}
 							</p>
 						</div>
 						<div>
-							<p className="m-0 text-sm text-portfolio-muted">기술</p>
+							<p className="m-0 text-base text-portfolio-muted">기술</p>
 							<div className="mt-3 flex flex-wrap gap-2">
 								{project.tags.map((tag) => (
 									<span
-										className="rounded-full bg-portfolio-surface px-3 py-2 text-sm text-portfolio-secondary"
+										className="rounded-full bg-portfolio-surface px-3 py-2 text-base text-portfolio-secondary"
 										key={tag}
 									>
 										{tag}
@@ -119,7 +119,7 @@ export const CaseStudyPage = ({
 									key={`${section.title}-${index}`}
 								>
 									<div>
-										<span className="text-sm text-portfolio-muted">
+										<span className="text-base text-portfolio-muted">
 											{String(index + 1).padStart(2, "0")}
 										</span>
 										<h2 className="mt-3 mb-0 text-2xl leading-tight font-medium tracking-[-0.035em]">
@@ -141,11 +141,11 @@ export const CaseStudyPage = ({
 										{section.code && (
 											<div className="mt-8 overflow-hidden rounded-[20px] border border-white/10 bg-[#0d0d0d]">
 												{section.codeLanguage && (
-													<div className="border-b border-white/10 px-5 py-3 font-mono text-xs text-zinc-500">
+													<div className="border-b border-white/10 px-5 py-3 font-mono text-base text-zinc-500">
 														{section.codeLanguage}
 													</div>
 												)}
-												<pre className="m-0 overflow-x-auto p-5 text-sm leading-6 text-zinc-200">
+												<pre className="m-0 overflow-x-auto p-5 text-base leading-6 text-zinc-200">
 													<code>{section.code}</code>
 												</pre>
 											</div>
@@ -161,14 +161,14 @@ export const CaseStudyPage = ({
 					<section
 						className={`${content} portfolio-scroll-reveal border-t border-portfolio-line py-20 min-[761px]:py-28`}
 					>
-						<p className="m-0 text-sm text-portfolio-muted">핵심 기여</p>
+						<p className="m-0 text-base text-portfolio-muted">핵심 기여</p>
 						<ol className="mt-10 grid list-none gap-4 p-0 min-[761px]:grid-cols-2">
 							{project.highlights.map((highlight, index) => (
 								<li
 									className="portfolio-card flex min-h-[220px] flex-col justify-between rounded-[20px] bg-portfolio-surface p-6 min-[761px]:p-8"
 									key={highlight}
 								>
-									<span className="text-sm text-portfolio-muted">
+									<span className="text-base text-portfolio-muted">
 										{String(index + 1).padStart(2, "0")}
 									</span>
 									<p className="mt-10 mb-0 text-lg leading-[1.45] tracking-[-0.02em] min-[761px]:text-xl">
@@ -189,7 +189,9 @@ export const CaseStudyPage = ({
 						className="portfolio-arrow-link group block"
 						href={`/work/${nextProject.slug}` as Route}
 					>
-						<span className="text-sm text-portfolio-muted">다음 프로젝트</span>
+						<span className="text-base text-portfolio-muted">
+							다음 프로젝트
+						</span>
 						<span className="mt-5 flex items-center justify-between gap-4 text-[clamp(2.75rem,8vw,6rem)] leading-none font-medium tracking-[-0.055em] transition-colors group-hover:text-portfolio-link">
 							{nextProject.name}{" "}
 							<ArrowUpRight className="size-8 min-[761px]:size-12" />
@@ -197,7 +199,7 @@ export const CaseStudyPage = ({
 					</Link>
 				) : (
 					<Link
-						className="text-sm text-portfolio-muted hover:text-white"
+						className="text-base text-portfolio-muted hover:text-white"
 						href="/#work"
 					>
 						모든 프로젝트 보기
