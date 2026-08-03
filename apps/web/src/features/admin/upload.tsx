@@ -67,7 +67,7 @@ export const FileUpload = () => {
 		>
 			<label className="flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed border-input bg-background text-center md:col-span-2">
 				<UploadCloud className="mb-2 text-muted-foreground" />
-				<span className="text-sm font-medium">
+				<span className="text-base font-medium">
 					{value.file?.name ?? "업로드할 파일을 선택하세요"}
 				</span>
 				<input
@@ -102,7 +102,7 @@ export const FileUpload = () => {
 				<Button disabled={!value.file || value.status === "업로드 중…"}>
 					업로드
 				</Button>
-				<span className="text-sm text-muted-foreground">{value.status}</span>
+				<span className="text-base text-muted-foreground">{value.status}</span>
 			</div>
 		</form>
 	);

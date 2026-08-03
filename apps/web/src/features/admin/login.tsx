@@ -13,7 +13,7 @@ export const AdminLogin = ({ invalid }: { invalid: boolean }) => (
 				<LockKeyhole size={20} />
 			</div>
 			<h1 className="text-xl font-semibold tracking-tight">suk.kr admin</h1>
-			<p className="mt-2 text-sm text-muted-foreground">
+			<p className="mt-2 text-base text-muted-foreground">
 				관리자 비밀번호를 입력하세요.
 			</p>
 			<Input
@@ -24,7 +24,7 @@ export const AdminLogin = ({ invalid }: { invalid: boolean }) => (
 				className="mt-6"
 			/>
 			{invalid && (
-				<p className="mt-3 text-sm text-red-400">
+				<p className="mt-3 text-base text-red-400">
 					비밀번호가 올바르지 않습니다.
 				</p>
 			)}

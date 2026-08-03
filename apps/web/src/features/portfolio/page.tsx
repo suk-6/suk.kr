@@ -13,9 +13,9 @@ const sectionHeading =
 const navLink =
 	"text-portfolio-muted transition-colors duration-150 hover:text-white motion-reduce:transition-none";
 const entryLink =
-	"mt-4 inline-flex items-center gap-1.5 text-sm text-portfolio-secondary";
+	"mt-4 inline-flex items-center gap-1.5 text-base text-portfolio-secondary";
 const entryDescription =
-	"mt-3 max-w-[700px] text-sm leading-[1.6] text-portfolio-description";
+	"mt-3 max-w-[700px] text-base leading-[1.6] text-portfolio-description";
 const mediaImage =
 	"aspect-4/3 bg-portfolio-surface bg-cover bg-center opacity-90 transition-opacity duration-[180ms] group-hover:opacity-100 motion-reduce:transition-none";
 
@@ -40,7 +40,7 @@ export const PortfolioPage = async () => {
 				<div className={`${content} flex h-full items-center justify-between`}>
 					<a
 						href="#top"
-						className="portfolio-avatar-link flex items-center gap-2.5 text-sm tracking-[-0.02em]"
+						className="portfolio-avatar-link flex items-center gap-2.5 text-base tracking-[-0.02em]"
 					>
 						<Image
 							className="rounded-full object-cover"
@@ -52,7 +52,7 @@ export const PortfolioPage = async () => {
 						/>
 						<span>@woosuknam</span>
 					</a>
-					<nav className="flex items-center gap-4 text-sm min-[761px]:gap-7">
+					<nav className="flex items-center gap-4 text-base min-[761px]:gap-7">
 						<a className={navLink} href="#work">
 							프로젝트
 						</a>
@@ -69,7 +69,7 @@ export const PortfolioPage = async () => {
 			<section
 				className={`${content} flex min-h-[calc(100svh-72px)] flex-col justify-center py-20 min-[761px]:min-h-[min(900px,calc(100svh-72px))]`}
 			>
-				<p className="portfolio-enter m-0 text-sm tracking-[-0.01em] text-portfolio-muted">
+				<p className="portfolio-enter m-0 text-base tracking-[-0.01em] text-portfolio-muted">
 					{settings.title}
 				</p>
 				<h1 className="portfolio-enter portfolio-enter-2 mt-7 mb-0 max-w-[1000px] text-[clamp(4.5rem,18vw,7rem)] leading-[.85] font-medium tracking-[-0.065em] min-[761px]:text-[clamp(6rem,11vw,9rem)]">
@@ -78,7 +78,7 @@ export const PortfolioPage = async () => {
 				<p className="portfolio-enter portfolio-enter-3 mt-9 mb-0 max-w-[620px] text-[clamp(1.2rem,2.4vw,1.6rem)] leading-[1.3] tracking-[-0.025em] text-portfolio-secondary">
 					{settings.intro}
 				</p>
-				<div className="portfolio-enter portfolio-enter-4 mt-9 flex flex-wrap gap-3 text-sm font-medium">
+				<div className="portfolio-enter portfolio-enter-4 mt-9 flex flex-wrap gap-3 text-base font-medium">
 					<a
 						className="portfolio-primary-cta inline-flex min-h-11 items-center rounded-full bg-white px-[15px] transition-transform active:scale-[.97]"
 						href="#work"
@@ -98,14 +98,14 @@ export const PortfolioPage = async () => {
 							className="portfolio-row grid grid-cols-[68px_1fr] items-start gap-3 border-t border-portfolio-line py-5 last:border-b min-[761px]:grid-cols-[150px_1fr] min-[761px]:gap-9"
 							key={entry.id}
 						>
-							<time className="m-0 text-sm leading-6 text-portfolio-muted">
+							<time className="m-0 text-base leading-6 text-portfolio-muted">
 								{entry.startDate}
 							</time>
 							<div>
-								<h3 className="m-0 text-base leading-6 font-normal tracking-[-0.01em]">
+								<h3 className="m-0 text-base leading-6 font-medium tracking-[-0.01em]">
 									{entry.title}
 								</h3>
-								<p className="mt-1.5 mb-0 text-sm leading-6 text-portfolio-muted">
+								<p className="mt-1.5 mb-0 text-base leading-6 text-portfolio-muted">
 									{entry.organization}
 								</p>
 								{entry.description && (
@@ -153,7 +153,7 @@ export const PortfolioPage = async () => {
 									</Link>
 								) : (
 									<Link
-										className="portfolio-media flex aspect-4/3 items-center justify-center rounded-[15px] bg-portfolio-surface-raised text-sm text-portfolio-muted transition-colors hover:text-white"
+										className="portfolio-media flex aspect-4/3 items-center justify-center rounded-[15px] bg-portfolio-surface-raised text-base text-portfolio-muted transition-colors hover:text-white"
 										href={caseStudyHref}
 										aria-label={`${project.name} 케이스 스터디`}
 									>
@@ -167,22 +167,22 @@ export const PortfolioPage = async () => {
 												<Link href={caseStudyHref}>{project.name}</Link>
 											</h3>
 											{project.organization && (
-												<span className="mt-2 block text-sm text-portfolio-muted">
+												<span className="mt-2 block text-base text-portfolio-muted">
 													@{project.organization}
 												</span>
 											)}
 										</div>
-										<span className="text-sm text-portfolio-muted">
+										<span className="text-base text-portfolio-muted">
 											{String(index + 1).padStart(2, "0")}
 										</span>
 									</div>
-									<p className="mt-5 mb-0 text-[15px] leading-[1.45] text-portfolio-muted">
+									<p className="mt-5 mb-0 text-base leading-[1.45] text-portfolio-muted">
 										{project.description}
 									</p>
 									<div className="mt-auto flex flex-wrap gap-2 pt-8">
 										{project.tags.map((tag) => (
 											<span
-												className="rounded-full bg-portfolio-surface-raised px-3 py-2 text-sm leading-5 text-portfolio-secondary"
+												className="rounded-full bg-portfolio-surface-raised px-3 py-2 text-base leading-5 text-portfolio-secondary"
 												key={tag}
 											>
 												{tag}
@@ -190,7 +190,7 @@ export const PortfolioPage = async () => {
 										))}
 									</div>
 									<Link
-										className="portfolio-accent-link portfolio-arrow-link mt-6 inline-flex items-center gap-1.5 text-sm"
+										className="portfolio-accent-link portfolio-arrow-link mt-6 inline-flex items-center gap-1.5 text-base"
 										href={caseStudyHref}
 									>
 										케이스 스터디 <ArrowUpRight className="size-4" />
@@ -212,18 +212,18 @@ export const PortfolioPage = async () => {
 							className="portfolio-row grid grid-cols-1 gap-2.5 border-t border-portfolio-line py-[22px] last:border-b min-[761px]:grid-cols-[150px_220px_1fr] min-[761px]:gap-9 min-[761px]:py-6"
 							key={entry.id}
 						>
-							<time className="m-0 text-sm leading-[1.6] text-portfolio-muted">
+							<time className="m-0 text-base leading-[1.6] text-portfolio-muted">
 								{entry.startDate} — {entry.endDate}
 							</time>
 							<div>
-								<h3 className="m-0 mb-1.5 text-[15px] leading-[1.5] font-[450]">
+								<h3 className="m-0 mb-1.5 text-base leading-[1.5] font-medium">
 									{entry.organization}
 								</h3>
-								<p className="m-0 text-sm leading-[1.6] text-portfolio-secondary">
+								<p className="m-0 text-base leading-[1.6] text-portfolio-secondary">
 									{entry.title}
 								</p>
 							</div>
-							<p className="mt-2.5 mb-0 text-sm leading-[1.6] text-portfolio-muted min-[761px]:mt-0">
+							<p className="mt-2.5 mb-0 text-base leading-[1.6] text-portfolio-muted min-[761px]:mt-0">
 								{entry.description}
 							</p>
 						</article>
@@ -242,7 +242,7 @@ export const PortfolioPage = async () => {
 							key={title}
 						>
 							<header>
-								<h3 className="m-0 text-lg font-[450]">{title}</h3>
+								<h3 className="m-0 text-lg font-medium">{title}</h3>
 							</header>
 							<div>
 								{values.map((entry) => (
@@ -250,17 +250,17 @@ export const PortfolioPage = async () => {
 										className="portfolio-row grid grid-cols-[80px_1fr] gap-3 border-t border-portfolio-line py-5 last:border-b min-[761px]:grid-cols-[130px_1fr] min-[761px]:gap-7"
 										key={entry.id}
 									>
-										<time className="m-0 text-sm leading-[1.5] text-portfolio-muted">
+										<time className="m-0 text-base leading-[1.5] text-portfolio-muted">
 											{entry.startDate}
 											{entry.endDate && entry.endDate !== entry.startDate
 												? ` — ${entry.endDate}`
 												: ""}
 										</time>
 										<div>
-											<strong className="mb-1.5 block text-[15px] leading-[1.5] font-[450]">
+											<strong className="mb-1.5 block text-base leading-[1.5] font-medium">
 												{entry.title}
 											</strong>
-											<p className="m-0 text-sm leading-[1.55] text-portfolio-muted">
+											<p className="m-0 text-base leading-[1.55] text-portfolio-muted">
 												{entry.organization}
 											</p>
 											{entry.description && (
@@ -289,7 +289,7 @@ export const PortfolioPage = async () => {
 				className={`${content} portfolio-scroll-reveal scroll-mt-[72px] border-t border-portfolio-line pt-[72px] pb-10 min-[761px]:pt-24`}
 				id="contact"
 			>
-				<p className="mt-0 mb-[30px] text-[15px] leading-6 text-portfolio-muted">
+				<p className="mt-0 mb-[30px] text-base leading-6 text-portfolio-muted">
 					{settings.availableFor}
 				</p>
 				<a
@@ -298,7 +298,7 @@ export const PortfolioPage = async () => {
 				>
 					{settings.email} <ArrowUpRight className="size-8" />
 				</a>
-				<div className="mt-14 flex flex-col gap-[18px] border-t border-portfolio-line pt-5 text-sm text-portfolio-muted min-[761px]:mt-[72px] min-[761px]:flex-row min-[761px]:justify-between">
+				<div className="mt-14 flex flex-col gap-[18px] border-t border-portfolio-line pt-5 text-base text-portfolio-muted min-[761px]:mt-[72px] min-[761px]:flex-row min-[761px]:justify-between">
 					<span>
 						© {new Date().getFullYear()} {settings.name}
 					</span>
