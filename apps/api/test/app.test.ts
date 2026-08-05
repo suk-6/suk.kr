@@ -118,6 +118,7 @@ describe("api", () => {
 			url: "",
 			sortOrder: (index + 1) * 10,
 			visible: true,
+			summaryHidden: kind === "award",
 		}));
 		const hiddenEntry = {
 			...entries[0],
@@ -226,7 +227,7 @@ describe("api", () => {
 		).json<{
 			settings: typeof settings;
 			projects: Array<{ id: string; caseStudy: typeof project.caseStudy }>;
-			entries: Array<{ id: string }>;
+			entries: Array<{ id: string; summaryHidden: boolean }>;
 			skills: Array<{ id: string }>;
 			notices: Array<{ id: string }>;
 		}>();
@@ -242,6 +243,9 @@ describe("api", () => {
 			expect.arrayContaining(entries.map(({ id }) => id)),
 		);
 		expect(portfolio.entries.map(({ id }) => id)).not.toContain(hiddenEntry.id);
+		expect(
+			portfolio.entries.find(({ id }) => id === "entry-award")?.summaryHidden,
+		).toBe(true);
 		expect(portfolio.skills.map(({ id }) => id)).toContain(skill.id);
 		expect(portfolio.notices.map(({ id }) => id)).toEqual([
 			activeNotice.id,

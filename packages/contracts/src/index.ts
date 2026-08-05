@@ -66,6 +66,7 @@ export const entrySchema = z.object({
 	url: z.url().or(z.literal("")),
 	sortOrder: z.number().int().min(0).max(9999),
 	visible: z.boolean(),
+	summaryHidden: z.boolean().default(false),
 });
 
 export const skillSchema = z.object({

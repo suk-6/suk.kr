@@ -2,6 +2,7 @@ import type { Entry, EntryKind } from "@suk/contracts";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { removeEntry, saveEntry } from "../actions";
 
@@ -55,14 +56,21 @@ const EntryForm = ({ kind, entry }: { kind: EntryKind; entry?: Entry }) => (
 					type="number"
 					defaultValue={entry?.sortOrder ?? 0}
 				/>
-				<label className="flex items-center gap-2 text-base">
-					<input
-						name="visible"
-						type="checkbox"
-						defaultChecked={entry?.visible ?? true}
-					/>
-					공개
-				</label>
+				<div className="flex flex-wrap items-center gap-5">
+					<label className="flex items-center gap-2 text-base">
+						<Switch name="visible" defaultChecked={entry?.visible ?? true} />
+						공개
+					</label>
+					{kind === "award" && (
+						<label className="flex items-center gap-2 text-base">
+							<Switch
+								name="summaryHidden"
+								defaultChecked={entry?.summaryHidden ?? false}
+							/>
+							간략히 표시에서 숨김
+						</label>
+					)}
+				</div>
 				<div className="flex gap-2 md:col-span-2">
 					<Button>저장</Button>
 					{entry && (

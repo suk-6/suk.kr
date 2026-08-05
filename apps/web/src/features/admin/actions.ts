@@ -130,6 +130,7 @@ export const saveEntry = async (data: FormData) => {
 		url: text(data, "url"),
 		sortOrder: number(data, "sortOrder"),
 		visible: data.get("visible") === "on",
+		summaryHidden: data.get("summaryHidden") === "on",
 	});
 	await api.mutate(`/entries/${id}`, "PUT", value);
 	done();

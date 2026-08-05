@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { api } from "@/lib/api/client";
 import { assetUrl } from "@/lib/assets";
+import { Awards } from "./awards";
 import { RenewalNotice } from "./notice";
 
 const content = "mx-auto max-w-[1199px]";
@@ -56,8 +57,11 @@ export const PortfolioPage = async () => {
 						<a className={navLink} href="#work">
 							프로젝트
 						</a>
+						<a className={navLink} href="#awards">
+							수상
+						</a>
 						<a className={navLink} href="#about">
-							소개
+							경력
 						</a>
 						<a className={navLink} href="#contact">
 							연락
@@ -85,45 +89,6 @@ export const PortfolioPage = async () => {
 					>
 						프로젝트 보기
 					</a>
-				</div>
-			</section>
-
-			<section className={`${section} portfolio-scroll-reveal`}>
-				<header>
-					<h2 className={sectionHeading}>수상</h2>
-				</header>
-				<div>
-					{awards.map((entry) => (
-						<article
-							className="portfolio-row grid grid-cols-[68px_1fr] items-start gap-3 border-t border-portfolio-line py-5 last:border-b min-[761px]:grid-cols-[150px_1fr] min-[761px]:gap-9"
-							key={entry.id}
-						>
-							<time className="m-0 text-base leading-6 text-portfolio-muted">
-								{entry.startDate}
-							</time>
-							<div>
-								<h3 className="m-0 text-base leading-6 font-medium tracking-[-0.01em]">
-									{entry.title}
-								</h3>
-								<p className="mt-1.5 mb-0 text-base leading-6 text-portfolio-muted">
-									{entry.organization}
-								</p>
-								{entry.description && (
-									<p className={entryDescription}>{entry.description}</p>
-								)}
-								{entry.url && (
-									<a
-										className={entryLink}
-										href={entry.url}
-										target="_blank"
-										rel="noopener noreferrer"
-									>
-										관련 자료 <ArrowUpRight className="size-3" />
-									</a>
-								)}
-							</div>
-						</article>
-					))}
 				</div>
 			</section>
 
@@ -200,6 +165,10 @@ export const PortfolioPage = async () => {
 						);
 					})}
 				</div>
+			</section>
+
+			<section className={`${section} portfolio-scroll-reveal`} id="awards">
+				<Awards entries={awards} />
 			</section>
 
 			<section className={`${section} portfolio-scroll-reveal`} id="about">
