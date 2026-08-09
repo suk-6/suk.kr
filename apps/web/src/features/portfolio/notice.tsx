@@ -31,7 +31,7 @@ export const RenewalNotice = ({ notices }: { notices: SiteNotice[] }) =>
 						</article>
 					))}
 				</div>
-				<DialogFooter className="border-t p-4">
+				<DialogFooter className="mx-0 mb-0 border-t p-4">
 					<DialogClose render={<Button />}>확인</DialogClose>
 				</DialogFooter>
 			</DialogContent>
