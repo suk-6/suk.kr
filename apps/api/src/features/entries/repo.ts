@@ -10,7 +10,7 @@ export const getEntries = async (db: D1Database, includeHidden = false) => {
 	return results.map(mapEntry);
 };
 
-export const saveEntry = (db: D1Database, value: Entry) =>
+const saveStatement = (db: D1Database, value: Entry) =>
 	db
 		.prepare(
 			`INSERT INTO timeline_entries (id, kind, title, organization, start_date, end_date, description, url, sort_order, visible, summary_hidden, updated_at)
@@ -30,8 +30,22 @@ export const saveEntry = (db: D1Database, value: Entry) =>
 			value.visible ? 1 : 0,
 			value.summaryHidden ? 1 : 0,
 			new Date().toISOString(),
-		)
-		.run();
+		);
+
+export const saveEntry = (db: D1Database, value: Entry) =>
+	saveStatement(db, value).run();
 
 export const deleteEntry = (db: D1Database, id: string) =>
 	db.prepare("DELETE FROM timeline_entries WHERE id = ?").bind(id).run();
+
+export const saveEntries = (
+	db: D1Database,
+	values: Entry[],
+	deletedIds: string[],
+) =>
+	db.batch([
+		...deletedIds.map((id) =>
+			db.prepare("DELETE FROM timeline_entries WHERE id = ?").bind(id),
+		),
+		...values.map((value) => saveStatement(db, value)),
+	]);

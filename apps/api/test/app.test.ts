@@ -137,6 +137,34 @@ describe("api", () => {
 				).status,
 			).toBe(200);
 		}
+		const updatedEntry = {
+			...entries[0],
+			title: "Updated experience title",
+			sortOrder: 90,
+		};
+		expect(
+			(
+				await app.request(
+					"/entries",
+					{
+						method: "PUT",
+						headers: headers(),
+						body: JSON.stringify({
+							upsert: [updatedEntry],
+							remove: [hiddenEntry.id],
+						}),
+					},
+					env,
+				)
+			).status,
+		).toBe(200);
+		const managedEntries = await (
+			await app.request("/entries", { headers: headers() }, env)
+		).json<Array<{ id: string; title: string }>>();
+		expect(managedEntries.find(({ id }) => id === updatedEntry.id)?.title).toBe(
+			updatedEntry.title,
+		);
+		expect(managedEntries.map(({ id }) => id)).not.toContain(hiddenEntry.id);
 
 		const skill = {
 			id: "skill-test",

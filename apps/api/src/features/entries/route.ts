@@ -1,11 +1,16 @@
-import { entrySchema } from "@suk/contracts";
+import { entryBatchSchema, entrySchema } from "@suk/contracts";
 import { Hono } from "hono";
-import { deleteEntry, getEntries, saveEntry } from "./repo";
+import { deleteEntry, getEntries, saveEntries, saveEntry } from "./repo";
 
 export const entriesRoute = new Hono<{ Bindings: Env }>()
 	.get("/", async (context) =>
 		context.json(await getEntries(context.env.DB, true)),
 	)
+	.put("/", async (context) => {
+		const value = entryBatchSchema.parse(await context.req.json());
+		await saveEntries(context.env.DB, value.upsert, value.remove);
+		return context.json(value);
+	})
 	.put("/:id", async (context) => {
 		const value = entrySchema.parse({
 			...(await context.req.json()),
