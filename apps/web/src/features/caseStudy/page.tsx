@@ -37,7 +37,7 @@ export const CaseStudyPage = ({
 						<span aria-hidden="true">·</span>
 						<span>{project.tags.join(" · ")}</span>
 					</div>
-					<h1 className="portfolio-enter portfolio-enter-2 mt-7 mb-0 max-w-[1050px] text-[clamp(4rem,16vw,7rem)] leading-[.88] font-medium tracking-[-0.065em] min-[761px]:text-[clamp(6rem,10vw,8.5rem)]">
+					<h1 className="portfolio-enter portfolio-enter-2 mt-7 mb-0 max-w-[1050px] text-[clamp(4rem,16vw,7rem)] leading-[.96] font-medium tracking-[-0.065em] min-[761px]:text-[clamp(6rem,10vw,8.5rem)]">
 						{project.name}
 					</h1>
 					<p className="portfolio-enter portfolio-enter-3 mt-9 mb-0 max-w-[760px] text-[clamp(1.25rem,2.8vw,2rem)] leading-[1.25] tracking-[-0.03em] text-portfolio-secondary">
