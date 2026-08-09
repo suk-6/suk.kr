@@ -2,9 +2,10 @@ import type { Project } from "@suk/contracts";
 import { FileText } from "lucide-react";
 import type { Route } from "next";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { removeProject, saveProject } from "../actions";
 
@@ -78,22 +79,19 @@ const ProjectForm = ({ project }: { project?: Project }) => (
 					type="number"
 					defaultValue={project?.sortOrder ?? 0}
 				/>
-				<label className="flex items-center gap-2 text-base">
-					<input
-						name="visible"
-						type="checkbox"
-						defaultChecked={project?.visible ?? true}
-					/>
+				<label className="flex items-center gap-2 text-sm">
+					<Switch name="visible" defaultChecked={project?.visible ?? true} />
 					공개
 				</label>
 				<div className="flex gap-2 md:col-span-2">
 					<Button>저장</Button>
 					{project && (
-						<Button asChild type="button" variant="outline">
-							<Link href={`/admin/projects/${project.id}/case-study` as Route}>
-								<FileText /> 케이스 스터디 편집
-							</Link>
-						</Button>
+						<Link
+							className={buttonVariants({ variant: "outline" })}
+							href={`/admin/projects/${project.id}/case-study` as Route}
+						>
+							<FileText /> 케이스 스터디 편집
+						</Link>
 					)}
 					{project && (
 						<Button formAction={removeProject} variant="destructive">

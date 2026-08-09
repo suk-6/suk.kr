@@ -1,7 +1,7 @@
 "use server";
 
 import {
-	entrySchema,
+	entryBatchSchema,
 	fileSchema,
 	fileUpdateSchema,
 	linkSchema,
@@ -11,6 +11,7 @@ import {
 	settingsSchema,
 	skillSchema,
 } from "@suk/contracts";
+import type { EntryBatch } from "@suk/contracts";
 import type { Route } from "next";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -116,29 +117,10 @@ export const removeProject = async (data: FormData) => {
 	done();
 };
 
-export const saveEntry = async (data: FormData) => {
+export const saveEntries = async (input: EntryBatch) => {
 	await authorize();
-	const id = text(data, "id") || crypto.randomUUID();
-	const value = entrySchema.parse({
-		id,
-		kind: text(data, "kind"),
-		title: text(data, "title"),
-		organization: text(data, "organization"),
-		startDate: text(data, "startDate"),
-		endDate: text(data, "endDate"),
-		description: text(data, "description"),
-		url: text(data, "url"),
-		sortOrder: number(data, "sortOrder"),
-		visible: data.get("visible") === "on",
-		summaryHidden: data.get("summaryHidden") === "on",
-	});
-	await api.mutate(`/entries/${id}`, "PUT", value);
-	done();
-};
-
-export const removeEntry = async (data: FormData) => {
-	await authorize();
-	await api.mutate(`/entries/${text(data, "id")}`, "DELETE");
+	const value = entryBatchSchema.parse(input);
+	await api.mutate("/entries", "PUT", value);
 	done();
 };
 
