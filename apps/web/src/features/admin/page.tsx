@@ -1,4 +1,10 @@
-import { entrySections, type Section } from "./config";
+import { Separator } from "@/components/ui/separator";
+import {
+	SidebarInset,
+	SidebarProvider,
+	SidebarTrigger,
+} from "@/components/ui/sidebar";
+import { entrySections, type Section, sections } from "./config";
 import type { AdminData } from "./data";
 import { AdminNav } from "./nav";
 import { EntriesSection } from "./sections/entries";
@@ -17,25 +23,38 @@ export const AdminPage = ({
 	section: Section;
 	data: AdminData;
 }) => (
-	<main className="min-h-svh bg-background text-foreground">
+	<SidebarProvider className="font-normal">
 		<AdminNav active={section} />
-		<div className="mx-auto max-w-7xl p-5 sm:p-8 lg:ml-60 lg:p-10">
-			{section === "overview" && <OverviewSection data={data} />}
-			{section === "settings" && <SettingsSection settings={data.settings} />}
-			{section === "notices" && <NoticesSection notices={data.notices} />}
-			{section === "projects" && <ProjectsSection projects={data.projects} />}
-			{entrySections.has(section as never) && (
-				<EntriesSection
-					kind={
-						section as
-							"experience" | "education" | "activity" | "award" | "certificate"
-					}
-					entries={data.entries.filter(({ kind }) => kind === section)}
-				/>
-			)}
-			{section === "skills" && <SkillsSection skills={data.skills} />}
-			{section === "links" && <LinksSection links={data.links} />}
-			{section === "files" && <FilesSection files={data.files} />}
-		</div>
-	</main>
+		<SidebarInset>
+			<header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
+				<SidebarTrigger className="-ml-1" />
+				<Separator orientation="vertical" className="mr-2 h-4" />
+				<span className="text-sm font-medium">
+					{sections.find(({ id }) => id === section)?.label}
+				</span>
+			</header>
+			<div className="mx-auto w-full max-w-6xl p-4 sm:p-8 lg:p-10">
+				{section === "overview" && <OverviewSection data={data} />}
+				{section === "settings" && <SettingsSection settings={data.settings} />}
+				{section === "notices" && <NoticesSection notices={data.notices} />}
+				{section === "projects" && <ProjectsSection projects={data.projects} />}
+				{entrySections.has(section as never) && (
+					<EntriesSection
+						kind={
+							section as
+								| "experience"
+								| "education"
+								| "activity"
+								| "award"
+								| "certificate"
+						}
+						entries={data.entries.filter(({ kind }) => kind === section)}
+					/>
+				)}
+				{section === "skills" && <SkillsSection skills={data.skills} />}
+				{section === "links" && <LinksSection links={data.links} />}
+				{section === "files" && <FilesSection files={data.files} />}
+			</div>
+		</SidebarInset>
+	</SidebarProvider>
 );

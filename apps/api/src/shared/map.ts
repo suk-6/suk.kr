@@ -49,6 +49,7 @@ type EntryRow = {
 	url: string;
 	sort_order: number;
 	visible: number;
+	summary_hidden: number;
 };
 
 type SkillRow = {
@@ -130,6 +131,7 @@ export const mapEntry = (row: EntryRow): Entry => ({
 	url: row.url,
 	sortOrder: row.sort_order,
 	visible: Boolean(row.visible),
+	summaryHidden: Boolean(row.summary_hidden),
 });
 
 export const mapSkill = (row: SkillRow): Skill => ({

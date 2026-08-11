@@ -118,6 +118,7 @@ describe("api", () => {
 			url: "",
 			sortOrder: (index + 1) * 10,
 			visible: true,
+			summaryHidden: kind === "award",
 		}));
 		const hiddenEntry = {
 			...entries[0],
@@ -136,6 +137,34 @@ describe("api", () => {
 				).status,
 			).toBe(200);
 		}
+		const updatedEntry = {
+			...entries[0],
+			title: "Updated experience title",
+			sortOrder: 90,
+		};
+		expect(
+			(
+				await app.request(
+					"/entries",
+					{
+						method: "PUT",
+						headers: headers(),
+						body: JSON.stringify({
+							upsert: [updatedEntry],
+							remove: [hiddenEntry.id],
+						}),
+					},
+					env,
+				)
+			).status,
+		).toBe(200);
+		const managedEntries = await (
+			await app.request("/entries", { headers: headers() }, env)
+		).json<Array<{ id: string; title: string }>>();
+		expect(managedEntries.find(({ id }) => id === updatedEntry.id)?.title).toBe(
+			updatedEntry.title,
+		);
+		expect(managedEntries.map(({ id }) => id)).not.toContain(hiddenEntry.id);
 
 		const skill = {
 			id: "skill-test",
@@ -226,7 +255,7 @@ describe("api", () => {
 		).json<{
 			settings: typeof settings;
 			projects: Array<{ id: string; caseStudy: typeof project.caseStudy }>;
-			entries: Array<{ id: string }>;
+			entries: Array<{ id: string; summaryHidden: boolean }>;
 			skills: Array<{ id: string }>;
 			notices: Array<{ id: string }>;
 		}>();
@@ -242,6 +271,9 @@ describe("api", () => {
 			expect.arrayContaining(entries.map(({ id }) => id)),
 		);
 		expect(portfolio.entries.map(({ id }) => id)).not.toContain(hiddenEntry.id);
+		expect(
+			portfolio.entries.find(({ id }) => id === "entry-award")?.summaryHidden,
+		).toBe(true);
 		expect(portfolio.skills.map(({ id }) => id)).toContain(skill.id);
 		expect(portfolio.notices.map(({ id }) => id)).toEqual([
 			activeNotice.id,

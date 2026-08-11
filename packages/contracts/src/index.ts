@@ -66,7 +66,18 @@ export const entrySchema = z.object({
 	url: z.url().or(z.literal("")),
 	sortOrder: z.number().int().min(0).max(9999),
 	visible: z.boolean(),
+	summaryHidden: z.boolean().default(false),
 });
+
+export const entryBatchSchema = z
+	.object({
+		upsert: z.array(entrySchema).max(100),
+		remove: z.array(z.string().min(1)).max(100),
+	})
+	.refine(
+		({ upsert, remove }) => !upsert.some(({ id }) => new Set(remove).has(id)),
+		"같은 항목을 저장하고 삭제할 수 없습니다.",
+	);
 
 export const skillSchema = z.object({
 	id: z
@@ -142,6 +153,7 @@ export const fileUpdateSchema = fileSchema.pick({ slug: true, fileName: true });
 export type Settings = z.infer<typeof settingsSchema>;
 export type Project = z.infer<typeof projectSchema>;
 export type Entry = z.infer<typeof entrySchema>;
+export type EntryBatch = z.infer<typeof entryBatchSchema>;
 export type EntryKind = z.infer<typeof entryKind>;
 export type Skill = z.infer<typeof skillSchema>;
 export type SiteNotice = z.infer<typeof noticeSchema>;

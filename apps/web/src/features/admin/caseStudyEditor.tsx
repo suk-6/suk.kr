@@ -15,7 +15,7 @@ import {
 import type { Route } from "next";
 import Link from "next/link";
 import { type DragEvent, useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { saveCaseStudy } from "./actions";
 
 type Section = Project["caseStudy"][number] & {
@@ -116,14 +116,13 @@ export const CaseStudyEditor = ({
 			<header className="sticky top-0 z-20 border-b bg-background/90 backdrop-blur-xl">
 				<div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
 					<div className="flex min-w-0 items-center gap-3">
-						<Button asChild variant="ghost" size="icon-sm">
-							<Link
-								href="/admin?section=projects"
-								aria-label="프로젝트 관리로 돌아가기"
-							>
-								<ArrowLeft />
-							</Link>
-						</Button>
+						<Link
+							className={buttonVariants({ variant: "ghost", size: "icon-sm" })}
+							href="/admin?section=projects"
+							aria-label="프로젝트 관리로 돌아가기"
+						>
+							<ArrowLeft />
+						</Link>
 						<div className="min-w-0">
 							<p className="truncate text-base font-medium">{project.name}</p>
 							<p className="text-base text-muted-foreground">
@@ -132,11 +131,13 @@ export const CaseStudyEditor = ({
 						</div>
 					</div>
 					<div className="flex items-center gap-2">
-						<Button asChild variant="ghost" size="sm">
-							<Link href={`/work/${project.slug}` as Route} target="_blank">
-								미리보기 <ExternalLink />
-							</Link>
-						</Button>
+						<Link
+							className={buttonVariants({ variant: "ghost", size: "sm" })}
+							href={`/work/${project.slug}` as Route}
+							target="_blank"
+						>
+							미리보기 <ExternalLink />
+						</Link>
 						<Button type="submit" form="case-study-form" size="sm">
 							저장
 						</Button>

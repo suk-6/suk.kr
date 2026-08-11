@@ -4,10 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { api } from "@/lib/api/client";
 import { assetUrl } from "@/lib/assets";
+import { Awards } from "./awards";
 import { RenewalNotice } from "./notice";
 
 const content = "mx-auto max-w-[1199px]";
-const section = `${content} scroll-mt-[72px] py-[72px] min-[761px]:py-24`;
+const section = `${content} scroll-mt-[60px] py-[72px] min-[761px]:py-24`;
 const sectionHeading =
 	"mb-10 text-[clamp(2.75rem,7vw,5.25rem)] leading-[.94] font-medium tracking-[-0.055em] min-[761px]:mb-14";
 const navLink =
@@ -36,7 +37,7 @@ export const PortfolioPage = async () => {
 	return (
 		<main className="portfolio min-h-svh px-5 min-[761px]:px-8" id="top">
 			<RenewalNotice notices={notices} />
-			<header className="sticky top-0 z-20 -mx-5 h-[72px] border-b border-transparent bg-background/95 px-5 backdrop-blur-xl [animation:stickyHeaderBorder_linear_both] [animation-range:0_2px] [animation-timeline:scroll(root_block)] motion-reduce:[animation:none] min-[761px]:-mx-8 min-[761px]:px-8">
+			<header className="sticky top-0 z-20 -mx-5 h-[60px] border-b border-transparent bg-background/95 px-5 backdrop-blur-xl [animation:stickyHeaderBorder_linear_both] [animation-range:0_2px] [animation-timeline:scroll(root_block)] motion-reduce:[animation:none] min-[761px]:-mx-8 min-[761px]:px-8">
 				<div className={`${content} flex h-full items-center justify-between`}>
 					<a
 						href="#top"
@@ -56,8 +57,11 @@ export const PortfolioPage = async () => {
 						<a className={navLink} href="#work">
 							프로젝트
 						</a>
+						<a className={navLink} href="#awards">
+							수상
+						</a>
 						<a className={navLink} href="#about">
-							소개
+							경력
 						</a>
 						<a className={navLink} href="#contact">
 							연락
@@ -67,7 +71,7 @@ export const PortfolioPage = async () => {
 			</header>
 
 			<section
-				className={`${content} flex min-h-[calc(100svh-72px)] flex-col justify-center py-20 min-[761px]:min-h-[min(900px,calc(100svh-72px))]`}
+				className={`${content} flex min-h-[calc(100svh-60px)] flex-col justify-center py-20 min-[761px]:min-h-[min(900px,calc(100svh-60px))]`}
 			>
 				<p className="portfolio-enter m-0 text-base tracking-[-0.01em] text-portfolio-muted">
 					{settings.title}
@@ -85,45 +89,6 @@ export const PortfolioPage = async () => {
 					>
 						프로젝트 보기
 					</a>
-				</div>
-			</section>
-
-			<section className={`${section} portfolio-scroll-reveal`}>
-				<header>
-					<h2 className={sectionHeading}>수상</h2>
-				</header>
-				<div>
-					{awards.map((entry) => (
-						<article
-							className="portfolio-row grid grid-cols-[68px_1fr] items-start gap-3 border-t border-portfolio-line py-5 last:border-b min-[761px]:grid-cols-[150px_1fr] min-[761px]:gap-9"
-							key={entry.id}
-						>
-							<time className="m-0 text-base leading-6 text-portfolio-muted">
-								{entry.startDate}
-							</time>
-							<div>
-								<h3 className="m-0 text-base leading-6 font-medium tracking-[-0.01em]">
-									{entry.title}
-								</h3>
-								<p className="mt-1.5 mb-0 text-base leading-6 text-portfolio-muted">
-									{entry.organization}
-								</p>
-								{entry.description && (
-									<p className={entryDescription}>{entry.description}</p>
-								)}
-								{entry.url && (
-									<a
-										className={entryLink}
-										href={entry.url}
-										target="_blank"
-										rel="noopener noreferrer"
-									>
-										관련 자료 <ArrowUpRight className="size-3" />
-									</a>
-								)}
-							</div>
-						</article>
-					))}
 				</div>
 			</section>
 
@@ -200,6 +165,10 @@ export const PortfolioPage = async () => {
 						);
 					})}
 				</div>
+			</section>
+
+			<section className={`${section} portfolio-scroll-reveal`} id="awards">
+				<Awards entries={awards} />
 			</section>
 
 			<section className={`${section} portfolio-scroll-reveal`} id="about">
@@ -286,7 +255,7 @@ export const PortfolioPage = async () => {
 			</section>
 
 			<footer
-				className={`${content} portfolio-scroll-reveal scroll-mt-[72px] border-t border-portfolio-line pt-[72px] pb-10 min-[761px]:pt-24`}
+				className={`${content} portfolio-scroll-reveal scroll-mt-[60px] border-t border-portfolio-line pt-[72px] pb-10 min-[761px]:pt-24`}
 				id="contact"
 			>
 				<p className="mt-0 mb-[30px] text-base leading-6 text-portfolio-muted">
