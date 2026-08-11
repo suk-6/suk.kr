@@ -348,6 +348,33 @@ describe("api", () => {
 		).toBe(204);
 	});
 
+	it("rejects application routes as short-link slugs", async () => {
+		for (const slug of [
+			"_next",
+			"admin",
+			"api",
+			"i",
+			"icon.png",
+			"IP",
+			"work",
+		]) {
+			const response = await app.request(
+				`/links/${slug}`,
+				{
+					method: "PUT",
+					headers: headers(),
+					body: JSON.stringify({
+						slug,
+						targetUrl: "https://example.com",
+						passwordHash: null,
+					}),
+				},
+				env,
+			);
+			expect(response.status).toBe(400);
+		}
+	});
+
 	it("keeps file-owned short links read-only in link management", async () => {
 		const file = {
 			id: "file-test",

@@ -27,6 +27,7 @@
 - Keep shared API shapes in `packages/contracts`. For persisted features, check contracts, schema, Worker repository/routes, admin UI, public UI, and tests together.
 - Use ESLint and Prettier.
 - Preserve unrelated user changes in a dirty worktree.
+- Keep the static reserved short-link list in `packages/contracts` synchronized with root application and framework routes; it currently includes `_next`, `admin`, `api`, `i`, `icon.png`, `ip`, and `work`.
 
 ## UI
 

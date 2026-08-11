@@ -110,12 +110,26 @@ export const noticeSchema = z
 		},
 	);
 
+export const reservedSlugs: readonly string[] = [
+	"_next",
+	"admin",
+	"api",
+	"i",
+	"icon.png",
+	"ip",
+	"work",
+];
+
 export const linkSchema = z.object({
 	slug: z
 		.string()
 		.min(1)
 		.max(160)
-		.regex(/^[^/?#]+$/, "slug에 /, ?, #을 사용할 수 없습니다."),
+		.regex(/^[^/?#]+$/, "slug에 /, ?, #을 사용할 수 없습니다.")
+		.refine(
+			(slug) => !reservedSlugs.includes(slug.toLowerCase()),
+			"애플리케이션에서 사용하는 예약어는 slug로 등록할 수 없습니다.",
+		),
 	targetUrl: z.url(),
 	passwordHash: z.string().nullable().default(null),
 });
