@@ -16,7 +16,7 @@ export const Password = ({
 			className="w-full max-w-sm rounded-2xl border border-zinc-800 p-7"
 		>
 			<LockKeyhole className="mb-8" />
-			<p className="text-sm text-zinc-400">suk.kr/{slug}</p>
+			<p className="text-base text-zinc-400">suk.kr/{slug}</p>
 			<h1 className="mt-1 text-2xl font-semibold">보호된 링크</h1>
 			<Input
 				name="password"
@@ -27,7 +27,7 @@ export const Password = ({
 				className="mt-6 border-zinc-700 bg-zinc-900 text-white"
 			/>
 			{invalid && (
-				<p className="mt-2 text-sm text-red-400">
+				<p className="mt-2 text-base text-red-400">
 					비밀번호가 올바르지 않습니다.
 				</p>
 			)}

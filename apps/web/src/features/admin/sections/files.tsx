@@ -9,13 +9,13 @@ import { FileUpload } from "../upload";
 export const FilesSection = ({ files }: { files: StoredFile[] }) => (
 	<>
 		<header className="mb-8">
-			<p className="text-sm text-muted-foreground">SSFS</p>
+			<p className="text-base text-muted-foreground">SSFS</p>
 			<h1 className="mt-1 text-3xl font-semibold tracking-tight">파일 관리</h1>
 		</header>
 		<Card>
 			<CardHeader>
 				<h2 className="font-semibold">파일 업로드</h2>
-				<p className="mt-1 text-sm text-muted-foreground">
+				<p className="mt-1 text-base text-muted-foreground">
 					선택한 파일명으로 slug와 fileName이 자동 입력됩니다.
 				</p>
 			</CardHeader>
@@ -37,7 +37,7 @@ export const FilesSection = ({ files }: { files: StoredFile[] }) => (
 						<input type="hidden" name="id" value={file.id} />
 						<Input name="slug" defaultValue={file.slug} />
 						<Input name="fileName" defaultValue={file.fileName} />
-						<span className="self-center text-xs text-muted-foreground">
+						<span className="self-center text-base text-muted-foreground">
 							{(file.size / 1024 / 1024).toFixed(1)} MB
 						</span>
 						<div className="flex items-center gap-2">

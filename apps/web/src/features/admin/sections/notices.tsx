@@ -21,7 +21,7 @@ const NoticeForm = ({ notice }: { notice?: SiteNotice }) => (
 		<CardContent>
 			<form action={saveNotice} className="grid gap-4 md:grid-cols-2">
 				<input type="hidden" name="id" value={notice?.id ?? ""} />
-				<label className="text-sm md:col-span-2">
+				<label className="text-base md:col-span-2">
 					제목
 					<Input
 						name="title"
@@ -30,7 +30,7 @@ const NoticeForm = ({ notice }: { notice?: SiteNotice }) => (
 						required
 					/>
 				</label>
-				<label className="text-sm md:col-span-2">
+				<label className="text-base md:col-span-2">
 					내용
 					<Textarea
 						name="content"
@@ -39,7 +39,7 @@ const NoticeForm = ({ notice }: { notice?: SiteNotice }) => (
 						required
 					/>
 				</label>
-				<label className="text-sm">
+				<label className="text-base">
 					공개 시작
 					<Input
 						name="startsAt"
@@ -48,7 +48,7 @@ const NoticeForm = ({ notice }: { notice?: SiteNotice }) => (
 						className="mt-1.5"
 					/>
 				</label>
-				<label className="text-sm">
+				<label className="text-base">
 					공개 종료
 					<Input
 						name="endsAt"
@@ -57,7 +57,7 @@ const NoticeForm = ({ notice }: { notice?: SiteNotice }) => (
 						className="mt-1.5"
 					/>
 				</label>
-				<label className="text-sm">
+				<label className="text-base">
 					정렬 순서
 					<Input
 						name="sortOrder"
@@ -66,7 +66,7 @@ const NoticeForm = ({ notice }: { notice?: SiteNotice }) => (
 						className="mt-1.5"
 					/>
 				</label>
-				<label className="flex items-center gap-2 self-end pb-2 text-sm">
+				<label className="flex items-center gap-2 self-end pb-2 text-base">
 					<Switch name="visible" defaultChecked={notice?.visible ?? true} />
 					공개
 				</label>
@@ -86,9 +86,9 @@ const NoticeForm = ({ notice }: { notice?: SiteNotice }) => (
 export const NoticesSection = ({ notices }: { notices: SiteNotice[] }) => (
 	<>
 		<header className="mb-8">
-			<p className="text-sm text-muted-foreground">Notice</p>
+			<p className="text-base text-muted-foreground">Notice</p>
 			<h1 className="mt-1 text-3xl font-semibold tracking-tight">공지 관리</h1>
-			<p className="mt-2 text-sm text-muted-foreground">
+			<p className="mt-2 text-base text-muted-foreground">
 				기간을 비워두면 제한 없이 공개됩니다.
 			</p>
 		</header>

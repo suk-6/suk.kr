@@ -69,7 +69,7 @@ const LinkForm = ({ link }: { link?: ShortLink }) => {
 export const LinksSection = ({ links }: { links: ShortLink[] }) => (
 	<>
 		<header className="mb-8">
-			<p className="text-sm text-muted-foreground">Redirects</p>
+			<p className="text-base text-muted-foreground">Redirects</p>
 			<h1 className="mt-1 text-3xl font-semibold tracking-tight">
 				단축 URL 관리
 			</h1>
@@ -77,7 +77,7 @@ export const LinksSection = ({ links }: { links: ShortLink[] }) => (
 		<Card>
 			<CardHeader>
 				<h2 className="font-semibold">suk.kr/slug</h2>
-				<p className="mt-1 text-sm text-muted-foreground">
+				<p className="mt-1 text-base text-muted-foreground">
 					파일에서 생성된 항목은 파일 관리에서만 변경할 수 있습니다.
 				</p>
 			</CardHeader>

@@ -25,7 +25,7 @@ export const RenewalNotice = ({ notices }: { notices: SiteNotice[] }) =>
 							<h2 className="pr-6 text-lg leading-none font-semibold">
 								{title}
 							</h2>
-							<p className="mt-3 whitespace-pre-line text-sm leading-6 text-muted-foreground">
+							<p className="mt-3 whitespace-pre-line text-base leading-6 text-muted-foreground">
 								{content}
 							</p>
 						</article>

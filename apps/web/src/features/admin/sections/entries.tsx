@@ -55,7 +55,7 @@ const EntryForm = ({ kind, entry }: { kind: EntryKind; entry?: Entry }) => (
 					type="number"
 					defaultValue={entry?.sortOrder ?? 0}
 				/>
-				<label className="flex items-center gap-2 text-sm">
+				<label className="flex items-center gap-2 text-base">
 					<input
 						name="visible"
 						type="checkbox"
@@ -85,7 +85,7 @@ export const EntriesSection = ({
 }) => (
 	<>
 		<header className="mb-8">
-			<p className="text-sm text-muted-foreground">Timeline</p>
+			<p className="text-base text-muted-foreground">Timeline</p>
 			<h1 className="mt-1 text-3xl font-semibold tracking-tight">
 				{labels[kind]} 관리
 			</h1>

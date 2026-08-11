@@ -32,6 +32,7 @@
 - Keep shared API shapes in `packages/contracts`. A persisted feature change usually needs coordinated updates to the schema migration, contract, Worker row mapping/repository, admin action/form, public UI, and tests.
 - Use ESLint and Prettier. Do not reintroduce Biome.
 - Preserve unrelated user changes in a dirty worktree.
+- Root application and framework routes are reserved short-link slugs. Keep the static reserved list in `packages/contracts` synchronized with top-level routes under `apps/web/src/app`; it currently includes `_next`, `admin`, `api`, `i`, `icon.png`, `ip`, and `work`.
 
 ## UI rules
 

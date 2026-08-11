@@ -78,7 +78,7 @@ const ProjectForm = ({ project }: { project?: Project }) => (
 					type="number"
 					defaultValue={project?.sortOrder ?? 0}
 				/>
-				<label className="flex items-center gap-2 text-sm">
+				<label className="flex items-center gap-2 text-base">
 					<input
 						name="visible"
 						type="checkbox"
@@ -109,7 +109,7 @@ const ProjectForm = ({ project }: { project?: Project }) => (
 export const ProjectsSection = ({ projects }: { projects: Project[] }) => (
 	<>
 		<header className="mb-8">
-			<p className="text-sm text-muted-foreground">Portfolio</p>
+			<p className="text-base text-muted-foreground">Portfolio</p>
 			<h1 className="mt-1 text-3xl font-semibold tracking-tight">
 				프로젝트 관리
 			</h1>

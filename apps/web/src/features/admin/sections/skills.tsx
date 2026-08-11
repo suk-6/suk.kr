@@ -36,7 +36,7 @@ const SkillForm = ({ skill }: { skill?: Skill }) => (
 export const SkillsSection = ({ skills }: { skills: Skill[] }) => (
 	<>
 		<header className="mb-8">
-			<p className="text-sm text-muted-foreground">Toolkit</p>
+			<p className="text-base text-muted-foreground">Toolkit</p>
 			<h1 className="mt-1 text-3xl font-semibold tracking-tight">기술 관리</h1>
 		</header>
 		<Card>
