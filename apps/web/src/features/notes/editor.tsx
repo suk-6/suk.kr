@@ -1,6 +1,15 @@
 "use client";
 
+import { Lock, LockOpen } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTitle,
+	PopoverTrigger,
+} from "@/components/ui/popover";
 import { changeNotePassword, saveNote, unlockNote } from "./actions";
 
 export function NoteEditor({
@@ -65,7 +74,7 @@ export function NoteEditor({
 		return (
 			<main className="flex min-h-svh items-center justify-center bg-[#090909] p-6 font-mono text-[#ecece8]">
 				<form
-					className="w-full max-w-sm space-y-5"
+					className="w-full max-w-sm space-y-6"
 					onSubmit={async (event) => {
 						event.preventDefault();
 						try {
@@ -83,11 +92,14 @@ export function NoteEditor({
 						}
 					}}
 				>
-					<p className="text-sm text-[#999]">note / {id}</p>
+					<div className="flex items-center gap-2 text-sm text-[#999]">
+						<Lock className="size-4" />
+						<span>note / {id}</span>
+					</div>
 					<h1 className="text-xl">잠긴 노트</h1>
-					<input
+					<Input
 						type="text"
-						className="note-secret w-full rounded border border-[#333] bg-[#161616] p-3 outline-none focus:border-[#777]"
+						className="note-secret h-10 border-[#333] bg-[#161616]"
 						value={secret}
 						onChange={(event) => setSecret(event.target.value)}
 						placeholder="비밀번호"
@@ -103,88 +115,118 @@ export function NoteEditor({
 							{status}
 						</p>
 					)}
-					<button className="rounded bg-[#ecece8] px-4 py-2 text-sm text-[#090909]">
+					<Button type="submit" size="lg" className="w-full">
 						열기
-					</button>
+					</Button>
 				</form>
 			</main>
 		);
 
 	return (
 		<main className="flex h-svh flex-col bg-[#090909] font-mono text-[#ecece8]">
-			<header className="flex min-h-14 flex-wrap items-center gap-4 border-b border-[#262626] px-5 py-3 text-sm">
+			<header className="flex h-14 shrink-0 items-center gap-3 border-b border-[#262626] px-5 text-sm">
 				<span className="mr-auto">note / {id}</span>
-				<span role="status" aria-live="polite" className="text-[#999]">
+				<span role="status" aria-live="polite" className="truncate text-[#999]">
 					{status}
 				</span>
-				{setting ? (
-					<form
-						className="flex items-center gap-2"
-						onSubmit={async (event) => {
-							event.preventDefault();
-							try {
-								await save();
-								setHasPassword(await changeNotePassword(id, secret));
-								setSecret("");
-								setSetting(false);
-								setStatus("비밀번호 저장 완료");
-							} catch (error) {
-								setStatus(
-									error instanceof Error ? error.message : "비밀번호 저장 실패",
-								);
-							}
-						}}
+				<Popover
+					open={setting}
+					onOpenChange={(open) => {
+						setSetting(open);
+						if (!open) setSecret("");
+					}}
+				>
+					<PopoverTrigger
+						render={
+							<Button
+								variant="ghost"
+								size="icon-sm"
+								aria-label={hasPassword ? "비밀번호 변경" : "비밀번호 설정"}
+								title={hasPassword ? "비밀번호 변경" : "비밀번호 설정"}
+							/>
+						}
 					>
-						<input
-							type="text"
-							className="note-secret w-36 rounded border border-[#333] bg-[#161616] px-2 py-1 outline-none focus:border-[#777]"
-							value={secret}
-							onChange={(event) => setSecret(event.target.value)}
-							placeholder="새 비밀번호"
-							autoComplete="off"
-							data-1p-ignore
-							data-lpignore="true"
-							data-form-type="other"
-							required
-						/>
-						<button type="submit">저장</button>
-						<button
-							type="button"
-							onClick={() => {
-								setSecret("");
-								setSetting(false);
+						{hasPassword ? (
+							<Lock className="size-4" />
+						) : (
+							<LockOpen className="size-4" />
+						)}
+					</PopoverTrigger>
+					<PopoverContent
+						align="end"
+						sideOffset={8}
+						className="w-64 gap-3 bg-[#1b1b1b] p-3 text-[#ecece8] ring-white/10"
+					>
+						<PopoverTitle>
+							{hasPassword ? "비밀번호 변경" : "비밀번호 설정"}
+						</PopoverTitle>
+						<form
+							className="space-y-3"
+							onSubmit={async (event) => {
+								event.preventDefault();
+								try {
+									await save();
+									setHasPassword(await changeNotePassword(id, secret));
+									setSecret("");
+									setSetting(false);
+									setStatus("비밀번호 저장 완료");
+								} catch (error) {
+									setStatus(
+										error instanceof Error
+											? error.message
+											: "비밀번호 저장 실패",
+									);
+								}
 							}}
 						>
-							취소
-						</button>
-					</form>
-				) : (
-					<>
-						<button onClick={() => setSetting(true)}>
-							{hasPassword ? "비밀번호 변경" : "비밀번호 설정"}
-						</button>
-						{hasPassword && (
-							<button
-								onClick={async () => {
-									try {
-										await save();
-										await changeNotePassword(id, "");
-										setHasPassword(false);
-										setStatus("비밀번호 제거 완료");
-									} catch (error) {
-										setStatus(
-											error instanceof Error
-												? error.message
-												: "비밀번호 제거 실패",
-										);
-									}
-								}}
-							>
-								제거
-							</button>
-						)}
-					</>
-				)}
+							<Input
+								type="text"
+								className="note-secret border-[#333] bg-[#111]"
+								value={secret}
+								onChange={(event) => setSecret(event.target.value)}
+								placeholder="새 비밀번호"
+								aria-label="새 비밀번호"
+								autoComplete="off"
+								data-1p-ignore
+								data-lpignore="true"
+								data-form-type="other"
+								autoFocus
+								required
+							/>
+							<div className="flex items-center justify-end gap-2">
+								{hasPassword && (
+									<Button
+										type="button"
+										variant="ghost"
+										size="sm"
+										className="mr-auto text-[#aaa]"
+										onClick={async () => {
+											try {
+												await save();
+												await changeNotePassword(id, "");
+												setHasPassword(false);
+												setSecret("");
+												setSetting(false);
+												setStatus("비밀번호 제거 완료");
+											} catch (error) {
+												setStatus(
+													error instanceof Error
+														? error.message
+														: "비밀번호 제거 실패",
+												);
+											}
+										}}
+									>
+										비밀번호 제거
+									</Button>
+								)}
+								<Button type="submit" size="sm">
+									저장
+								</Button>
+							</div>
+						</form>
+					</PopoverContent>
+				</Popover>
 			</header>
 			<textarea
 				aria-label="노트 내용"

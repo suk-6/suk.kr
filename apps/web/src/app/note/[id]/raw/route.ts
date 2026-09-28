@@ -1,4 +1,5 @@
 import { noteIdSchema } from "@suk/contracts";
+import { isNoteUnlocked } from "@/features/notes/session";
 import { api } from "@/lib/api/client";
 import { verifyPassword } from "@/lib/crypto/password";
 
@@ -24,14 +25,17 @@ const handle = async (
 	if (!noteIdSchema.safeParse(id).success)
 		return new Response("Invalid note ID\n", { status: 404, headers });
 	const note = await api.note(id);
+	const reading = request.method === "GET" || request.method === "HEAD";
 	if (
 		note?.passwordHash &&
-		!authenticate(request.headers.get("authorization"), note.passwordHash)
+		!authenticate(request.headers.get("authorization"), note.passwordHash) &&
+		!(reading && (await isNoteUnlocked(id, note.passwordHash)))
 	)
 		return new Response("Authentication required\n", {
 			status: 401,
 			headers: { ...headers, "WWW-Authenticate": 'Basic realm="note"' },
 		});
+	if (request.method === "HEAD") return new Response(null, { headers });
 	if (request.method === "GET")
 		return new Response(note?.content ?? "", { headers });
 	const declaredSize = Number(request.headers.get("content-length") ?? 0);
@@ -51,5 +55,6 @@ const handle = async (
 };
 
 export const GET = handle;
+export const HEAD = handle;
 export const PUT = handle;
 export const POST = handle;
