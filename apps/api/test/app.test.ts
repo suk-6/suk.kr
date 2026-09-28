@@ -27,6 +27,7 @@ describe("api", () => {
 			"site_notices",
 			"files",
 			"short_links",
+			"notes",
 		]) {
 			expect(
 				await env.DB.prepare(
@@ -356,6 +357,7 @@ describe("api", () => {
 			"i",
 			"icon.png",
 			"IP",
+			"note",
 			"work",
 		]) {
 			const response = await app.request(
@@ -475,5 +477,109 @@ describe("api", () => {
 			env,
 		);
 		expect(response.status).toBe(413);
+	});
+
+	it("manages notes without exposing content in the list", async () => {
+		const id = "Note_Test-1";
+		expect(
+			(await app.request(`/notes/${id}`, { headers: headers() }, env)).status,
+		).toBe(404);
+		expect(
+			(await app.request("/notes", { headers: headers() }, env)).status,
+		).toBe(200);
+		const created = await app.request(
+			`/notes/${id}`,
+			{
+				method: "PUT",
+				headers: headers(),
+				body: JSON.stringify({ content: "안녕" }),
+			},
+			env,
+		);
+		expect(created.status).toBe(200);
+		expect(await created.json()).toMatchObject({
+			id,
+			content: "안녕",
+			passwordHash: null,
+		});
+		const list = await (
+			await app.request("/notes", { headers: headers() }, env)
+		).json<Array<Record<string, unknown>>>();
+		expect(list.find((note) => note.id === id)).toEqual({
+			id,
+			size: 6,
+			locked: false,
+			updatedAt: expect.any(String),
+		});
+		const locked = await app.request(
+			`/notes/${id}/password`,
+			{
+				method: "PUT",
+				headers: headers(),
+				body: JSON.stringify({ passwordHash: "salt:hash" }),
+			},
+			env,
+		);
+		expect((await locked.json<{ passwordHash: string }>()).passwordHash).toBe(
+			"salt:hash",
+		);
+		expect(
+			(
+				await (
+					await app.request("/notes", { headers: headers() }, env)
+				).json<Array<{ id: string; locked: boolean }>>()
+			).find((note) => note.id === id)?.locked,
+		).toBe(true);
+		expect(
+			(
+				await app.request(
+					`/notes/${id}`,
+					{ method: "DELETE", headers: headers() },
+					env,
+				)
+			).status,
+		).toBe(204);
+		expect(
+			(await app.request(`/notes/${id}`, { headers: headers() }, env)).status,
+		).toBe(404);
+	});
+
+	it("enforces the 512 KiB UTF-8 note limit while allowing larger note requests", async () => {
+		const id = "size-test";
+		const allowed = "a".repeat(512 * 1024);
+		expect(
+			(
+				await app.request(
+					`/notes/${id}`,
+					{
+						method: "PUT",
+						headers: headers(),
+						body: JSON.stringify({ content: allowed }),
+					},
+					env,
+				)
+			).status,
+		).toBe(200);
+		expect(
+			(
+				await app.request(
+					`/notes/${id}`,
+					{
+						method: "PUT",
+						headers: headers(),
+						body: JSON.stringify({ content: allowed + "한" }),
+					},
+					env,
+				)
+			).status,
+		).toBe(413);
+		expect(
+			(await app.request(`/notes/${id}`, { headers: headers() }, env)).status,
+		).toBe(200);
+		await app.request(
+			`/notes/${id}`,
+			{ method: "DELETE", headers: headers() },
+			env,
+		);
 	});
 });

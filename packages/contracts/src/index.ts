@@ -117,8 +117,24 @@ export const reservedSlugs: readonly string[] = [
 	"i",
 	"icon.png",
 	"ip",
+	"note",
 	"work",
 ];
+
+export const noteIdSchema = z.string().regex(/^[A-Za-z0-9_-]{1,64}$/);
+export const noteSchema = z.object({
+	id: noteIdSchema,
+	content: z.string(),
+	passwordHash: z.string().nullable(),
+	createdAt: z.string().datetime(),
+	updatedAt: z.string().datetime(),
+});
+export const noteListItemSchema = noteSchema
+	.pick({ id: true, updatedAt: true })
+	.extend({ size: z.number().int().nonnegative(), locked: z.boolean() });
+export const noteListSchema = z.array(noteListItemSchema);
+export type Note = z.infer<typeof noteSchema>;
+export type NoteListItem = z.infer<typeof noteListItemSchema>;
 
 export const linkSchema = z.object({
 	slug: z

@@ -5,6 +5,7 @@ import { entriesRoute } from "./features/entries/route";
 import { filesRoute } from "./features/files/route";
 import { linksRoute } from "./features/links/route";
 import { noticesRoute } from "./features/notices/route";
+import { notesRoute } from "./features/notes/route";
 import { portfolioRoute } from "./features/portfolio/route";
 import { projectsRoute } from "./features/projects/route";
 import { settingsRoute } from "./features/settings/route";
@@ -18,13 +19,14 @@ app.get("/health", (context) =>
 	context.json({ ok: true, service: "api-suk-kr" }),
 );
 app.use("*", auth());
-app.use(
-	"*",
+app.use("*", (context, next) =>
 	bodyLimit({
-		maxSize: 64 * 1024,
+		maxSize: context.req.path.startsWith("/notes/")
+			? 4 * 1024 * 1024
+			: 64 * 1024,
 		onError: (context) =>
 			context.json({ error: "Request body is too large" }, 413),
-	}),
+	})(context, next),
 );
 app.use("*", async (context, next) => {
 	const startedAt = Date.now();
@@ -46,6 +48,7 @@ app.route("/skills", skillsRoute);
 app.route("/links", linksRoute);
 app.route("/files", filesRoute);
 app.route("/notices", noticesRoute);
+app.route("/notes", notesRoute);
 app.notFound((context) => context.json({ error: "Not found" }, 404));
 app.onError((error, context) => {
 	console.error(

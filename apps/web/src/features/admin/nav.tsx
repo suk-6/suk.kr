@@ -1,4 +1,5 @@
-import { LogOut } from "lucide-react";
+import { LogOut, StickyNote } from "lucide-react";
+import type { Route } from "next";
 import Link from "next/link";
 import {
 	Sidebar,
@@ -15,7 +16,7 @@ import {
 import { logout } from "@/lib/auth/actions";
 import { type Section, sections } from "./config";
 
-export const AdminNav = ({ active }: { active: Section }) => (
+export const AdminNav = ({ active }: { active: Section | "notes" }) => (
 	<Sidebar collapsible="icon">
 		<SidebarHeader>
 			<SidebarMenu>
@@ -49,6 +50,16 @@ export const AdminNav = ({ active }: { active: Section }) => (
 								</SidebarMenuButton>
 							</SidebarMenuItem>
 						))}
+						<SidebarMenuItem>
+							<SidebarMenuButton
+								isActive={active === "notes"}
+								render={<Link href={"/admin/notes" as Route} />}
+								tooltip="노트 관리"
+							>
+								<StickyNote />
+								<span>노트 관리</span>
+							</SidebarMenuButton>
+						</SidebarMenuItem>
 					</SidebarMenu>
 				</SidebarGroupContent>
 			</SidebarGroup>

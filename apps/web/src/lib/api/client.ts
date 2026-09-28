@@ -1,5 +1,7 @@
 import type {
 	Entry,
+	Note,
+	NoteListItem,
 	Portfolio,
 	Project,
 	Settings,
@@ -48,6 +50,12 @@ export const api = {
 		request<ShortLink>(`/links/${encodeURIComponent(slug)}`),
 	files: () => request<StoredFile[]>("/files"),
 	notices: () => request<SiteNotice[]>("/notices"),
+	notes: () => request<NoteListItem[]>("/notes"),
+	note: (id: string) =>
+		request<Note>(`/notes/${encodeURIComponent(id)}`).catch((error) => {
+			if (error instanceof Error && error.message === "Not found") return null;
+			throw error;
+		}),
 	file: (id: string) => request<StoredFile>(`/files/${encodeURIComponent(id)}`),
 	mutate: <T>(
 		path: string,
