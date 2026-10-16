@@ -3,7 +3,7 @@ import { fileAuthorization } from "@/features/files/auth";
 import { fileError } from "@/features/files/errors";
 import { operationPlan } from "@/features/files/operations";
 
-export const maxDuration = 300;
+export const maxDuration = 60;
 
 export async function GET(request: Request) {
 	try {
