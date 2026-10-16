@@ -141,7 +141,11 @@ export const linkSchema = z.object({
 		.string()
 		.min(1)
 		.max(160)
-		.regex(/^[^/?#]+$/, "slug에 /, ?, #을 사용할 수 없습니다.")
+		.regex(/^[^/?#\\]+$/, "slug에 /, \\, ?, #을 사용할 수 없습니다.")
+		.refine(
+			(slug) => ![".", ".."].includes(slug),
+			"점만 있는 slug는 사용할 수 없습니다.",
+		)
 		.refine(
 			(slug) => !reservedSlugs.includes(slug.toLowerCase()),
 			"애플리케이션에서 사용하는 예약어는 slug로 등록할 수 없습니다.",
@@ -164,7 +168,120 @@ export const fileSchema = z.object({
 	createdAt: z.string().datetime(),
 });
 
-export const fileUpdateSchema = fileSchema.pick({ slug: true, fileName: true });
+// S3 is the file inventory. D1 rows below are optional slug mappings;
+// legacy metadata columns remain compatible snapshots, not the file inventory.
+export const objectKeySchema = z
+	.string()
+	.min(1)
+	.refine(
+		(key) =>
+			!/[\uD800-\uDFFF]/u.test(key) &&
+			!key.startsWith("/") &&
+			!key.split("/").some((part) => part === "." || part === "..") &&
+			!/[\u0000-\u001f\u007f]/.test(key) &&
+			new TextEncoder().encode(key).length <= 1024,
+		"올바른 S3 키를 입력하세요. 점만 있는 경로와 제어 문자는 사용할 수 없습니다.",
+	);
+export const fileObjectKeySchema = objectKeySchema.refine(
+	(key) => !key.endsWith("/"),
+	"파일 키는 /로 끝날 수 없습니다.",
+);
+export const folderPrefixSchema = z.union([
+	z.literal(""),
+	objectKeySchema.refine(
+		(key) => key.endsWith("/"),
+		"폴더 경로는 /로 끝나야 합니다.",
+	),
+]);
+export const fileUpdateSchema = fileSchema
+	.pick({ slug: true, fileName: true })
+	.extend({
+		objectKey: fileObjectKeySchema.optional(),
+		publicUrl: z.url().optional(),
+	})
+	.refine(
+		(value) => Boolean(value.objectKey) === Boolean(value.publicUrl),
+		"이동할 키와 공개 URL을 함께 입력하세요.",
+	);
+export const fileUploadSchema = z.object({
+	objectKey: fileObjectKeySchema,
+	contentType: fileSchema.shape.contentType,
+	size: z
+		.number()
+		.int()
+		.nonnegative()
+		.max(5 * 1024 ** 3),
+	overwrite: z.boolean().default(false),
+	etag: z.string().min(1).optional(),
+	confirmation: z.string().optional(),
+});
+export const fileSigningSchema = fileUploadSchema;
+export const signedFileUploadSchema = z.object({
+	objectKey: fileObjectKeySchema,
+	expiresAt: z.number().int(),
+	uploadUrl: z.url(),
+	contentType: z.string().min(1),
+	headers: z.record(z.string(), z.string()),
+});
+export const fileMappingDeleteSchema = z.object({
+	objectKey: fileSchema.shape.objectKey,
+});
+export const fileSlugSchema = z.union([
+	z.object({ id: z.string().min(1), slug: z.null() }),
+	z.object({ objectKey: fileObjectKeySchema, slug: linkSchema.shape.slug }),
+]);
+export const reviewedObjectSchema = z.object({
+	objectKey: z.string().min(1),
+	etag: z.string().min(1),
+	size: z.number().int().nonnegative(),
+});
+export const folderCreateSchema = z.object({
+	prefix: folderPrefixSchema.refine(Boolean, "버킷 루트는 만들 수 없습니다."),
+});
+export const fileDeleteSchema = z.object({
+	objectKey: objectKeySchema,
+	objects: z.array(reviewedObjectSchema),
+	confirmation: z.string().optional(),
+});
+export const fileMoveSchema = fileDeleteSchema
+	.extend({ destinationKey: objectKeySchema })
+	.refine(
+		({ objectKey, destinationKey }) =>
+			objectKey !== destinationKey &&
+			objectKey.endsWith("/") === destinationKey.endsWith("/") &&
+			!(objectKey.endsWith("/") && destinationKey.startsWith(objectKey)),
+		"원본과 다른 경로를 입력하세요. 폴더는 /로 끝나야 하며 자신의 하위 폴더로 이동할 수 없습니다.",
+	);
+export const fileOperationPlanSchema = z.object({
+	objects: z.array(reviewedObjectSchema),
+	count: z.number().int().nonnegative(),
+	bytes: z.number().int().nonnegative(),
+	requiresConfirmation: z.boolean(),
+});
+export const storageObjectSchema = z.object({
+	objectKey: z.string(),
+	size: z.number().int().nonnegative(),
+	lastModified: z.string().datetime().nullable(),
+	contentType: z.string(),
+	publicUrl: z.url(),
+	mapping: fileSchema.extend({ updatedAt: z.string() }).nullable(),
+});
+export const storageObjectsSchema = z.object({
+	prefix: z.string(),
+	folders: z.array(z.string()),
+	objects: z.array(storageObjectSchema),
+	nextToken: z.string().nullable(),
+});
+export const fileScanOffsetSchema = z.coerce.number().int().nonnegative();
+export const brokenFileLinksSchema = z.object({
+	files: z.array(fileSchema.extend({ updatedAt: z.string() })),
+	nextOffset: z.number().int().nullable(),
+});
+export type SignedFileUpload = z.infer<typeof signedFileUploadSchema>;
+export type StorageObject = z.infer<typeof storageObjectSchema>;
+export type StorageObjects = z.infer<typeof storageObjectsSchema>;
+export type FileOperationPlan = z.infer<typeof fileOperationPlanSchema>;
+export type BrokenFileLinks = z.infer<typeof brokenFileLinksSchema>;
 
 export type Settings = z.infer<typeof settingsSchema>;
 export type Project = z.infer<typeof projectSchema>;

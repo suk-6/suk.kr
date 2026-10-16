@@ -438,7 +438,11 @@ describe("api", () => {
 
 		const deleted = await app.request(
 			`/files/${file.id}`,
-			{ method: "DELETE", headers: headers() },
+			{
+				method: "DELETE",
+				headers: headers(),
+				body: JSON.stringify({ objectKey: file.objectKey }),
+			},
 			env,
 		);
 		expect(deleted.status).toBe(200);
@@ -459,7 +463,11 @@ describe("api", () => {
 			(
 				await app.request(
 					`/files/${file.id}`,
-					{ method: "DELETE", headers: headers() },
+					{
+						method: "DELETE",
+						headers: headers(),
+						body: JSON.stringify({ objectKey: file.objectKey }),
+					},
 					env,
 				)
 			).status,

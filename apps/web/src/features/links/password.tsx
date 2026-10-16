@@ -31,7 +31,9 @@ export const Password = ({
 					비밀번호가 올바르지 않습니다.
 				</p>
 			)}
-			<Button className="mt-4 w-full">계속</Button>
+			<Button type="submit" className="mt-4 w-full">
+				계속
+			</Button>
 		</form>
 	</main>
 );

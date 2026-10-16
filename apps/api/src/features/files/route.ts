@@ -1,4 +1,8 @@
-import { fileSchema, fileUpdateSchema } from "@suk/contracts";
+import {
+	fileMappingDeleteSchema,
+	fileSchema,
+	fileUpdateSchema,
+} from "@suk/contracts";
 import { Hono } from "hono";
 import { createFile, deleteFile, getFile, getFiles, updateFile } from "./repo";
 
@@ -12,21 +16,26 @@ export const filesRoute = new Hono<{ Bindings: Env }>()
 	})
 	.post("/", async (context) => {
 		const value = fileSchema.parse(await context.req.json());
-		await createFile(context.env.DB, value);
-		return context.json(value, 201);
+		return context.json(await createFile(context.env.DB, value), 201);
 	})
 	.patch("/:id", async (context) => {
 		const value = fileUpdateSchema.parse(await context.req.json());
 		const updated = await updateFile(
 			context.env.DB,
 			context.req.param("id"),
-			value.slug,
-			value.fileName,
+			value,
 		);
 		return context.json(updated);
 	})
 	.delete("/:id", async (context) => {
+		const value = fileMappingDeleteSchema.parse(
+			await context.req.json().catch(() => null),
+		);
 		return context.json(
-			await deleteFile(context.env.DB, context.req.param("id")),
+			await deleteFile(
+				context.env.DB,
+				context.req.param("id"),
+				value.objectKey,
+			),
 		);
 	});

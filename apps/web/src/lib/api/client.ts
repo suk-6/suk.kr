@@ -12,12 +12,22 @@ import type {
 } from "@suk/contracts";
 import "server-only";
 
+export class ApiError extends Error {
+	constructor(
+		public status: number,
+		message: string,
+	) {
+		super(message);
+	}
+}
+
 const request = async <T>(
 	path: string,
 	init?: RequestInit & { revalidate?: number },
 ): Promise<T> => {
 	const response = await fetch(`${process.env.API_BASE_URL}${path}`, {
 		...init,
+		signal: init?.signal ?? AbortSignal.timeout(15_000),
 		headers: {
 			Authorization: `Bearer ${process.env.API_TOKEN}`,
 			"Content-Type": "application/json",
@@ -31,7 +41,7 @@ const request = async <T>(
 		const body = (await response
 			.json()
 			.catch(() => ({ error: response.statusText }))) as { error?: string };
-		throw new Error(body.error ?? "API request failed");
+		throw new ApiError(response.status, body.error ?? "API request failed");
 	}
 
 	return response.status === 204

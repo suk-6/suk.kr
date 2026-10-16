@@ -6,7 +6,7 @@ export const OverviewSection = ({ data }: { data: AdminData }) => {
 		["프로젝트", data.projects.length],
 		["경력·활동", data.entries.length],
 		["단축 URL", data.links.length],
-		["관리 파일", data.files.length],
+		["파일 단축 링크", data.files.length],
 	];
 	return (
 		<>

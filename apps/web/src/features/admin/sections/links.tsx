@@ -43,9 +43,16 @@ const LinkForm = ({ link }: { link?: ShortLink }) => {
 					</Badge>
 				) : (
 					<>
-						<Button size="sm">저장</Button>
+						<Button type="submit" size="sm">
+							저장
+						</Button>
 						{link && (
-							<Button size="sm" variant="destructive" formAction={removeLink}>
+							<Button
+								type="submit"
+								size="sm"
+								variant="destructive"
+								formAction={removeLink}
+							>
 								삭제
 							</Button>
 						)}

@@ -53,7 +53,7 @@ export const AdminPage = ({
 				)}
 				{section === "skills" && <SkillsSection skills={data.skills} />}
 				{section === "links" && <LinksSection links={data.links} />}
-				{section === "files" && <FilesSection files={data.files} />}
+				{section === "files" && <FilesSection />}
 			</div>
 		</SidebarInset>
 	</SidebarProvider>

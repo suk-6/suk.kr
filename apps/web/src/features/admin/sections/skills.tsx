@@ -23,9 +23,16 @@ const SkillForm = ({ skill }: { skill?: Skill }) => (
 			defaultValue={skill?.sortOrder ?? 0}
 		/>
 		<div className="flex gap-2">
-			<Button size="sm">저장</Button>
+			<Button type="submit" size="sm">
+				저장
+			</Button>
 			{skill && (
-				<Button size="sm" variant="destructive" formAction={removeSkill}>
+				<Button
+					type="submit"
+					size="sm"
+					variant="destructive"
+					formAction={removeSkill}
+				>
 					삭제
 				</Button>
 			)}

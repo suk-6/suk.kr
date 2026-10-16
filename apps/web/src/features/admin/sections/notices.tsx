@@ -71,9 +71,13 @@ const NoticeForm = ({ notice }: { notice?: SiteNotice }) => (
 					공개
 				</label>
 				<div className="flex gap-2 md:col-span-2">
-					<Button>저장</Button>
+					<Button type="submit">저장</Button>
 					{notice && (
-						<Button formAction={removeNotice} variant="destructive">
+						<Button
+							type="submit"
+							formAction={removeNotice}
+							variant="destructive"
+						>
 							삭제
 						</Button>
 					)}

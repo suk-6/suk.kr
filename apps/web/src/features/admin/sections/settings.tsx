@@ -104,7 +104,7 @@ export const SettingsSection = ({ settings }: { settings: Settings }) => (
 						/>
 					</label>
 					<div className="md:col-span-2">
-						<Button>저장</Button>
+						<Button type="submit">저장</Button>
 					</div>
 				</form>
 			</CardContent>

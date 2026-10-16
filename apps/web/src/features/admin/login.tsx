@@ -35,7 +35,9 @@ export const AdminLogin = ({ invalid }: { invalid: boolean }) => (
 						/>
 						{invalid && <FieldError>비밀번호가 올바르지 않습니다.</FieldError>}
 					</Field>
-					<Button className="w-full">로그인</Button>
+					<Button type="submit" className="w-full">
+						로그인
+					</Button>
 				</form>
 			</CardContent>
 		</Card>

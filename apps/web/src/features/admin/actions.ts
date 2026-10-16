@@ -2,12 +2,9 @@
 
 import {
 	entryBatchSchema,
-	fileSchema,
-	fileUpdateSchema,
 	linkSchema,
 	noticeSchema,
 	projectSchema,
-	type StoredFile,
 	settingsSchema,
 	skillSchema,
 } from "@suk/contracts";
@@ -15,7 +12,6 @@ import type { EntryBatch } from "@suk/contracts";
 import type { Route } from "next";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { deleteObject } from "@/features/files/s3";
 import { api } from "@/lib/api/client";
 import { isAdmin } from "@/lib/auth/session";
 import { hashPassword } from "@/lib/crypto/password";
@@ -198,57 +194,5 @@ export const removeLink = async (data: FormData) => {
 		`/links/${encodeURIComponent(text(data, "previousSlug") || text(data, "slug"))}`,
 		"DELETE",
 	);
-	done();
-};
-
-export const createFile = async (data: FormData) => {
-	await authorize();
-	const value = fileSchema.parse({
-		id: crypto.randomUUID(),
-		slug: text(data, "slug"),
-		fileName: text(data, "fileName"),
-		objectKey: text(data, "objectKey"),
-		contentType: text(data, "contentType"),
-		size: number(data, "size"),
-		publicUrl: `${process.env.NEXT_PUBLIC_S3_URL}/${encodeURIComponent(text(data, "objectKey")).replaceAll("%2F", "/")}`,
-		createdAt: new Date().toISOString(),
-	});
-	try {
-		await api.mutate("/files", "POST", value);
-	} catch (error) {
-		await deleteObject(value.objectKey).catch((cleanupError) =>
-			console.error("Failed to clean up an untracked upload", cleanupError),
-		);
-		throw error;
-	}
-	done();
-};
-
-export const updateFile = async (data: FormData) => {
-	await authorize();
-	const value = fileUpdateSchema.parse({
-		slug: text(data, "slug"),
-		fileName: text(data, "fileName"),
-	});
-	await api.mutate(`/files/${text(data, "id")}`, "PATCH", value);
-	done();
-};
-
-export const removeFile = async (data: FormData) => {
-	await authorize();
-	const deleted = await api.mutate<StoredFile>(
-		`/files/${text(data, "id")}`,
-		"DELETE",
-	);
-	try {
-		await deleteObject(deleted.objectKey);
-	} catch (error) {
-		await api
-			.mutate("/files", "POST", deleted)
-			.catch((rollbackError) =>
-				console.error("Failed to restore file metadata", rollbackError),
-			);
-		throw error;
-	}
 	done();
 };

@@ -84,7 +84,7 @@ const ProjectForm = ({ project }: { project?: Project }) => (
 					공개
 				</label>
 				<div className="flex gap-2 md:col-span-2">
-					<Button>저장</Button>
+					<Button type="submit">저장</Button>
 					{project && (
 						<Link
 							className={buttonVariants({ variant: "outline" })}
@@ -94,7 +94,11 @@ const ProjectForm = ({ project }: { project?: Project }) => (
 						</Link>
 					)}
 					{project && (
-						<Button formAction={removeProject} variant="destructive">
+						<Button
+							type="submit"
+							formAction={removeProject}
+							variant="destructive"
+						>
 							삭제
 						</Button>
 					)}
